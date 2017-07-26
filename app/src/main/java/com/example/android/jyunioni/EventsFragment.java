@@ -17,6 +17,10 @@ import java.util.ArrayList;
  */
 public class EventsFragment extends Fragment {
 
+    // TODO: Kaikki mitä tää luokka tarvii on ArrayList Event:tejä
+    // TODO: tää lista tulis luoda EventActivityn AsyncTaskilla, koska sen avulla haetaan tiedot netistä.
+
+
     /**
      * Adapter for the list of events
      */
@@ -32,12 +36,6 @@ public class EventsFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.list_build, container, false);
-
-
-        // TODO: Event list should be created during the startup of the app. Data should be fetched when the app has started.
-        // TODO: Kaikki mitä tää luokka tarvii on ArrayList Event:tejä
-
-        // TODO: tää lista tulis luoda EventActivityn AsyncTaskilla, koska sen avulla haetaan tiedot netistä.
 
 
         // Create a list of events

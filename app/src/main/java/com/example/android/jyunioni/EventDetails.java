@@ -91,7 +91,6 @@ public class EventDetails extends AppCompatActivity {
         eventDetailImageView.setBackgroundResource(eventImageId);
 
 
-
         // Find the button in the event details view that takes the user to the event's web page.
         Button eventDetailsButton = (Button) findViewById(R.id.event_details_button);
 
