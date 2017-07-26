@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- (C) Jani Suoranta 17.7.2017 -->
+<resources>
+
+    <!-- Primary dark color of the app. Shown in the status bar -->
+    <color name="primary_dark_color">#0D47A1</color>
+
+    <!-- Primary color of the app. Shown in the app bar and the background of fragments -->
+    <color name="primary_color">#536DFE</color>
+
+    <!-- Background color for app -->
+    <color name="background">#FFFFFF</color>
+
+
+    <!-- Theme colors for each group -->
+    <!-- Pörssi Ry -->
+    <color name="color_porssi_ry">#3A53A4</color>
+
+    <!-- Dumppi Ry -->
+    <color name="color_dumppi_ry">#7A122C</color>
+
+    <!-- Linkki Jyväskylä Ry -->
+    <color name="color_linkki_jkl">#035CFF</color>
+
+</resources>

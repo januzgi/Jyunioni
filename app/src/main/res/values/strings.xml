@@ -1,0 +1,27 @@
+<!-- (C) Jani Suoranta 17.7.2017 -->
+<resources>
+    <!-- Title for the application. [CHAR LIMIT=12] -->
+    <string name="app_name">Jyunioni</string>
+
+    <!-- Category name for events -->
+    <string name="category_events">Events</string>
+
+    <!-- Category name for the shoutbox -->
+    <string name="category_shoutbox">Shoutbox</string>
+
+    <!-- IcsEvent details button text -->
+    <string name="event_details_button_text">Tapahtumasivulle</string>
+
+    <!-- Toast text to tell the user that the app opens a browser -->
+    <string name="moving_to_event_page">Avataan tapahtuman sivu...</string>
+
+    <!-- Toast text to tell the user if the intent contained no data for some reason -->
+    <string name="no_event_data_found">Tapahtuman dataa ei löytynyt.</string>
+
+    <!-- Toast text to tell the user if there's no internet connection -->
+    <string name="no_internet_connection">Ei internet yhteyttä.</string>
+
+    <!-- Toast text to tell the user if the event's page URL was not found -->
+    <string name="webpage_not_found">Tapahtuman osoitetta ei löytynyt.</string>
+
+</resources>

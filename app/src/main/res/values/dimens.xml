@@ -1,0 +1,11 @@
+<!-- Jani Suoranta 18.7.2017 -->
+<resources>
+    <!-- Height of each list item -->
+    <dimen name="list_item_height">88dp</dimen>
+
+    <!-- Height of event's details and additional information -->
+    <dimen name="event_details_item_height">172dp</dimen>
+
+    <!-- Default padding -->
+    <dimen name="custom_default_padding">16dp</dimen>
+</resources>
