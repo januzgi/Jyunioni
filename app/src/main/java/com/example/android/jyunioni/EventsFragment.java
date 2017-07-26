@@ -25,7 +25,8 @@ public class EventsFragment extends Fragment {
     /**
      * Required empty public constructor
      */
-    public EventsFragment() {}
+    public EventsFragment() {
+    }
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
@@ -69,12 +70,11 @@ public class EventsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                 // Find the current event that was clicked on
+                // Find the current event that was clicked on
                 Event currentEvent = mAdapter.getItem(position);
 
                 // Create the intent
                 Intent intent = new Intent(getContext(), EventDetails.class);
-
 
                 // Get the URL so the user can be directed to right web page.
                 String eventUrl = currentEvent.getUrl();
@@ -82,20 +82,21 @@ public class EventsFragment extends Fragment {
                 // Get the current event's image resource id so the right image can be displayed in the details view.
                 int eventImageId = currentEvent.getImageResourceId();
 
-                // Get event's name and timestamp
+                // Get event's name, timestamp and information
                 String eventName = currentEvent.getEventName();
                 String eventTimestamp = currentEvent.getEventTimestamp();
+                String eventInformation = currentEvent.getEventInformation();
 
                 // Add the data to the intent so it can be used in the activity.
                 intent.putExtra("EVENT_NAME", eventName);
                 intent.putExtra("EVENT_TIMESTAMP", eventTimestamp);
                 intent.putExtra("IMAGE_ID", eventImageId);
                 intent.putExtra("EVENT_URL", eventUrl);
+                intent.putExtra("EVENT_INFORMATION", eventInformation);
 
                 startActivity(intent);
             }
         });
-
 
 
         return rootView;

@@ -44,25 +44,41 @@ public class EventDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_details);
 
+               /* From EventsFragment.java
+               // Add the data to the intent so it can be used in the activity.
+        intent.putExtra("EVENT_NAME", eventName);
+        intent.putExtra("EVENT_TIMESTAMP", eventTimestamp);
+        intent.putExtra("IMAGE_ID", eventImageId);
+        intent.putExtra("EVENT_URL", eventUrl);
+        intent.putExtra("EVENT_INFORMATION", eventInformation);*/
+
+        Intent intent = getIntent();
+        Bundle intentData = intent.getExtras();
+
+        if(intentData != null)
+        {
+            String j = (String) intentData.get("name");
+
+            // Get the event's name and the timestamp.
+            eventName = intent.getStringExtra("EVENT_NAME");
+            eventNameAndTimestamp = eventName + "\n" + intent.getStringExtra("EVENT_TIMESTAMP");
+
+            // Set the event name as the title of the activity for better UX
+            setTitle(eventName);
+
+            // Get the event's host groups image id. Default -1 == no image.
+            eventImageId = intent.getIntExtra("IMAGE_ID", -1);
+
+            // Get the event's URL
+            EventDetails.eventUrl = intent.getStringExtra("EVENT_URL");
+
+            // Get the description / other information about the event
+            eventInformation = intent.getStringExtra("EVENT_INFORMATION");
+
+        }
 
 
-        // Get the event's name and the timestamp.
-        eventName = event.getEventName();
-        eventNameAndTimestamp = event + "\n" + event.getEventTimestamp();
-
-        // Set the event name as the title of the activity for better UX
-        setTitle(eventName);
-
-        // Get the event's host groups image id.
-        eventImageId = event.getImageResourceId();
-
-        // Get the event's URL
-        EventDetails.eventUrl = event.getUrl();
-
-        // Get the description / other information about the event
-        eventInformation = event.getEventInformation();
-
-        // Set the HTTP request content inside the event information textview
+        // Set the event's details / information in the event information textview
         TextView eventInformationTextView = (TextView) findViewById(R.id.event_information_textview);
         eventInformationTextView.setText(eventInformation);
 
@@ -122,3 +138,20 @@ public class EventDetails extends AppCompatActivity {
 
 
 }
+
+
+     /* // Get the event's name and the timestamp.
+        eventName = event.getEventName();
+        eventNameAndTimestamp = event + "\n" + event.getEventTimestamp();
+
+        // Set the event name as the title of the activity for better UX
+        setTitle(eventName);
+
+        // Get the event's host groups image id.
+        eventImageId = event.getImageResourceId();
+
+        // Get the event's URL
+        EventDetails.eventUrl = event.getUrl();
+
+        // Get the description / other information about the event
+        eventInformation = event.getEventInformation();*/

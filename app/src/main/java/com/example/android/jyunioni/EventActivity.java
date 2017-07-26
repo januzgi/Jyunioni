@@ -290,6 +290,7 @@ public class EventActivity extends AppCompatActivity {
             // There is output from the website and it seems to work in that sense.
             Log.e(LOG_TAG, httpResponseString);
 
+            // Prolly needed to use inputstreamreader.
 
             StringBuilder output = new StringBuilder();
             if (inputStream != null) {
