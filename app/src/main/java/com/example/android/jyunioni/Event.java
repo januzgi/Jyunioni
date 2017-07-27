@@ -25,12 +25,12 @@ public class Event {
     /**
      * String for the event name
      */
-    private String mEventName;
+    private String mEventName = "";
 
     /**
      * String for the event's timestamp in as DD:MM:YY\nMM:HH
      */
-    private String mEventTimestamp;
+    private String mEventTimestamp = "";
 
     /**
      * Image resource ID for the event's hosting group
@@ -40,17 +40,17 @@ public class Event {
     /**
      * Theme color for the group hosting the event.
      */
-    private int mGroupColorId;
+    private int mGroupColorId = -1;
 
     /**
      * The URL of the event's web page.
      */
-    private String mUrl;
+    private String mUrl = "";
 
     /**
      * The information, instructions or details of the event.
      */
-    private String mEventInformation;
+    private String mEventInformation = "";
 
     /**
      * Constant value that represents no image was provided for this group

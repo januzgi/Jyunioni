@@ -54,6 +54,14 @@ public class EventsFetchingAsyncTask extends AsyncTask<URL, Void, Event> {
     private int groupColorId;
 
 
+    /**
+     * AsyncTask method call in EventActivity.java
+     */
+
+    /*// Kick off an {@link AsyncTask} to perform the network request to get the data.
+    EventsFetchingAsyncTask task = new EventsFetchingAsyncTask();
+        task.execute();*/
+
 
     @Override
     protected Event doInBackground(URL... urls) {
@@ -72,14 +80,12 @@ public class EventsFetchingAsyncTask extends AsyncTask<URL, Void, Event> {
             Log.e(LOG_TAG, "IOException when making the HTTP request in doInBackground at EventActivity" + e);
         }
 
-        // Create an InputStream object for the extractor to use.
-        InputStream inputStream = null;
 
         try {
             Log.e(LOG_TAG, "Extracting features soon.");
 
             // Extract relevant fields from the HTTP response and create an {@link Event} object
-            event = extractDetails(response, inputStream);
+            event = extractDetails(response);
 
             // Update the UI with the information
             // updateUi(event);
@@ -183,13 +189,15 @@ public class EventsFetchingAsyncTask extends AsyncTask<URL, Void, Event> {
     /**
      * Return an {@link Event} object by parsing out information of the HTTP response.
      */
-    private Event extractDetails(String httpResponseString, InputStream inputStream) throws IOException {
+    private Event extractDetails(String httpResponseString) throws IOException {
         // TODO: parametrit kohdilleen, että täsmää Event konstruktoria ja et toimii eri teksti ja kuvakenttien fetchaus.
 
         // There is output from the website and it seems to work in that sense.
         Log.e(LOG_TAG, httpResponseString);
 
         // Prolly needed to use inputstreamreader.
+        InputStream inputStream = null;
+
 
         StringBuilder output = new StringBuilder();
         if (inputStream != null) {
