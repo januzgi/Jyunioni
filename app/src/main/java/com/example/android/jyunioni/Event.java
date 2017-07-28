@@ -78,38 +78,44 @@ public class Event {
     }
 
     /**
-     * Get the string for the event's name.
+     * Getter and setter for event name
      */
     public String getEventName() {
         return mEventName;
     }
+    public void setEventName(String eventName){ mEventName = eventName;}
 
     /**
-     * Get the string for the event's timestamp.
+     * Getter and setter for event timestamp
      */
     public String getEventTimestamp() {
         return mEventTimestamp;
     }
+    public void setEventTimestamp(String eventTimestamp){ mEventTimestamp = eventTimestamp;}
 
     /**
-     * Return the image resource ID of the event hosting group.
+     * Getter and setter for the image resource ID of the event hosting group.
      */
     public int getImageResourceId() { return mImageResourceId; }
+    public void setImageResourceId(int id) { mImageResourceId = id;}
 
     /**
-     * Return the color ID for the group hosting the event.
+     * Getter and setter for the color ID for the group hosting the event.
      */
     public int getGroupColorId() { return mGroupColorId; }
+    public void setGroupColorId(int id) { mGroupColorId = id;}
 
     /**
-     * Get the URL of the event's page wherefrom the data was fetched too
+     * Getter and setter for the URL of the event's page wherefrom the data was fetched too
      */
     public String getUrl() { return mUrl; }
+    public void setUrl(String url) { mUrl = url;}
 
     /**
-     * Get the event's information or description
+     * Getter and setter for the event's information or description
      */
     public String getEventInformation() { return mEventInformation; }
+    public void setEventInformation(String information) { mEventInformation = information;}
 
     /**
      * Returns whether or not there is an image for this word.
@@ -117,7 +123,4 @@ public class Event {
     public boolean hasImage() {
         return mImageResourceId != NO_IMAGE_PROVIDED;
     }
-
-
-    public void setEventName(String eventName){ mEventName = eventName;}
 }

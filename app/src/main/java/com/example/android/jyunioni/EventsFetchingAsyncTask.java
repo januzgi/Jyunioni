@@ -271,7 +271,7 @@ public class EventsFetchingAsyncTask extends AsyncTask<URL, Void, Event> {
                     eventUrl[i] = Parser.extractUrl(line);
 
                     // result += "Event URL: " + eventUrl[i] + "\n" + "###########" + "\n" + "\n";
-                    currentEvent.setEventUrl(eventUrl[i]);
+                    currentEvent.setUrl(eventUrl[i]);
 
                 }
 
