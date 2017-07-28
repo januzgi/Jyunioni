@@ -11,6 +11,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Scanner;
 
 import static com.example.android.jyunioni.EventDetails.LOG_TAG;
 
@@ -28,48 +31,37 @@ public class EventsFetchingAsyncTask extends AsyncTask<URL, Void, Event> {
      */
     private final String LINKKI_EVENTS_URL = "http://linkkijkl.fi/events/?ical=1&tribe_display=month";
 
- /*   *
-     * TextView that is displayed when the list is empty
-
-    private TextView mEmptyStateTextView;
-
-    *
-     * Progressbar to be shown when fetching data.
-
-    private ProgressBar mProgressBar;
-
-    *
-     * Adapter for the list of events
-
-    private EventAdapter mAdapter;*/
-
 
     /**
      * Private variables for updating the UI with the information from the Event object.
-     * Organizing groups image & color and event name and timestamp needed.
+     * <p>
+     * Event image, name, timestamp, general information, url and group's color id is needed.
+     * <p>
+     * Small p stands for private as to separate private class variables form method variables in this class's methods.
      */
-    private String eventName = null;
-    private String eventTimestamp = null;
-    private int groupImageId;
-    private int groupColorId;
+    private String pEventName = "";
+    private String pEventTimestamp = "";
+    private String pEventInformation = "";
+    private String pEventUrl = "";
+    private int pGroupImageId = -1;
+    private int pGroupColorId = -1;
 
 
     /**
      * AsyncTask method call in EventActivity.java
+     * Runs multiple times at the moment, which is not good. Should run only in the startup of the app.
      */
-
     /*// Kick off an {@link AsyncTask} to perform the network request to get the data.
     EventsFetchingAsyncTask task = new EventsFetchingAsyncTask();
         task.execute();*/
-
 
     @Override
     protected Event doInBackground(URL... urls) {
 
         // Create an Event object instance
-        Event event = null;
+        Event event;
 
-        // Create URL object
+        // Create URL object for fetching the Linkki Jyväskylä Ry event's
         URL url = createUrl(LINKKI_EVENTS_URL);
 
         // Perform HTTP request to the URL and receive a response
@@ -80,27 +72,19 @@ public class EventsFetchingAsyncTask extends AsyncTask<URL, Void, Event> {
             Log.e(LOG_TAG, "IOException when making the HTTP request in doInBackground at EventActivity" + e);
         }
 
+        // Extract relevant fields from the HTTP response and create an {@link Event} object
+        // updateUi gets the result Event object via the onPostExecute().
+        event = extractDetails(response);
 
-        try {
-            Log.e(LOG_TAG, "Extracting features soon.");
 
-            // Extract relevant fields from the HTTP response and create an {@link Event} object
-            event = extractDetails(response);
-
-            // Update the UI with the information
-            // updateUi(event);
-
-            // Return the {@link Event} object as the result for the {@link EventAsyncTask}
-            return event;
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "IOException when extracting the HTTP response fields." + e);
-        }
-
+        // Return the {@link Event} object as the result for the {@link EventAsyncTask}
         return event;
     }
 
     /**
      * Update the screen with the given event (which was the result of the {@link EventsFetchingAsyncTask}).
+     * Runs in the UI thread.
+     * Gets the result from the population done in doInBackground().
      */
     @Override
     protected void onPostExecute(Event event) {
@@ -179,7 +163,8 @@ public class EventsFetchingAsyncTask extends AsyncTask<URL, Void, Event> {
             BufferedReader reader = new BufferedReader(inputStreamReader);
             String line = reader.readLine();
             while (line != null) {
-                output.append(line);
+                // Add a newline so the output won't be at one line.
+                output.append(line + "\n");
                 line = reader.readLine();
             }
         }
@@ -187,32 +172,124 @@ public class EventsFetchingAsyncTask extends AsyncTask<URL, Void, Event> {
     }
 
     /**
-     * Return an {@link Event} object by parsing out information of the HTTP response.
+     * Return an {@link Event} object by parsing out information from the HTTP response.
+     * Event image, name, timestamp, general information url and group's color id is needed.
      */
-    private Event extractDetails(String httpResponseString) throws IOException {
-        // TODO: parametrit kohdilleen, että täsmää Event konstruktoria ja et toimii eri teksti ja kuvakenttien fetchaus.
+    private Event extractDetails(String httpResponseString) {
 
-        // There is output from the website and it seems to work in that sense.
-        Log.e(LOG_TAG, httpResponseString);
+        // Create the Event object instance
+        Event currentEvent = new Event("Tapahtuma", "Päivämäärä", "Lisätietoa",
+                R.drawable.linkki_jkl_icon, R.color.color_linkki_jkl, "http://linkkijkl.fi/");
 
-        // Prolly needed to use inputstreamreader.
-        InputStream inputStream = null;
+        // TODO: put the results into the Event object.
 
+        // Helper variable for the scanner loops
+        String line = null;
 
-        StringBuilder output = new StringBuilder();
-        if (inputStream != null) {
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
+        // The amount of events is counted using every event's starting symbol
+        String eventBegin = "BEGIN:VEVENT";
 
-            BufferedReader reader = new BufferedReader(inputStreamReader);
-            String line = reader.readLine();
-            while (line != null) {
-                output.append(line);
-                line = reader.readLine();
-            }
+        // Create a scanner and loop through the string to count the amount of
+        // separate events in the string
+        Scanner eventsCountScanner = new Scanner(httpResponseString).useDelimiter("[\n]");
+
+        // Create a variable to initialize right size string arrays later
+        int eventsCount = 0;
+
+        // If the line contains the beginning of a new event, then add one to
+        // the events counter
+        while (eventsCountScanner.hasNext()) {
+            line = eventsCountScanner.next();
+            if (line.contains(eventBegin))
+                eventsCount++;
         }
 
 
-        return null;
+        // Create string arrays for the different fields that are extracted from
+        // the HTTP response string
+        String eventTimeStart = "";
+        String eventTimeEnd = "";
+        String[] eventTimestamp = new String[eventsCount];
+
+        String[] eventName = new String[eventsCount];
+        String[] eventInformation = new String[eventsCount];
+        String[] eventUrl = new String[eventsCount];
+
+        String result = "";
+
+
+        // Scan through the fields and add the contents to the corresponding
+        // String arrays. Use 'newline' as a limiter to go to nextLine().
+        Scanner fieldsScanner = new Scanner(httpResponseString).useDelimiter("[\n]");
+
+        // When the for -loop has been done (one event has been extracted, this
+        // adds by one)
+        int loopCount = 0;
+
+        // When there's still text left in the scanner
+        while (fieldsScanner.hasNext()) {
+
+            // Get the different fields information to desired String arrays,
+            // from which they can easily be matched up.
+            // Add the fields to the "results" string array
+            for (int i = 0; i < eventsCount; i++) {
+
+                // Use the scanner to parse the details of each event
+                line = fieldsScanner.next();
+
+                // Event's starting time
+                if (line.contains("DTSTART;")) {
+                    eventTimeStart = Parser.extractTime(line);
+
+                    // Event's ending time
+                } else if (line.contains("DTEND;")) {
+                    eventTimeEnd = Parser.extractTime(line);
+
+                    // Get the timestamp from the starting and ending times of the event
+                    eventTimestamp[i] = eventTimeStart + " - " + eventTimeEnd;
+
+                    //result += "Event timestamp: " + eventTimestamp[i] + "\n";
+                    currentEvent.setEventTimestamp(eventTimestamp[i]);
+
+                    // Event's name
+                } else if (line.contains("SUMMARY")) {
+                    eventName[i] = Parser.extractField(line);
+
+                    // result += "Event name: " + eventName[i] + "\n";
+                    currentEvent.setEventName(eventName[i]);
+
+                    // Event's description / overall information
+                } else if (line.contains("DESCRIPTION:")) {
+                    eventInformation[i] = Parser.extractDescriptionField(line);
+
+                    // result += "Event information:" + "\n" + eventInformation[i] + "\n";
+                    currentEvent.setEventInformation(eventInformation[i]);
+
+                    // Event's URL
+                    // Skip the first URL, which is the "X-ORIGINAL-URL:"
+                } else if (line.contains("URL") && i != 0) {
+                    eventUrl[i] = Parser.extractUrl(line);
+
+                    // result += "Event URL: " + eventUrl[i] + "\n" + "###########" + "\n" + "\n";
+                    currentEvent.setEventUrl(eventUrl[i]);
+
+                }
+
+                // If this was the end of the event being extracted
+                if (line.contains("END:VEVENT")) {
+                    // If there is the "event end" then exit the for loop back to
+                    // the while loop
+                    loopCount++;
+                    break;
+                }
+
+            }
+
+            // If the loop has gone through all the events
+            if (loopCount == eventsCount) break;
+        }
+
+        return result;
 
     }
 
@@ -225,14 +302,14 @@ public class EventsFetchingAsyncTask extends AsyncTask<URL, Void, Event> {
         /*Log.e(LOG_TAG, event.toString() + "Event toString() in EventActivity updateUi method.");*/
 
         // Get the event's host groups image id.
-        groupImageId = event.getImageResourceId();
+        pGroupImageId = event.getImageResourceId();
 
         // Get the event's name and the timestamp.
-        eventName = event.getEventName();
-        eventTimestamp = event.getEventTimestamp();
+        pEventName = event.getEventName();
+        pEventTimestamp = event.getEventTimestamp();
 
         // Get the organizing group's color id.
-        groupColorId = event.getGroupColorId();
+        pGroupColorId = event.getGroupColorId();
 
 
 /*        // Set the according items to the right views.
@@ -252,71 +329,57 @@ public class EventsFetchingAsyncTask extends AsyncTask<URL, Void, Event> {
 
 }
 
-/**
- * Extracts dates and text from .ICS file
- *
- * @author Douglas Rudolph
- */
-class ICSParser {
 
-    /**
-     * @param line: .ics encoded line
-     * @return text: return text - either event or name
-     */
-    public static String extractText(String line) {
-        line = line.replaceAll("[ ]+", " ");
-        String[] text = line.split("[ ]");
 
-        String str = "";
-        for (int i = 1; i < text.length; i++) {
-            str += " " + text[i];
-        }
-        str = str.trim();
+class Parser {
 
-        return str;
-    }
 
-    /**
-     * @param line: .ICS encoded line
-     * @return return: Time of event in JSON Date format
-     */
     public static String extractTime(String line) {
-        line = line.replaceAll("[ ]+", " ");
-        String[] text = line.split("[ ]");
+        String date = "";
+        String time = "";
+        String result = "Katso tiedot.";
 
-        String startTimeStr;
-        if (text.length == 3)
-            startTimeStr = text[1] + "T" + text[2].trim();
-        else
-            startTimeStr = text[1].trim();
+        line = extractField(line);
+        // Line is now this format: 20170723T170000
 
-        return startTimeStr;
+        date = line.substring(0, line.indexOf('T'));
+        time = line.substring(line.indexOf('T') + 1, line.indexOf('T') + 5);
+        // date + " " + time --- is now this format: 20170723 1700
+
+        SimpleDateFormat defaultFormat = new SimpleDateFormat("yyyyMMdd hhmm");
+        SimpleDateFormat newFormat = new SimpleDateFormat("d.M. HH:mm");
+
+        try {
+            Date timestamp = defaultFormat.parse(date + " " + time);
+            result = newFormat.format(timestamp);
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "Problem in parsing the dates at extractTime method in Parser class.");
+        }
+
+        return result;
     }
 
-}
+    public static String extractField(String line) {
+        // Get the string after the ':'
+        String result =  line.substring(line.lastIndexOf(':') + 1);
 
-/**
- * Object to represent each IcsEvent on a Calendar
- *
- * @author Douglas Rudolph
- */
-class IcsEvent {
-    public String summary;
-    public String startTime;
-    public String endTime;
-    public String location;
-
-    public IcsEvent(String summary, String startTime, String endTime, String location) {
-        this.summary = summary;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.location = location;
+        return result;
     }
 
-    @Override
-    public String toString() {
-        return summary + "|" + startTime + "|" + endTime + "|" + location + "\n";
+    public static String extractUrl(String line) {
+        // Get the string after the ':'
+        String result = line.substring(line.lastIndexOf(':') + 3);
+
+        return result;
     }
 
+    public static String extractDescriptionField(String line) {
+        // Get the string after the ':'
+        String result = line.substring(line.indexOf(':') + 1);
+        result = result.replaceAll("\\\\n", "\n");
+        result = result.replaceAll("\\\\,", ",");
+
+        return result;
+    }
 
 }

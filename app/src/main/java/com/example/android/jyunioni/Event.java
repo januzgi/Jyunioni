@@ -117,4 +117,7 @@ public class Event {
     public boolean hasImage() {
         return mImageResourceId != NO_IMAGE_PROVIDED;
     }
+
+
+    public void setEventName(String eventName){ mEventName = eventName;}
 }

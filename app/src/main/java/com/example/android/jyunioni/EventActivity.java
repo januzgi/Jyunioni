@@ -22,6 +22,21 @@ import android.support.v7.app.AppCompatActivity;
 
 public class EventActivity extends AppCompatActivity {
 
+     /*   *
+     * TextView that is displayed when the list is empty
+
+    private TextView mEmptyStateTextView;
+
+    *
+     * Progressbar to be shown when fetching data.
+
+    private ProgressBar mProgressBar;
+
+    *
+     * Adapter for the list of events
+
+    private EventAdapter mAdapter;*/
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +64,11 @@ public class EventActivity extends AppCompatActivity {
         //      by calling onPageTitle()
         tabLayout.setupWithViewPager(viewPager);
 
+
         // Kick off an {@link AsyncTask} to perform the network request to get the data.
         EventsFetchingAsyncTask task = new EventsFetchingAsyncTask();
         task.execute();
+
     }
 
 }
