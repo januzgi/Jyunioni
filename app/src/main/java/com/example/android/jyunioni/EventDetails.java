@@ -44,13 +44,6 @@ public class EventDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_details);
 
-               /* From EventsFragment.java
-               // Add the data to the intent so it can be used in the activity.
-        intent.putExtra("EVENT_NAME", eventName);
-        intent.putExtra("EVENT_TIMESTAMP", eventTimestamp);
-        intent.putExtra("IMAGE_ID", eventImageId);
-        intent.putExtra("EVENT_URL", eventUrl);
-        intent.putExtra("EVENT_INFORMATION", eventInformation);*/
 
         Intent intent = getIntent();
         Bundle intentData = intent.getExtras();
@@ -137,20 +130,3 @@ public class EventDetails extends AppCompatActivity {
 
 
 }
-
-
-     /* // Get the event's name and the timestamp.
-        eventName = event.getEventName();
-        eventNameAndTimestamp = event + "\n" + event.getEventTimestamp();
-
-        // Set the event name as the title of the activity for better UX
-        setTitle(eventName);
-
-        // Get the event's host groups image id.
-        eventImageId = event.getImageResourceId();
-
-        // Get the event's URL
-        EventDetails.eventUrl = event.getUrl();
-
-        // Get the description / other information about the event
-        eventInformation = event.getEventInformation();*/
