@@ -265,6 +265,8 @@ public class EventActivity extends AppCompatActivity {
          */
         private Event extractDetails(String httpResponseString) {
 
+            // TODO: lisää eventit arraylistiin, josta sitten päivitetään UI sen mukaan paljon niitä löytyy.
+
             // Create the Event object instance
             Event currentEvent = new Event("Tapahtuma", "Päivämäärä", "Lisätietoa",
                     R.drawable.linkki_jkl_icon, R.color.color_linkki_jkl, "http://linkkijkl.fi/");
@@ -301,8 +303,6 @@ public class EventActivity extends AppCompatActivity {
             String[] eventInformation = new String[eventsCount];
             String[] eventUrl = new String[eventsCount];
 
-        /*String result = "";*/
-
 
             // Scan through the fields and add the contents to the corresponding
             // String arrays. Use 'newline' as a limiter to go to nextLine().
@@ -334,21 +334,18 @@ public class EventActivity extends AppCompatActivity {
                         // Get the timestamp from the starting and ending times of the event
                         eventTimestamp[i] = eventTimeStart + " - " + eventTimeEnd;
 
-                    /*result += "Event timestamp: " + eventTimestamp[i] + "\n";*/
                         currentEvent.setEventTimestamp(eventTimestamp[i]);
 
                         // Event's name
                     } else if (line.contains("SUMMARY")) {
                         eventName[i] = Parser.extractField(line);
 
-                    /*result += "Event name: " + eventName[i] + "\n";*/
                         currentEvent.setEventName(eventName[i]);
 
                         // Event's description / overall information
                     } else if (line.contains("DESCRIPTION:")) {
                         eventInformation[i] = Parser.extractDescriptionField(line);
 
-                    /*result += "Event information:" + "\n" + eventInformation[i] + "\n";*/
                         currentEvent.setEventInformation(eventInformation[i]);
 
                         // Event's URL
@@ -356,8 +353,23 @@ public class EventActivity extends AppCompatActivity {
                     } else if (line.contains("URL") && i != 0) {
                         eventUrl[i] = Parser.extractUrl(line);
 
-                    /*result += "Event URL: " + eventUrl[i] + "\n" + "###########" + "\n" + "\n";*/
                         currentEvent.setUrl(eventUrl[i]);
+
+                        // Match up the event's group image and color according to the URL where info was extracted from
+                        if (eventUrl[i].contains("linkkijkl")) {
+                            currentEvent.setImageResourceId(R.drawable.linkki_jkl_icon);
+                            currentEvent.setGroupColorId(R.color.color_linkki_jkl);
+                        }
+
+                       /*
+                        else if (eventUrl[i].contains("dumppi")) {
+
+                        }
+
+                        else if (eventUrl[i].contains("porssi")) {
+
+                        }
+                         */
 
                     }
 
@@ -384,6 +396,9 @@ public class EventActivity extends AppCompatActivity {
 }
 
 
+/**
+ * Class in which the parsing methods are for the Linkki Jyväskylä Ry's events.
+ */
 class Parser {
 
 
