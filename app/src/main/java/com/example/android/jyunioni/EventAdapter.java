@@ -54,13 +54,13 @@ public class EventAdapter extends ArrayAdapter<Event>  {
         // Get the {@link Event} object located at this position in the list
         Event currentEvent = getItem(position);
 
-        // Find the TextView in the list_item.xml layout with the ID event_timestamp_text_view.
+        // Find the TextView in the list_item.xml layout with the ID event_name_text_view.
         TextView eventNameTextView = (TextView) listItemView.findViewById(R.id.event_name_text_view);
-        // Get the default translation from the currentEvent object and set this text on the event name TextView.
+        // Get the name of the currentEvent object and set this text on the event name TextView.
         eventNameTextView.setText(currentEvent.getEventName());
 
 
-        // Find the TextView in the list_item.xml layout with the ID event_name_text_view.
+        // Find the TextView in the list_item.xml layout with the ID event_timestamp_text_view.
         TextView timestampTextView = (TextView) listItemView.findViewById(R.id.event_timestamp_text_view);
         // Get the timestamp from the currentEvent object and set this text on the timestamp TextView.
         timestampTextView.setText(currentEvent.getEventTimestamp());
@@ -87,7 +87,7 @@ public class EventAdapter extends ArrayAdapter<Event>  {
         // set the background color of the text container View
         textContainer.setBackgroundColor(ContextCompat.getColor(getContext(), currentEvent.getGroupColorId()));
 
-        // Return the whole list item layout (containing 2 TextViews) so that it can be shown in
+        // Return the whole list item layout (containing 2 TextViews and the ImageView) so that it can be shown in
         // the ListView.
         return listItemView;
     }

@@ -18,13 +18,9 @@ package com.example.android.jyunioni;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,21 +37,6 @@ import java.util.Scanner;
 import static com.example.android.jyunioni.EventDetails.LOG_TAG;
 
 public class EventActivity extends AppCompatActivity {
-
-     /*   *
-     * TextView that is displayed when the list is empty
-
-    private TextView mEmptyStateTextView;
-
-    *
-     * Progressbar to be shown when fetching data.
-
-    private ProgressBar mProgressBar;
-
-    *
-     * Adapter for the list of events
-
-    private EventAdapter mAdapter;*/
 
 
     @Override
@@ -86,8 +67,8 @@ public class EventActivity extends AppCompatActivity {
 
 
         // Kick off an {@link AsyncTask} to perform the network request to get the data.
-        EventsFetchingAsyncTask task = new EventsFetchingAsyncTask();
-        task.execute();
+ /*       EventsFetchingAsyncTask task = new EventsFetchingAsyncTask();
+        task.execute();*/
 
     }
 
@@ -97,28 +78,11 @@ public class EventActivity extends AppCompatActivity {
      */
     public void updateUi(Event event) {
 
-        /*Log.e(LOG_TAG, "Event object contents in updateUi method at AsyncTask class:\n" +
+        Log.e(LOG_TAG, "Event object contents in updateUi method at AsyncTask class:\n" +
                 event.getEventName() + "\n" + event.getEventTimestamp() + "\n" + event.getEventInformation()
-                + "\n" + event.getUrl() + "\n" + event.getGroupColorId() + "\n" + event.getImageResourceId());*/
-
-
-        // Set the according items to the right views.
-        TextView eventNameTextView = (TextView) findViewById(R.id.event_name_text_view);
-        eventNameTextView.setText(event.getEventName());
-
-        TextView eventTimestampTextView = (TextView) findViewById(R.id.event_timestamp_text_view);
-        eventTimestampTextView.setText(event.getEventTimestamp());
-
-        ImageView eventsGroupImageView = (ImageView) findViewById(R.id.group_image);
-        eventsGroupImageView.setBackgroundResource(event.getImageResourceId());
-
-        // Set the theme color for the list item, find id first
-        View textContainer = findViewById(R.id.text_container);
-
-        // Find the color that the resource ID maps to and
-        // set the background color of the text container View
-        textContainer.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), event.getGroupColorId()));
+                + "\n" + event.getUrl() + "\n" + event.getGroupColorId() + "\n" + event.getImageResourceId());
     }
+
 
 
     /**
@@ -163,10 +127,11 @@ public class EventActivity extends AppCompatActivity {
             // updateUi gets the result Event object via the onPostExecute().
             event = extractDetails(response);
 
-
             // Return the {@link Event} object as the result for the {@link EventAsyncTask}
             return event;
         }
+
+
 
         /**
          * Update the screen with the given event (which was the result of the {@link EventsFetchingAsyncTask}).
@@ -178,6 +143,7 @@ public class EventActivity extends AppCompatActivity {
             if (event == null) {
                 return;
             }
+
             updateUi(event);
         }
 
@@ -265,10 +231,10 @@ public class EventActivity extends AppCompatActivity {
          */
         private Event extractDetails(String httpResponseString) {
 
-            // TODO: lisää eventit arraylistiin, josta sitten päivitetään UI sen mukaan paljon niitä löytyy.
+            // TODO: eventit extractDetailsiin arraylistissä, josta sitten päivitetään UI sen mukaan paljon niitä löytyy.
 
             // Create the Event object instance
-            Event currentEvent = new Event("Tapahtuma", "Päivämäärä", "Lisätietoa",
+            Event currentEvent = new Event("Esmes tapahtuma", "esmes päivämäärä", "esmes lisätietoa",
                     R.drawable.linkki_jkl_icon, R.color.color_linkki_jkl, "http://linkkijkl.fi/");
 
             // Helper variable for the scanner loops
@@ -355,21 +321,11 @@ public class EventActivity extends AppCompatActivity {
 
                         currentEvent.setUrl(eventUrl[i]);
 
-                        // Match up the event's group image and color according to the URL where info was extracted from
-                        if (eventUrl[i].contains("linkkijkl")) {
+                        // Match up the event's group image and color according to the URL where the info was extracted from
+                        if (currentEvent.getUrl().contains("linkkijkl")) {
                             currentEvent.setImageResourceId(R.drawable.linkki_jkl_icon);
                             currentEvent.setGroupColorId(R.color.color_linkki_jkl);
                         }
-
-                       /*
-                        else if (eventUrl[i].contains("dumppi")) {
-
-                        }
-
-                        else if (eventUrl[i].contains("porssi")) {
-
-                        }
-                         */
 
                     }
 
@@ -451,3 +407,33 @@ class Parser {
     }
 
 }
+
+
+
+
+/*    // TODO: Create a duplicate arraylist of events just to see if it works for the eventsfragment.java
+    public ArrayList<Event> createFakeList(Event event){
+        ArrayList<Event> duplicateEvents = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++){
+            duplicateEvents.add(event);
+        }
+
+
+        return duplicateEvents;
+    }
+
+    public ArrayList<Event> getFakeList(){
+        return duplicateEvents;
+    }*/
+
+
+/*    // Set the according items to the right views.
+        eventNameTextView.setText(event.getEventName());
+        eventTimestampTextView.setText(event.getEventTimestamp());
+        eventsGroupImageView.setBackgroundResource(event.getImageResourceId());
+
+        // Set the theme color for the list item, find id first
+        // Find the color that the resource ID maps to and
+        // set the background color of the text container View
+        textContainer.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), event.getGroupColorId()));*/

@@ -37,17 +37,14 @@ public class EventsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.list_build, container, false);
 
+        // Get the activity to access the arraylist of events
+        EventActivity activity = (EventActivity) getActivity();
 
-        // Create a list of events
+        // Get the list of events from EventActivity
         final ArrayList<Event> events = new ArrayList<>();
 
-        // Fake events for visualisation
-        events.add(new Event("Dumpin syysrieha", "2.12.2017", "Bileet on isot.",
-                R.drawable.dumppi_ry_icon, R.color.color_dumppi_ry, "http://linkkijkl.fi/event/baarikierros/"));
-        events.add(new Event("Linkin sitsit", "11.11.2017", "Linkiltä löytyy.",
-                R.drawable.linkki_jkl_icon, R.color.color_linkki_jkl, "http://linkkijkl.fi/event/baarikierros/"));
-        events.add(new Event("Pörssin talvisota", "12.12.2017", "Vieläkin darra",
-                R.drawable.porssi_ry_icon, R.color.color_porssi_ry, "http://linkkijkl.fi/event/baarikierros/"));
+        events.add(new Event("Esmes tapahtuma", "esmes päivämäärä", "esmes lisätietoa",
+                R.drawable.linkki_jkl_icon, R.color.color_linkki_jkl, "http://linkkijkl.fi/"));
 
 
         // Create an {@link EventAdapter}, whose data source is a list of {@link Event}s.
@@ -56,12 +53,13 @@ public class EventsFragment extends Fragment {
 
         // Find the {@link ListView} object in the view hierarchy of the {@link Activity}.
         // There should be a {@link ListView} with the view ID called group_list, which is declared in the
-        // list_build.xmll layout file.
+        // list_build.xml layout file.
         ListView listView = (ListView) rootView.findViewById(R.id.events_list);
 
         // Make the {@link ListView} use the {@link EventAdapter} we created above, so that the
         // {@link ListView} will display list items for each {@link Event} in the list.
         listView.setAdapter(mAdapter);
+
 
         // Set a click listener to open the event's details via an intent
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
