@@ -35,9 +35,12 @@ public class EventsFragment extends Fragment {
      */
     private EventAdapter mAdapter;
 
-
+    // Private class variables to update the UI from onCreateView and updateUi methods.
     private ListView listView;
     private View rootView;
+
+    // Get the event from EventActivity
+    private final ArrayList<Event> events = new ArrayList<>();
 
     /**
      * Required empty public constructor
@@ -50,12 +53,12 @@ public class EventsFragment extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.list_build, container, false);
 
-        // Get the event from EventActivity
-        final ArrayList<Event> events = new ArrayList<>();
+        // The default event before AsyncTask has finished
+        Event event = new Event("", "", "", R.drawable.default_icon, R.color.color_default, "");
 
-        events.add(getEvents());
+        updateUi(event);
 
-        // Create an {@link EventAdapter}, whose data source is a list of {@link Event}s.
+        /*// Create an {@link EventAdapter}, whose data source is a list of {@link Event}s.
         // The adapter knows how to create list items for each item in the list.
         mAdapter = new EventAdapter(getActivity(), events);
 
@@ -100,7 +103,7 @@ public class EventsFragment extends Fragment {
 
                 startActivity(intent);
             }
-        });
+        });*/
 
 
         return rootView;
@@ -135,23 +138,9 @@ public class EventsFragment extends Fragment {
      */
     public void updateUi(Event event) {
 
-        /*    // Set the according items to the right views.
-        eventNameTextView.setText(event.getEventName());
-        eventTimestampTextView.setText(event.getEventTimestamp());
-        eventsGroupImageView.setBackgroundResource(event.getImageResourceId());
-
-        // Set the theme color for the list item, find id first
-        // Find the color that the resource ID maps to and
-        // set the background color of the text container View
-        textContainer.setBackgroundColor(ContextCompat.getColor(getActivity(), event.getGroupColorId()));*/
-
-        Log.e(LOG_TAG, "Event object contents in updateUi method at AsyncTask class:\n" +
+/*        Log.e(LOG_TAG, "Event object contents in updateUi method at AsyncTask class:\n" +
                 event.getEventName() + "\n" + event.getEventTimestamp() + "\n" + event.getEventInformation()
-                + "\n" + event.getUrl() + "\n" + event.getGroupColorId() + "\n" + event.getImageResourceId());
-
-
-        // Get the event from EventActivity
-        final ArrayList<Event> events = new ArrayList<>();
+                + "\n" + event.getUrl() + "\n" + event.getGroupColorId() + "\n" + event.getImageResourceId());*/
 
         events.add(event);
 
@@ -201,25 +190,7 @@ public class EventsFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-
     }
-
-
-
-    /**
-     * Getter for the EventsFragment class to access the events being fetched by AsyncTask in this EventActivity class.
-     * @return
-     */
-    public Event getEvents(){
-        Event event = new Event("Esmes tapahtuma", "esmes päivämäärä", "esmes lisätietoa",
-                R.drawable.linkki_jkl_icon, R.color.color_linkki_jkl, "http://linkkijkl.fi/");
-
-        return event;
-    }
-
-
-
 
 
     /**
@@ -423,7 +394,7 @@ public class EventsFragment extends Fragment {
 
 
             // When there's still text left in the scanner
-            while (fieldsScanner.hasNext()) {
+            while (fieldsScanner.hasNext() && eventsCount > 0) {
 
                 // Get the different fields information to desired String arrays,
                 // from which they can easily be matched up.
