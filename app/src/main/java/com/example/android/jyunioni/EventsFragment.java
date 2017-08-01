@@ -37,15 +37,13 @@ public class EventsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.list_build, container, false);
 
-        // Get the activity to access the arraylist of events
+        // Get the activity to access the event
         EventActivity activity = (EventActivity) getActivity();
 
-        // Get the list of events from EventActivity
+        // Get the event from EventActivity
         final ArrayList<Event> events = new ArrayList<>();
 
-        events.add(new Event("Esmes tapahtuma", "esmes päivämäärä", "esmes lisätietoa",
-                R.drawable.linkki_jkl_icon, R.color.color_linkki_jkl, "http://linkkijkl.fi/"));
-
+        events.add(activity.getEvents());
 
         // Create an {@link EventAdapter}, whose data source is a list of {@link Event}s.
         // The adapter knows how to create list items for each item in the list.

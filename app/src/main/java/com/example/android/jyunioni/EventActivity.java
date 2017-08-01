@@ -64,12 +64,6 @@ public class EventActivity extends AppCompatActivity {
         //   3. Set the tab layout's tab names with the view pager's adapter's titles
         //      by calling onPageTitle()
         tabLayout.setupWithViewPager(viewPager);
-
-
-        // Kick off an {@link AsyncTask} to perform the network request to get the data.
- /*       EventsFetchingAsyncTask task = new EventsFetchingAsyncTask();
-        task.execute();*/
-
     }
 
 
@@ -81,6 +75,23 @@ public class EventActivity extends AppCompatActivity {
         Log.e(LOG_TAG, "Event object contents in updateUi method at AsyncTask class:\n" +
                 event.getEventName() + "\n" + event.getEventTimestamp() + "\n" + event.getEventInformation()
                 + "\n" + event.getUrl() + "\n" + event.getGroupColorId() + "\n" + event.getImageResourceId());
+    }
+
+
+    /**
+     * Getter for the EventsFragment class to access the events being fethced by AsyncTask in this EventActivity class.
+     * @return
+     */
+    public Event getEvents(){
+        Event event = new Event();
+
+
+
+        // Kick off an {@link AsyncTask} to perform the network request to get the data.
+ /*       EventsFetchingAsyncTask task = new EventsFetchingAsyncTask();
+        task.execute();*/
+
+        return event;
     }
 
 

@@ -57,6 +57,10 @@ public class Event {
      */
     private static final int NO_IMAGE_PROVIDED = -1;
 
+    /**
+     * An empty constructor.
+     */
+    public Event(){}
 
     /**
      * Create a new Event object.
@@ -76,6 +80,7 @@ public class Event {
         mGroupColorId = groupColorId;
         mUrl = url;
     }
+
 
     /**
      * Getter and setter for event name
