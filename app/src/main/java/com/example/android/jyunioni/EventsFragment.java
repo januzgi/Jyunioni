@@ -114,6 +114,11 @@ public class EventsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
 
+        // Kick off an {@link AsyncTask} to perform the network request to get the data.
+ /*       EventsFetchingAsyncTask task = new EventsFetchingAsyncTask();
+        task.execute();*/
+
+
     }
 
     @Override
@@ -140,13 +145,8 @@ public class EventsFragment extends Fragment {
      * @return
      */
     public Event getEvents(){
-        Event event = new Event();
-
-
-
-        // Kick off an {@link AsyncTask} to perform the network request to get the data.
- /*       EventsFetchingAsyncTask task = new EventsFetchingAsyncTask();
-        task.execute();*/
+        Event event = new Event("Esmes tapahtuma", "esmes päivämäärä", "esmes lisätietoa",
+                R.drawable.linkki_jkl_icon, R.color.color_linkki_jkl, "http://linkkijkl.fi/");
 
         return event;
     }
