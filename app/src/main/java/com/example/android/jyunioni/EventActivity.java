@@ -79,7 +79,7 @@ public class EventActivity extends AppCompatActivity {
 
 
     /**
-     * Getter for the EventsFragment class to access the events being fethced by AsyncTask in this EventActivity class.
+     * Getter for the EventsFragment class to access the events being fetched by AsyncTask in this EventActivity class.
      * @return
      */
     public Event getEvents(){
@@ -447,4 +447,4 @@ class Parser {
         // Set the theme color for the list item, find id first
         // Find the color that the resource ID maps to and
         // set the background color of the text container View
-        textContainer.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), event.getGroupColorId()));*/
+        textContainer.setBackgroundColor(ContextCompat.getColor(getActivity(), event.getGroupColorId()));*/

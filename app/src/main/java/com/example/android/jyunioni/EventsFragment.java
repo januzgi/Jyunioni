@@ -97,6 +97,17 @@ public class EventsFragment extends Fragment {
 
     }
 
+    /**
+     * Will be called when the view has been created.
+     * Calling the AsyncTask from here.
+     */
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
+    }
+
     @Override
     public void onStop() {
         super.onStop();
