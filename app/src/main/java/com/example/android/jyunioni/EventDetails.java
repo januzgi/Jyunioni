@@ -26,17 +26,13 @@ public class EventDetails extends AppCompatActivity {
     public static final String LOG_TAG = EventDetails.class.getSimpleName();
 
     /**
-     * The events URL which is fetched in the EventActivity AsyncTask.
-     */
-    public static String eventUrl = null;
-
-    /**
      * Private variables for updating the UI with the information from the event page.
      */
     private String eventNameAndTimestamp = null;
     private String eventName = null;
     private String eventInformation = null;
     private int eventImageId;
+    private String eventUrl = null;
 
 
     @Override
@@ -63,7 +59,9 @@ public class EventDetails extends AppCompatActivity {
             eventImageId = intent.getIntExtra("IMAGE_ID", -1);
 
             // Get the event's URL
-            EventDetails.eventUrl = intent.getStringExtra("EVENT_URL");
+            eventUrl = intent.getStringExtra("EVENT_URL");
+
+            Log.e(LOG_TAG, "Event url at the moment in EventDetails: " + eventUrl);
 
             // Get the description / other information about the event
             eventInformation = intent.getStringExtra("EVENT_INFORMATION");
