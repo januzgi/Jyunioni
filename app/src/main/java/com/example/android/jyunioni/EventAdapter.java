@@ -16,7 +16,6 @@
 package com.example.android.jyunioni;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +84,7 @@ public class EventAdapter extends ArrayAdapter<Event>  {
 
         // Find the color that the resource ID maps to and
         // set the background color of the text container View
-        textContainer.setBackgroundColor(ContextCompat.getColor(getContext(), currentEvent.getGroupColorId()));
+        textContainer.setBackgroundColor(currentEvent.getGroupColorId());
 
         // Return the whole list item layout (containing 2 TextViews and the ImageView) so that it can be shown in
         // the ListView.

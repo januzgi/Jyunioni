@@ -50,30 +50,3 @@ public class EventActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
     }
 }
-
-/*    // TODO: Create a duplicate arraylist of events just to see if it works for the eventsfragment.java
-    public ArrayList<Event> createFakeList(Event event){
-        ArrayList<Event> duplicateEvents = new ArrayList<>();
-
-        for (int i = 0; i < 10; i++){
-            duplicateEvents.add(event);
-        }
-
-
-        return duplicateEvents;
-    }
-
-    public ArrayList<Event> getFakeList(){
-        return duplicateEvents;
-    }*/
-
-
-/*    // Set the according items to the right views.
-        eventNameTextView.setText(event.getEventName());
-        eventTimestampTextView.setText(event.getEventTimestamp());
-        eventsGroupImageView.setBackgroundResource(event.getImageResourceId());
-
-        // Set the theme color for the list item, find id first
-        // Find the color that the resource ID maps to and
-        // set the background color of the text container View
-        textContainer.setBackgroundColor(ContextCompat.getColor(getActivity(), event.getGroupColorId()));*/
