@@ -47,9 +47,8 @@ public class Parser {
     }
 
     public static String extractUrl(String line) {
-        // Get the string after the ':'
-        String result = line.substring(line.lastIndexOf(':') + 3);
-        result = "http://" + result;
+        // Get the string after the first ':'
+        String result = line.substring(line.indexOf(':') + 1);
 
         return result;
     }

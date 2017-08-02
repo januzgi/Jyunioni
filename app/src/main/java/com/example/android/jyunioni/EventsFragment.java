@@ -313,6 +313,8 @@ public class EventsFragment extends Fragment {
                     eventsCount++;
             }
 
+            Log.e(LOG_TAG, httpResponseString);
+
 
             // Create string arrays for the different fields that are extracted from
             // the HTTP response string
@@ -323,6 +325,9 @@ public class EventsFragment extends Fragment {
             String[] eventName = new String[eventsCount];
             String[] eventInformation = new String[eventsCount];
             String[] eventUrl = new String[eventsCount];
+
+            int[] eventImageId = new int[eventsCount];
+            int[] groupColorId = new int[eventsCount];
 
             // Scan through the fields and add the contents to the corresponding
             // String arrays. Use 'newline' as a limiter to go to nextLine().
@@ -340,7 +345,6 @@ public class EventsFragment extends Fragment {
                 // from which they can easily be matched up.
                 // Add the fields to the "results" string array
                 for (int i = 0; i < eventsCount; i++) {
-                    Event currentEvent = new Event();
 
                     // Use the scanner to parse the details of each event
                     line = fieldsScanner.next();
@@ -357,50 +361,57 @@ public class EventsFragment extends Fragment {
                         // Get the timestamp from the starting and ending times of the event
                         eventTimestamp[i] = eventTimeStart + " - " + eventTimeEnd;
 
-                        currentEvent.setEventTimestamp(eventTimestamp[i]);
-                        /*Log.e(LOG_TAG, "Event timestamp: " + currentEvent.getEventTimestamp());*/
+                        Log.e(LOG_TAG, "Event timestamp: " + eventTimestamp[i]);
 
                         // Event's name
                     } else if (line.contains("SUMMARY")) {
                         eventName[i] = Parser.extractField(line);
 
-                        currentEvent.setEventName(eventName[i]);
-                        /*Log.e(LOG_TAG, "Event name: " + currentEvent.getEventName());*/
+                        Log.e(LOG_TAG, "Event name: " + eventName[i]);
 
                         // Event's description / overall information
                     } else if (line.contains("DESCRIPTION:")) {
                         eventInformation[i] = Parser.extractDescriptionField(line);
 
-                        currentEvent.setEventInformation(eventInformation[i]);
-                        /*Log.e(LOG_TAG, "Event information: " + currentEvent.getEventInformation());*/
+                        Log.e(LOG_TAG, "Event information: " + eventInformation[i]);
 
                         // Event's URL
-                        // Skip the first URL, which is the "X-ORIGINAL-URL:"
-                    } else if (line.contains("URL") && i != 0) {
+                        // Skip the first URL, which is the "X-ORIGINAL-URL:" and add only the 'events' to the list
+                    } else if (line.contains("URL") && line.contains("event")) {
                         eventUrl[i] = Parser.extractUrl(line);
 
-                        currentEvent.setUrl(eventUrl[i]);
-                        /*Log.e(LOG_TAG, "Event url: " + currentEvent.getUrl());*/
+                        Log.e(LOG_TAG, "Event url: " + eventUrl[i]);
 
                         // Match up the event's group image and color according to the URL where the info was extracted from
-                        if (currentEvent.getUrl().contains("linkkijkl")) {
-                            currentEvent.setImageResourceId(R.drawable.linkki_jkl_icon);
-                            currentEvent.setGroupColorId(R.color.color_linkki_jkl);
-                            /*Log.e(LOG_TAG, "Event group image: " + currentEvent.getImageResourceId() + "\n" +
-                                    "Event groupcolor id: " + currentEvent.getGroupColorId());*/
-
-                            extractedEvents.add(new Event(currentEvent.getEventName(), currentEvent.getEventTimestamp(),
-                                    currentEvent.getEventInformation(), currentEvent.getImageResourceId(),
-                                    currentEvent.getGroupColorId(), currentEvent.getUrl()));
+                        if (eventUrl[i].contains("linkkijkl")) {
+                            eventImageId[i] = R.drawable.linkki_jkl_icon;
+                            groupColorId[i] = R.color.color_linkki_jkl;
+                            Log.e(LOG_TAG, "Event group image: " + eventImageId[i] + "\n" +
+                                    "Event groupcolor id: " + groupColorId[i]);
                         }
 
                     }
+
+
 
                     // If this was the end of the event being extracted
                     if (line.contains("END:VEVENT")) {
                         // If there is the "event end" then exit the for loop back to
                         // the while loop
                         loopCount++;
+
+                        // Ei printaa kuin kaksi viimeistä oikein?
+                        extractedEvents.add(new Event(eventName[i], eventTimestamp[i],
+                                eventInformation[i], eventImageId[i],
+                                groupColorId[i], eventUrl[i]));
+
+                        Log.e(LOG_TAG, "\nEvent at ArrayList(0) name: " + extractedEvents.get(0).getEventName() +
+                                "\nEvent at ArrayList(0) timestamp: " + extractedEvents.get(0).getEventTimestamp() +
+                                "\nEvent at ArrayList(0) information: " + extractedEvents.get(0).getEventInformation() +
+                                "\nEvent at ArrayList(0) URL: " + extractedEvents.get(0).getUrl() +
+                                "\nEvent at ArrayList(0) image id: " + extractedEvents.get(0).getImageResourceId() +
+                                "\nEvent at ArrayList(0) group color id: " + extractedEvents.get(0).getGroupColorId());
+
                         break;
                     }
 
@@ -411,13 +422,6 @@ public class EventsFragment extends Fragment {
             }
 
             events = extractedEvents;
-
-            Log.e(LOG_TAG, "\nEvent at ArrayList(0) name: " + extractedEvents.get(0).getEventName() +
-                    "\nEvent at ArrayList(0) timestamp: " + extractedEvents.get(0).getEventTimestamp() +
-                    "\nEvent at ArrayList(0) information: " + extractedEvents.get(0).getEventInformation() +
-                    "\nEvent at ArrayList(0) URL: " + extractedEvents.get(0).getUrl() +
-                    "\nEvent at ArrayList(0) image id: " + extractedEvents.get(0).getImageResourceId() +
-                    "\nEvent at ArrayList(0) group color id: " + extractedEvents.get(0).getGroupColorId());
 
             return extractedEvents.get(0);
 
