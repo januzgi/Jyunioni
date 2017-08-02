@@ -73,12 +73,12 @@ public class Event {
      * @param url             The url of the event's page
      */
     public Event(String eventName, String eventTimestamp, String eventInformation, int imageResourceId, int groupColorId, String url) {
-        mEventName = eventName;
-        mEventTimestamp = eventTimestamp;
-        mEventInformation = eventInformation;
-        mImageResourceId = imageResourceId;
-        mGroupColorId = groupColorId;
-        mUrl = url;
+        this.mEventName = eventName;
+        this.mEventTimestamp = eventTimestamp;
+        this.mEventInformation = eventInformation;
+        this.mImageResourceId = imageResourceId;
+        this.mGroupColorId = groupColorId;
+        this.mUrl = url;
     }
 
 
@@ -86,46 +86,46 @@ public class Event {
      * Getter and setter for event name
      */
     public String getEventName() {
-        return mEventName;
+        return this.mEventName;
     }
-    public void setEventName(String eventName){ mEventName = eventName;}
+    public void setEventName(String eventName){ this.mEventName = eventName;}
 
     /**
      * Getter and setter for event timestamp
      */
     public String getEventTimestamp() {
-        return mEventTimestamp;
+        return this.mEventTimestamp;
     }
-    public void setEventTimestamp(String eventTimestamp){ mEventTimestamp = eventTimestamp;}
+    public void setEventTimestamp(String eventTimestamp){ this.mEventTimestamp = eventTimestamp;}
 
     /**
      * Getter and setter for the image resource ID of the event hosting group.
      */
-    public int getImageResourceId() { return mImageResourceId; }
-    public void setImageResourceId(int id) { mImageResourceId = id;}
+    public int getImageResourceId() { return this.mImageResourceId; }
+    public void setImageResourceId(int id) { this.mImageResourceId = id;}
 
     /**
      * Getter and setter for the color ID for the group hosting the event.
      */
-    public int getGroupColorId() { return mGroupColorId; }
-    public void setGroupColorId(int id) { mGroupColorId = id;}
+    public int getGroupColorId() { return this.mGroupColorId; }
+    public void setGroupColorId(int id) { this.mGroupColorId = id;}
 
     /**
      * Getter and setter for the URL of the event's page wherefrom the data was fetched too
      */
-    public String getUrl() { return mUrl; }
-    public void setUrl(String url) { mUrl = url;}
+    public String getUrl() { return this.mUrl; }
+    public void setUrl(String url) { this.mUrl = url;}
 
     /**
      * Getter and setter for the event's information or description
      */
-    public String getEventInformation() { return mEventInformation; }
-    public void setEventInformation(String information) { mEventInformation = information;}
+    public String getEventInformation() { return this.mEventInformation; }
+    public void setEventInformation(String information) { this.mEventInformation = information;}
 
     /**
      * Returns whether or not there is an image for this word.
      */
     public boolean hasImage() {
-        return mImageResourceId != NO_IMAGE_PROVIDED;
+        return this.mImageResourceId != NO_IMAGE_PROVIDED;
     }
 }

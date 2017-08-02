@@ -40,7 +40,7 @@ public class EventsFragment extends Fragment {
     private View rootView;
 
     // Get the event from EventActivity
-    private final ArrayList<Event> events = new ArrayList<>();
+    private ArrayList<Event> events = new ArrayList<>();
 
     /**
      * Required empty public constructor
@@ -48,13 +48,13 @@ public class EventsFragment extends Fragment {
     public EventsFragment() {
     }
 
+
+    // TODO: implementoi callbacks niin saanee tiedot tallennettua liikuttaessa eri activityjen välillä.
+
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.list_build, container, false);
-
-        // The default event parameters
-        /*Event event = new Event("", "", "", R.drawable.default_icon, R.color.color_default, "");*/
 
         return rootView;
 
@@ -68,12 +68,9 @@ public class EventsFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
         // Kick off an {@link AsyncTask} to perform the network request to get the data.
         EventsFetchingAsyncTask task = new EventsFetchingAsyncTask();
         task.execute();
-
-
     }
 
     @Override
@@ -94,19 +91,16 @@ public class EventsFragment extends Fragment {
 
         events.add(event);
 
-        // Create an {@link EventAdapter}, whose data source is a list of {@link Event}s.
+        // Create an EventAdapter, whose data source is a list of Events.
         // The adapter knows how to create list items for each item in the list.
         mAdapter = new EventAdapter(getActivity(), events);
 
-        // Find the {@link ListView} object in the view hierarchy of the {@link Activity}.
-        // There should be a {@link ListView} with the view ID called group_list, which is declared in the
-        // list_build.xml layout file.
+        // Find the ListView object in the view hierarchy.
+        // ListView with the view ID called events_list is declared in the list_build.xml layout file.
         listView = (ListView) rootView.findViewById(R.id.events_list);
 
-        // Make the {@link ListView} use the {@link EventAdapter} we created above, so that the
-        // {@link ListView} will display list items for each {@link Event} in the list.
+        // ListView uses the EventAdapter so ListView will display list items for each Event in the list.
         listView.setAdapter(mAdapter);
-
 
         // Set a click listener to open the event's details via an intent
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -153,17 +147,14 @@ public class EventsFragment extends Fragment {
      */
     private class EventsFetchingAsyncTask extends AsyncTask<URL, Void, Event> {
 
-
         /**
          * Linkki Jyväskylä Ry events page URL.
          */
         private final String LINKKI_EVENTS_URL = "http://linkkijkl.fi/events/2017-09/?ical=1&tribe_display=month";
 
 
-
         /**
-         * AsyncTask method call in EventActivity.java
-         *
+         * This is done in a background thread.
          */
         @Override
         protected Event doInBackground(URL... urls) {
@@ -182,11 +173,11 @@ public class EventsFragment extends Fragment {
                 Log.e(LOG_TAG, "IOException when making the HTTP request in doInBackground at EventActivity" + e);
             }
 
-            // Extract relevant fields from the HTTP response and create an {@link Event} object
+            // Extract relevant fields from the HTTP response and create an Event object
             // updateUi gets the result Event object via the onPostExecute().
             event = extractDetails(response);
 
-            // Return the {@link Event} object as the result for the {@link EventAsyncTask}
+            // Return the Event object as the result for the EventAsyncTask
             return event;
         }
 
@@ -298,9 +289,8 @@ public class EventsFragment extends Fragment {
             // TODO: tulevia tapahtumia Linkin kalenterista ja ohjata Linkin tapahtumien sivulle?
 
 
-            // Create the Event object instance
-            Event currentEvent = new Event("", "", "",
-                    R.drawable.linkki_jkl_icon, R.color.color_linkki_jkl, "");
+            // Create the Event and ArrayList<Event> objects instance
+            ArrayList<Event> extractedEvents = new ArrayList<>();
 
             // Helper variable for the scanner loops
             String line = null;
@@ -350,6 +340,7 @@ public class EventsFragment extends Fragment {
                 // from which they can easily be matched up.
                 // Add the fields to the "results" string array
                 for (int i = 0; i < eventsCount; i++) {
+                    Event currentEvent = new Event();
 
                     // Use the scanner to parse the details of each event
                     line = fieldsScanner.next();
@@ -362,25 +353,26 @@ public class EventsFragment extends Fragment {
                     } else if (line.contains("DTEND;")) {
                         eventTimeEnd = Parser.extractTime(line);
 
+                        // TODO: jos aloitus ja lopetuspäivä sama niin eventTimeEnd päivämäärä pois
                         // Get the timestamp from the starting and ending times of the event
                         eventTimestamp[i] = eventTimeStart + " - " + eventTimeEnd;
 
                         currentEvent.setEventTimestamp(eventTimestamp[i]);
-                        Log.e(LOG_TAG, "Event timestamp parsed.");
+                        /*Log.e(LOG_TAG, "Event timestamp: " + currentEvent.getEventTimestamp());*/
 
                         // Event's name
                     } else if (line.contains("SUMMARY")) {
                         eventName[i] = Parser.extractField(line);
 
                         currentEvent.setEventName(eventName[i]);
-                        Log.e(LOG_TAG, "Event name parsed.");
+                        /*Log.e(LOG_TAG, "Event name: " + currentEvent.getEventName());*/
 
                         // Event's description / overall information
                     } else if (line.contains("DESCRIPTION:")) {
                         eventInformation[i] = Parser.extractDescriptionField(line);
 
                         currentEvent.setEventInformation(eventInformation[i]);
-                        Log.e(LOG_TAG, "Event information parsed.");
+                        /*Log.e(LOG_TAG, "Event information: " + currentEvent.getEventInformation());*/
 
                         // Event's URL
                         // Skip the first URL, which is the "X-ORIGINAL-URL:"
@@ -388,13 +380,18 @@ public class EventsFragment extends Fragment {
                         eventUrl[i] = Parser.extractUrl(line);
 
                         currentEvent.setUrl(eventUrl[i]);
-                        Log.e(LOG_TAG, "Event url parsed.");
+                        /*Log.e(LOG_TAG, "Event url: " + currentEvent.getUrl());*/
 
                         // Match up the event's group image and color according to the URL where the info was extracted from
                         if (currentEvent.getUrl().contains("linkkijkl")) {
                             currentEvent.setImageResourceId(R.drawable.linkki_jkl_icon);
                             currentEvent.setGroupColorId(R.color.color_linkki_jkl);
-                            Log.e(LOG_TAG, "Event group image and color set.");
+                            /*Log.e(LOG_TAG, "Event group image: " + currentEvent.getImageResourceId() + "\n" +
+                                    "Event groupcolor id: " + currentEvent.getGroupColorId());*/
+
+                            extractedEvents.add(new Event(currentEvent.getEventName(), currentEvent.getEventTimestamp(),
+                                    currentEvent.getEventInformation(), currentEvent.getImageResourceId(),
+                                    currentEvent.getGroupColorId(), currentEvent.getUrl()));
                         }
 
                     }
@@ -413,7 +410,16 @@ public class EventsFragment extends Fragment {
                 if (loopCount == eventsCount) break;
             }
 
-            return currentEvent;
+            events = extractedEvents;
+
+            Log.e(LOG_TAG, "\nEvent at ArrayList(0) name: " + extractedEvents.get(0).getEventName() +
+                    "\nEvent at ArrayList(0) timestamp: " + extractedEvents.get(0).getEventTimestamp() +
+                    "\nEvent at ArrayList(0) information: " + extractedEvents.get(0).getEventInformation() +
+                    "\nEvent at ArrayList(0) URL: " + extractedEvents.get(0).getUrl() +
+                    "\nEvent at ArrayList(0) image id: " + extractedEvents.get(0).getImageResourceId() +
+                    "\nEvent at ArrayList(0) group color id: " + extractedEvents.get(0).getGroupColorId());
+
+            return extractedEvents.get(0);
 
         }
 
