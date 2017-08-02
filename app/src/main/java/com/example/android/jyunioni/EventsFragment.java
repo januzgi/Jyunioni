@@ -36,17 +36,16 @@ public class EventsFragment extends Fragment {
      */
     private EventAdapter mAdapter;
 
-    // To update the UI from onCreateView and updateUi methods.
+    /**
+     * To update the UI from onCreateView and updateUi methods.
+     */
     private View rootView;
 
     /**
      * Required empty public constructor
      */
-    public EventsFragment() {
-    }
+    public EventsFragment() { }
 
-
-    // TODO: implementoi callbacks niin saanee tiedot tallennettua liikuttaessa eri activityjen välillä.
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
@@ -54,7 +53,6 @@ public class EventsFragment extends Fragment {
         rootView = inflater.inflate(R.layout.list_build, container, false);
 
         return rootView;
-
     }
 
     /**
@@ -92,7 +90,9 @@ public class EventsFragment extends Fragment {
         // ListView uses the EventAdapter so ListView will display list items for each Event in the list.
         listView.setAdapter(mAdapter);
 
-        // Set a click listener to open the event's details via an intent
+        /**
+         * Set a click listener to open the event's details via an intent
+         */
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {

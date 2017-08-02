@@ -14,6 +14,12 @@ import static com.example.android.jyunioni.EventDetails.LOG_TAG;
 public class Parser {
 
 
+    /**
+     * Extract timestamps from the HTTP response.
+     *
+     * @param line Line of HTTP response from the scanner.
+     * @return Formatted timestamp.
+     */
     public static String extractTime(String line) {
         String date = "";
         String time = "";
@@ -39,9 +45,16 @@ public class Parser {
         return result;
     }
 
+    /**
+     * Check if the event happens only on one day. If, then use the date on the startTime only.
+     *
+     * @example Example input: "7.9. 17:00", "7.9. 23:30" , Example output: "7.9. 17:00 - 23:30"
+     *
+     * @param startTime Events starting date and time.
+     * @param endTime Events ending date and time.
+     * @return Timestamp of the event without multiple same date.
+     */
     public static String checkEventTimestamp(String startTime, String endTime){
-        // Check if the event happens only on one day. If, then use the date on the startTime only.
-        // Example input "7.9. 17:00", "7.9. 23:30"
         String result = startTime + " - " + endTime;
 
         String startDate = startTime.substring(0, startTime.lastIndexOf("."));
@@ -51,10 +64,15 @@ public class Parser {
             result = startTime + " - " + endTime.substring(endTime.lastIndexOf(".") + 2, endTime.length());
         }
 
-        // Example output "7.9. 17:00 - 23:30"
         return result;
     }
 
+    /**
+     * Extract a field from HTTP response with the simplest "after ':'" rule.
+     *
+     * @param line Line of HTTP response from the scanner.
+     * @return Substring of the line after the ':'
+     */
     public static String extractField(String line) {
         // Get the string after the ':'
         String result = line.substring(line.lastIndexOf(':') + 1);
@@ -62,6 +80,12 @@ public class Parser {
         return result;
     }
 
+    /**
+     * Parses the URL.
+     *
+     * @param line Line of HTTP response from the scanner.
+     * @return Substring with the rightly formatted URL to be used for web intent later.
+     */
     public static String extractUrl(String line) {
         // Get the string after the first ':'
         String result = line.substring(line.indexOf(':') + 1);
@@ -69,6 +93,12 @@ public class Parser {
         return result;
     }
 
+    /**
+     * Extracts the event information field. Some additional newlines seem to come with the HTTP string so they are cut off.
+     *
+     * @param line Line of HTTP response from the scanner.
+     * @return Clear text with newlines as they should be.
+     */
     public static String extractDescriptionField(String line) {
         // Get the string after the ':'
         String result = line.substring(line.indexOf(':') + 1);
