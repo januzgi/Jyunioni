@@ -39,9 +39,6 @@ public class EventsFragment extends Fragment {
     private ListView listView;
     private View rootView;
 
-    // Get the event from EventActivity
-    private ArrayList<Event> events = new ArrayList<>();
-
     /**
      * Required empty public constructor
      */
@@ -81,15 +78,13 @@ public class EventsFragment extends Fragment {
 
 
     /**
-     * Update the screen to display information from the given {@link Event}.
+     * Update the screen to display information from the given {@link ArrayList<Event>}.
      */
-    public void updateUi(Event event) {
+    public void updateUi(ArrayList<Event> events) {
 
 /*        Log.e(LOG_TAG, "Event object contents in updateUi method at AsyncTask class:\n" +
                 event.getEventName() + "\n" + event.getEventTimestamp() + "\n" + event.getEventInformation()
                 + "\n" + event.getUrl() + "\n" + event.getGroupColorId() + "\n" + event.getImageResourceId());*/
-
-        events.add(event);
 
         // Create an EventAdapter, whose data source is a list of Events.
         // The adapter knows how to create list items for each item in the list.
@@ -145,7 +140,7 @@ public class EventsFragment extends Fragment {
      *
      * Runs multiple times at the moment, which is not good. Should run only in the startup of the app.
      */
-    private class EventsFetchingAsyncTask extends AsyncTask<URL, Void, Event> {
+    private class EventsFetchingAsyncTask extends AsyncTask<URL, Void, ArrayList<Event>> {
 
         /**
          * Linkki Jyväskylä Ry events page URL.
@@ -157,10 +152,10 @@ public class EventsFragment extends Fragment {
          * This is done in a background thread.
          */
         @Override
-        protected Event doInBackground(URL... urls) {
+        protected ArrayList<Event> doInBackground(URL... urls) {
 
-            // Create an Event object instance
-            Event event;
+            // Create an ArrayList<Event> object instance
+            ArrayList<Event> events;
 
             // Create URL object for fetching the Linkki Jyväskylä Ry event's
             URL url = createUrl(LINKKI_EVENTS_URL);
@@ -175,10 +170,10 @@ public class EventsFragment extends Fragment {
 
             // Extract relevant fields from the HTTP response and create an Event object
             // updateUi gets the result Event object via the onPostExecute().
-            event = extractDetails(response);
+            events = extractDetails(response);
 
             // Return the Event object as the result for the EventAsyncTask
-            return event;
+            return events;
         }
 
 
@@ -189,12 +184,12 @@ public class EventsFragment extends Fragment {
          * Gets the result from the population done in doInBackground().
          */
         @Override
-        protected void onPostExecute(Event event) {
-            if (event == null) {
+        protected void onPostExecute(ArrayList<Event> events) {
+            if (events == null) {
                 return;
             }
 
-            updateUi(event);
+            updateUi(events);
         }
 
 
@@ -276,10 +271,10 @@ public class EventsFragment extends Fragment {
         }
 
         /**
-         * Return an {@link Event} object by parsing out information from the HTTP response.
-         * Event image, name, timestamp, general information url and group's color id is needed.
+         * Return an {@link ArrayList<Event>} object by parsing out information from the HTTP response.
+         * Event image, name, timestamp, general information, url and group's color id is needed.
          */
-        private Event extractDetails(String httpResponseString) {
+        private ArrayList<Event> extractDetails(String httpResponseString) {
             // TODO: Entä jos kuussa ei olekaan tapahtumia
 
             // TODO: kuinka pitkälle tulevaisuuteen näytetään
@@ -376,7 +371,7 @@ public class EventsFragment extends Fragment {
                     }
 
 
-                    // If this was the end of the event being extracted
+                    // If this was the end of the event, add the event details to an object in events arraylist
                     else if (line.contains("END:VEVENT")) {
 
                         /*Log.e(LOG_TAG, "\nEvent at ArrayList(" + loopCount + ") name: " + eventName +
@@ -386,7 +381,7 @@ public class EventsFragment extends Fragment {
                                 "\nEvent at ArrayList(" + loopCount + ") image id: " + eventImageId +
                                 "\nEvent at ArrayList(" + loopCount + ") group color id: " + eventGroupColorId);*/
 
-                        events.add(new Event(eventName, eventTimestamp, eventInformation, eventImageId, eventGroupColorId, eventUrl));
+                        extractedEvents.add(new Event(eventName, eventTimestamp, eventInformation, eventImageId, eventGroupColorId, eventUrl));
 
                         // If there is the "event end" then exit the for loop back to
                         // the while loop
@@ -401,10 +396,7 @@ public class EventsFragment extends Fragment {
             }
 
 
-            // TODO: ettei ny kippais kokoajan
-            Event event = new Event("feikki", "aika", "bileet", R.drawable.default_icon, R.color.color_default, "http://google.com");
-
-            return event;
+            return extractedEvents;
 
         }
 

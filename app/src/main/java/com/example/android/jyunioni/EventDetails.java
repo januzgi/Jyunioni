@@ -61,11 +61,8 @@ public class EventDetails extends AppCompatActivity {
             // Get the event's URL
             eventUrl = intent.getStringExtra("EVENT_URL");
 
-            Log.e(LOG_TAG, "Event url at the moment in EventDetails: " + eventUrl);
-
             // Get the description / other information about the event
             eventInformation = intent.getStringExtra("EVENT_INFORMATION");
-
         }
 
 
