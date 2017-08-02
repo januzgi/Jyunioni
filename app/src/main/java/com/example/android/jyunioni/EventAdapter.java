@@ -24,7 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * {@link EventAdapter} is an {@link ArrayAdapter} that can provide the layout for each list item
@@ -38,7 +38,7 @@ public class EventAdapter extends ArrayAdapter<Event>  {
      * @param context is the current context (i.e. Activity) that the adapter is being created in.
      * @param events is the list of {@link Event}s to be displayed.
      */
-    public EventAdapter(Context context, ArrayList<Event> events) {
+    public EventAdapter(Context context, List<Event> events) {
         super(context, 0, events);
     }
 

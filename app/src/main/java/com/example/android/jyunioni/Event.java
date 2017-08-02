@@ -58,11 +58,6 @@ public class Event {
     private static final int NO_IMAGE_PROVIDED = -1;
 
     /**
-     * An empty constructor.
-     */
-    public Event(){}
-
-    /**
      * Create a new Event object.
      *
      * @param eventName       is the string from the HTTP request which is the event's name.
@@ -83,44 +78,38 @@ public class Event {
 
 
     /**
-     * Getter and setter for event name
+     * Getter for event name
      */
     public String getEventName() {
         return this.mEventName;
     }
-    public void setEventName(String eventName){ this.mEventName = eventName;}
 
     /**
-     * Getter and setter for event timestamp
+     * Getter for event timestamp
      */
     public String getEventTimestamp() {
         return this.mEventTimestamp;
     }
-    public void setEventTimestamp(String eventTimestamp){ this.mEventTimestamp = eventTimestamp;}
 
     /**
-     * Getter and setter for the image resource ID of the event hosting group.
+     * Getter for the image resource ID of the event hosting group.
      */
     public int getImageResourceId() { return this.mImageResourceId; }
-    public void setImageResourceId(int id) { this.mImageResourceId = id;}
 
     /**
-     * Getter and setter for the color ID for the group hosting the event.
+     * Getter for the color ID for the group hosting the event.
      */
     public int getGroupColorId() { return this.mGroupColorId; }
-    public void setGroupColorId(int id) { this.mGroupColorId = id;}
 
     /**
-     * Getter and setter for the URL of the event's page wherefrom the data was fetched too
+     * Getter for the URL of the event's page wherefrom the data was fetched too
      */
     public String getUrl() { return this.mUrl; }
-    public void setUrl(String url) { this.mUrl = url;}
 
     /**
-     * Getter and setter for the event's information or description
+     * Getter for the event's information or description
      */
     public String getEventInformation() { return this.mEventInformation; }
-    public void setEventInformation(String information) { this.mEventInformation = information;}
 
     /**
      * Returns whether or not there is an image for this word.
