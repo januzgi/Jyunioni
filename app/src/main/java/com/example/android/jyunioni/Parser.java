@@ -39,6 +39,22 @@ public class Parser {
         return result;
     }
 
+    public static String checkEventTimestamp(String startTime, String endTime){
+        // Check if the event happens only on one day. If, then use the date on the startTime only.
+        // Example input "7.9. 17:00", "7.9. 23:30"
+        String result = startTime + " - " + endTime;
+
+        String startDate = startTime.substring(0, startTime.lastIndexOf("."));
+        String endDate = endTime.substring(0, endTime.lastIndexOf(".")).toString();
+
+        if (startDate.equals(endDate)){
+            result = startTime + " - " + endTime.substring(endTime.lastIndexOf(".") + 2, endTime.length());
+        }
+
+        // Example output "7.9. 17:00 - 23:30"
+        return result;
+    }
+
     public static String extractField(String line) {
         // Get the string after the ':'
         String result = line.substring(line.lastIndexOf(':') + 1);
