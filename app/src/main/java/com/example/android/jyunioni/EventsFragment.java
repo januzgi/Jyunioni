@@ -314,19 +314,10 @@ public class EventsFragment extends Fragment {
             }
 
 
-            // Create string arrays for the different fields that are extracted from
+            // Create strings for the different fields that are extracted from
             // the HTTP response string
             String eventTimeStart = "";
             String eventTimeEnd = "";
-/*            String[] eventTimestamp = new String[eventsCount];
-
-            String[] eventName = new String[eventsCount];
-            String[] eventInformation = new String[eventsCount];
-            String[] eventUrl = new String[eventsCount];
-
-            int[] eventImageId = new int[eventsCount];
-            int[] eventGroupColorId = new int[eventsCount];*/
-
             String eventTimestamp = "";
 
             String eventName = "";
@@ -360,42 +351,42 @@ public class EventsFragment extends Fragment {
                     if (line.contains("DTSTART;")) { eventTimeStart = Parser.extractTime(line); }
 
                     // Event's ending time
-                    if (line.contains("DTEND;")) { eventTimeEnd = Parser.extractTime(line);
+                    else if (line.contains("DTEND;")) { eventTimeEnd = Parser.extractTime(line);
                         // Get the timestamp from the starting and ending times of the event
                         eventTimestamp = Parser.checkEventTimestamp(eventTimeStart, eventTimeEnd);
 
-                        Log.e(LOG_TAG, "Event timestamp: " + eventTimestamp); }
+                        /*Log.e(LOG_TAG, "Event timestamp: " + eventTimestamp);*/ }
+
 
                     // Event's name
-                    if (line.contains("SUMMARY")) { eventName = Parser.extractField(line);
-                        Log.e(LOG_TAG, "Event name: " + eventName); }
+                    else if (line.contains("SUMMARY")) { eventName = Parser.extractField(line);
+                        /*Log.e(LOG_TAG, "Event name: " + eventName);*/ }
 
 
                     // Event's description / overall information
-                    if (line.contains("DESCRIPTION:")) { eventInformation = Parser.extractDescriptionField(line);
-                        Log.e(LOG_TAG, "Event information: " + eventInformation); }
-
+                    else if (line.contains("DESCRIPTION:")) { eventInformation = Parser.extractDescriptionField(line);
+                        /*Log.e(LOG_TAG, "Event information: " + eventInformation);*/ }
 
 
                     // Event's URL
                     // Skip the first URL, which is the "X-ORIGINAL-URL:" and add only the 'events' to the list
-                    if (line.contains("URL") && line.contains("event")) { eventUrl = Parser.extractUrl(line);
+                    else if (line.contains("URL") && line.contains("event")) { eventUrl = Parser.extractUrl(line);
 
-                        Log.e(LOG_TAG, "Event url: " + eventUrl);
+                        /*Log.e(LOG_TAG, "Event url: " + eventUrl);*/
 
                         // Match up the event's group image and color according to the URL where the info was extracted from
                         if (eventUrl.contains("linkkijkl")) {
                             eventImageId = R.drawable.linkki_jkl_icon;
                             eventGroupColorId = R.color.color_linkki_jkl;
-                            Log.e(LOG_TAG, "Event group image: " + eventImageId + "\n" +
-                                    "Event groupcolor id: " + eventGroupColorId);
+                           /* Log.e(LOG_TAG, "Event group image: " + eventImageId + "\n" +
+                                    "Event groupcolor id: " + eventGroupColorId);*/
                         }
                     }
 
 
 
                     // If this was the end of the event being extracted
-                    if (line.contains("END:VEVENT")) {
+                    else if (line.contains("END:VEVENT")) {
 
                         Log.e(LOG_TAG, "\nEvent at ArrayList(" + loopCount + ") name: " + eventName +
                                 "\nEvent at ArrayList(" + loopCount + ") timestamp: " + eventTimestamp +
@@ -416,8 +407,6 @@ public class EventsFragment extends Fragment {
                 // If the loop has gone through all the events
                 if (loopCount == eventsCount) break;
             }
-
-            /*events = extractedEvents;*/
 
             // TODO: ettei ny kippais kokoajan
             Event event = new Event("feikki", "aika", "bileet", R.drawable.default_icon, R.color.color_default, "http://google.com");
