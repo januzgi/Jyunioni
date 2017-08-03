@@ -4,18 +4,14 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-
-import static com.example.android.jyunioni.EventDetails.LOG_TAG;
 
 /**
  * {@link Fragment} that displays a list of events.
@@ -149,20 +145,8 @@ public class EventsFragment extends Fragment /*implements LoaderManager.LoaderCa
             // Create an List<Event> object instance
             List<Event> events;
 
-            // Create URL object for fetching the Linkki Jyväskylä Ry event's
-            URL url = Queries.createUrl(LINKKI_EVENTS_URL);
-
-            // Perform HTTP request to the URL and receive a response
-            String response = "";
-            try {
-                response = Queries.makeHttpRequest(url);
-            } catch (IOException e) {
-                Log.e(LOG_TAG, "IOException when making the HTTP request in doInBackground at EventActivity" + e);
-            }
-
-            // Extract relevant fields from the HTTP response and create an Event object
-            // updateUi gets the result Event object via the onPostExecute().
-            events = Queries.extractDetails(response);
+            // Let the Queries class handle the data fetching
+            events = Queries.fetchEventData(LINKKI_EVENTS_URL);
 
             // Return the Event object as the result for the EventAsyncTask
             return events;

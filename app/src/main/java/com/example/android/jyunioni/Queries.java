@@ -240,64 +240,29 @@ public final class Queries {
     }
 
 
-}
+    /**
+     * Query data from different websites and return a list of {@link Event} objects.
+     */
+    public static List<Event> fetchEventData(String requestUrl) {
 
-
-
-/*
-    *
-     * Query the USGS dataset and return a list of {@link Earthquake} objects.
-
-    public static List<Earthquake> fetchEarthquakeData(String requestUrl) {
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        Log.e(LOG_TAG, "fetchEarthQuakeData(); at QueryUtils.java");
+        Log.e(LOG_TAG, "fetchEventData(); at Queries.java");
 
         // Create URL object
         URL url = createUrl(requestUrl);
 
-        // Perform HTTP request to the URL and receive a JSON response back
-        String jsonResponse = null;
+        // Perform HTTP request to the URL and receive a string response back
+        String httpResponse = null;
         try {
-            jsonResponse = makeHttpRequest(url);
+            httpResponse = makeHttpRequest(url);
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Problem making the HTTP request.", e);
+            Log.e(LOG_TAG, "IOException when making the HTTP request in fetchEventData() at Queries.java ", e);
         }
 
-        // Extract relevant fields from the JSON response and create a list of {@link Earthquake}s
-        List<Earthquake> earthquakes = extractFeatureFromJson(jsonResponse);
+        // Extract relevant fields from the HTTP response and create a list of Events
+        List<Event> events = extractDetails(httpResponse);
 
-        // Return the list of {@link Earthquake}s
-        return earthquakes;
-    }*/
+        // Return the list of Events
+        return events;
+    }
 
-
-// Se mitä tehtiin doInBackgroundissa voitaisiin tehdä fetchEventData:ssa? Ilmeisesti se oli ajatus myös Earthquake apissa
-
-  /*  protected List<Event> doInBackground(URL... urls) {
-
-        // Create an List<Event> object instance
-        List<Event> events;
-
-        // Create URL object for fetching the Linkki Jyväskylä Ry event's
-        URL url = Queries.createUrl(LINKKI_EVENTS_URL);
-
-        // Perform HTTP request to the URL and receive a response
-        String response = "";
-        try {
-            response = makeHttpRequest(url);
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "IOException when making the HTTP request in doInBackground at EventActivity" + e);
-        }
-
-        // Extract relevant fields from the HTTP response and create an Event object
-        // updateUi gets the result Event object via the onPostExecute().
-        events = extractDetails(response);
-
-        // Return the Event object as the result for the EventAsyncTask
-        return events;*/
+}
