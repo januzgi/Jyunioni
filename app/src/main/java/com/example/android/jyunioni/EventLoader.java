@@ -1,24 +1,22 @@
-/*
 package com.example.android.jyunioni;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.util.Log;
+
+import java.util.ArrayList;
 import java.util.List;
 
-*
+/**
  * Created by JaniS on 3.8.2017.
-
-
+ */
 
 public class EventLoader extends AsyncTaskLoader<List<Event>> {
 
-* Tag for log messages
-
+    /** Tag for log messages */
     private static final String LOG_TAG = EventLoader.class.getName();
 
-* Query URL
-
+    /** Query URL */
     private String mUrl;
 
 
@@ -34,10 +32,9 @@ public class EventLoader extends AsyncTaskLoader<List<Event>> {
         forceLoad();
     }
 
-*
+    /**
      * This is on a background thread.
-
-
+     */
     @Override
     public List<Event> loadInBackground() {
         Log.e(LOG_TAG, "loadInBackground(); at EventLoader.java");
@@ -46,8 +43,8 @@ public class EventLoader extends AsyncTaskLoader<List<Event>> {
         }
 
         // Perform the network request, parse the response, and extract a list of events.
-        List<Event> events = (mUrl);
+        List<Event> events = new ArrayList<>();
+        // TODO: tyhjä lista, tiedot täytyy hakea extractdetailssin kautta ja esmes urlin avulla kuten Earthquake apissa
         return events;
     }
 }
-*/
