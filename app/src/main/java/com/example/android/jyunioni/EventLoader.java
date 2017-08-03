@@ -10,7 +10,6 @@ import java.util.List;
 /**
  * Created by JaniS on 3.8.2017.
  */
-
 public class EventLoader extends AsyncTaskLoader<List<Event>> {
 
     /** Tag for log messages */
