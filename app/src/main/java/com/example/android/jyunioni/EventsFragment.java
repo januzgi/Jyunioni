@@ -29,7 +29,13 @@ import static com.example.android.jyunioni.EventDetails.LOG_TAG;
 /**
  * {@link Fragment} that displays a list of events.
  */
-public class EventsFragment extends Fragment {
+public class EventsFragment extends Fragment /*implements LoaderManager.LoaderCallbacks<List<Event>>*/ {
+
+    /**
+     * Constant value for the earthquake loader ID. We can choose any integer.
+     * This really only comes into play if you're using multiple loaders.
+     */
+    private static final int EVENT_LOADER_ID = 1;
 
     /**
      * Adapter for the list of events
@@ -135,7 +141,7 @@ public class EventsFragment extends Fragment {
      * <p>
      * Runs multiple times at the moment, which is not good. Should run only in the startup of the app.
      */
-    private class EventsFetchingAsyncTask extends AsyncTask<URL, Void, List<Event>> {
+    public class EventsFetchingAsyncTask extends AsyncTask<URL, Void, List<Event>> {
 
         /**
          * Linkki Jyväskylä Ry events page URL.
@@ -268,7 +274,7 @@ public class EventsFragment extends Fragment {
          * Return an {@link List<Event>} object by parsing out information from the HTTP response.
          * Event image, name, timestamp, general information, url and group's color id is needed.
          */
-        private List<Event> extractDetails(String httpResponseString) {
+        public List<Event> extractDetails(String httpResponseString) {
             // TODO: Entä jos kuussa ei olekaan tapahtumia
 
             // TODO: kuinka pitkälle tulevaisuuteen näytetään
