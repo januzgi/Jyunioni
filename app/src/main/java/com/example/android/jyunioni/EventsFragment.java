@@ -8,7 +8,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +19,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.android.jyunioni.EventDetails.LOG_TAG;
-
 /**
  * {@link Fragment} that displays a list of events.
  */
@@ -30,8 +27,11 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     /**
      * Constant value for the earthquake loader ID. We can choose any integer.
      * This really only comes into play if you're using multiple loaders.
+     *
+     * Also create the loader.
      */
     private static final int EVENT_LOADER_ID = 1;
+    LoaderManager loaderManager;
 
     /**
      * Different groups event's page URL.
@@ -49,7 +49,6 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
      */
     private View rootView;
 
-
     /**
      * TextView that is displayed when the list is empty
      */
@@ -59,7 +58,6 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
      * Progressbar to be shown when fetching data.
      */
     private ProgressBar mProgressBar;
-
 
     /**
      * Required empty public constructor
@@ -90,7 +88,6 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
         // ListView uses the EventAdapter so ListView will display list items for each Event in the list.
         eventsListView.setAdapter(mAdapter);
-
 
         /**
          * Set a click listener to open the event's details via an intent
@@ -127,6 +124,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             }
         });
 
+
         // Check using the ConnectivityManager if there's an internet connection or one is just being made.
         ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -136,14 +134,12 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         // If there is a network connection, fetch data
         if (activeNetwork != null && activeNetwork.isConnected()) {
             // Get a reference to the LoaderManager, in order to interact with loaders.
-            LoaderManager loaderManager = getActivity().getLoaderManager();
+            loaderManager = getActivity().getLoaderManager();
 
             // Initialize the loader. Pass in the int ID constant defined above and pass in null for
             // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
             // because this activity implements the LoaderCallbacks interface).
             loaderManager.initLoader(EVENT_LOADER_ID, null, this);
-
-            Log.e(LOG_TAG, "initLoader();");
 
         } else {
             // Otherwise, display error
@@ -179,17 +175,34 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         }
 
         mEmptyStateTextView.setText("No events data found.");
-
-        Log.e(LOG_TAG, "onLoadFinished();");
-
     }
 
     @Override
     public void onLoaderReset(Loader<List<Event>> loader) {
         // Loader reset, so we can clear out our existing data.
         mAdapter.clear();
-        Log.e(LOG_TAG, "onLoaderReset();");
     }
 
+    @Override
+    public void onResume() {
+        /*getActivity().getLoaderManager();*/
+        super.onResume();
+    }
 
+    /**
+     * Call LoaderManager from here so the data won't be lost when screen is being tilted.
+     */
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        getActivity().getLoaderManager();
+        super.onActivityCreated(savedInstanceState);
+    }
 }
+
+/*
+https://stackoverflow.com/questions/12507617/android-loader-not-triggering-callbacks-on-screen-rotate
+*/
+
+/*
+http://www.androiddesignpatterns.com/2012/08/implementing-loaders.html
+*/
