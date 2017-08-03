@@ -1,28 +1,37 @@
 package com.example.android.jyunioni;
 
+import android.app.LoaderManager;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.Loader;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.net.URL;
 import java.util.List;
+
+import static com.example.android.jyunioni.EventDetails.LOG_TAG;
 
 /**
  * {@link Fragment} that displays a list of events.
  */
-public class EventsFragment extends Fragment /*implements LoaderManager.LoaderCallbacks<List<Event>>*/ {
+public class EventsFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Event>> {
 
     /**
      * Constant value for the earthquake loader ID. We can choose any integer.
      * This really only comes into play if you're using multiple loaders.
      */
     private static final int EVENT_LOADER_ID = 1;
+
+    /**
+     * Different groups event's page URL.
+     */
+    private final String LINKKI_EVENTS_URL = "http://linkkijkl.fi/events/2017-09/?ical=1&tribe_display=month";
+    // TODO: add different groups URL
 
     /**
      * Adapter for the list of events
@@ -33,6 +42,18 @@ public class EventsFragment extends Fragment /*implements LoaderManager.LoaderCa
      * To update the UI from onCreateView and updateUi methods.
      */
     private View rootView;
+
+
+    /**
+     * TextView that is displayed when the list is empty
+     */
+    /*private TextView mEmptyStateTextView;*/
+
+    /**
+     * Progressbar to be shown when fetching data.
+     */
+    /*private ProgressBar mProgressBar;*/
+
 
     /**
      * Required empty public constructor
@@ -45,48 +66,99 @@ public class EventsFragment extends Fragment /*implements LoaderManager.LoaderCa
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.list_build, container, false);
 
-        return rootView;
-    }
+        // Find the ListView object in the view hierarchy.
+        // ListView with the view ID called events_list is declared in the list_build.xml layout file.
+        ListView eventsListView = (ListView) rootView.findViewById(R.id.events_list);
 
-    /**
-     * Will be called when the view has been created.
-     * Calling the AsyncTask from here.
-     */
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        // Kick off an {@link AsyncTask} to perform the network request to get the data.
-        EventsFetchingAsyncTask task = new EventsFetchingAsyncTask();
-        task.execute();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
+        // TODO: Create the empty state textview
+        /*// Find a reference to the {@link mEmptyStateTextView} in the layout
+        mEmptyStateTextView = (TextView) findViewById(R.id.emptyView);
+        earthquakeListView.setEmptyView(mEmptyStateTextView);*/
 
 
-    /**
-     * Update the screen to display information from the given {@link List<Event>}.
-     */
-    public void updateUi(List<Event> events) {
+        // Create an List<Event> object instance
+        List<Event> events;
+
+
+        // TODO: data fetched in the main thread
+        // Let the Queries class handle the data fetching
+        events = Queries.fetchEventData(LINKKI_EVENTS_URL);
+
+
 
         // Create an EventAdapter, whose data source is a list of Events.
         // The adapter knows how to create list items for each item in the list.
         mAdapter = new EventAdapter(getActivity(), events);
 
-        // Find the ListView object in the view hierarchy.
-        // ListView with the view ID called events_list is declared in the list_build.xml layout file.
-        ListView listView = (ListView) rootView.findViewById(R.id.events_list);
-
         // ListView uses the EventAdapter so ListView will display list items for each Event in the list.
-        listView.setAdapter(mAdapter);
+        eventsListView.setAdapter(mAdapter);
+
+
+    /*
+
+
+
+        // Set the progress bar to be shown when searching for the data
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        mProgressBar.setVisibility(View.VISIBLE);
+
+        // Create a new adapter that takes an empty list of earthquakes as input
+        mAdapter = new EarthquakeAdapter(this, new ArrayList<Earthquake>());
+
+        // Set the adapter on the {@link ListView} so the list can be populated in the user interface
+        earthquakeListView.setAdapter(mAdapter);
+
+        // Set an item click listener on the ListView, which sends an intent to a web browser to open a website with more information about the selected earthquake.
+        earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                // Find the current earthquake that was clicked on
+                Earthquake currentEarthquake = mAdapter.getItem(position);
+
+                // Convert the String URL into a URI object (to pass into the Intent constructor)
+                Uri earthquakeUri = Uri.parse(currentEarthquake.getUrl());
+
+                // Create a new intent to view the earthquake URI
+                Intent websiteIntent = new Intent(Intent.ACTION_VIEW, earthquakeUri);
+
+                // Send the intent to launch a new activity
+                startActivity(websiteIntent);
+            }
+        });
+
+
+        // Check using the ConnectivityManager if there's an internet connection or one is just being made.
+        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        // Get details on the currently active default data network
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+        // If there is a network connection, fetch data
+        if (activeNetwork != null && activeNetwork.isConnected()) {
+            // Get a reference to the LoaderManager, in order to interact with loaders.
+            LoaderManager loaderManager = getLoaderManager();
+
+            // Initialize the loader. Pass in the int ID constant defined above and pass in null for
+            // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
+            // because this activity implements the LoaderCallbacks interface).
+            loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);
+
+            Log.e(LOG_TAG, "initLoader();");
+
+        } else {
+            // Otherwise, display error
+            // First, hide loading indicator so error message will be visible
+
+            mProgressBar.setVisibility(View.GONE);
+            mEmptyStateTextView.setText("No internet connection.");
+
+        }*/
+
 
         /**
          * Set a click listener to open the event's details via an intent
          */
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        eventsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
@@ -117,54 +189,43 @@ public class EventsFragment extends Fragment /*implements LoaderManager.LoaderCa
                 startActivity(intent);
             }
         });
+
+        return rootView;
     }
 
 
-    /**
-     * Created by JaniS on 26.7.2017.
-     * <p>
-     * {@link AsyncTask} to perform the network request on a background thread, and then
-     * update the UI with the first event in the response.
-     * <p>
-     * Runs multiple times at the moment, which is not good. Should run only in the startup of the app.
-     */
-    public class EventsFetchingAsyncTask extends AsyncTask<URL, Void, List<Event>> {
-
-        /**
-         * Linkki Jyväskylä Ry events page URL.
-         */
-        private final String LINKKI_EVENTS_URL = "http://linkkijkl.fi/events/2017-09/?ical=1&tribe_display=month";
-
-
-        /**
-         * This is done in a background thread.
-         */
-        @Override
-        protected List<Event> doInBackground(URL... urls) {
-
-            // Create an List<Event> object instance
-            List<Event> events;
-
-            // Let the Queries class handle the data fetching
-            events = Queries.fetchEventData(LINKKI_EVENTS_URL);
-
-            // Return the Event object as the result for the EventAsyncTask
-            return events;
-        }
-
-
-        /**
-         * Update the screen with the given event (which was the result of the {@link EventsFetchingAsyncTask}).
-         * Runs in the UI thread.
-         * Gets the result from the population done in doInBackground().
-         */
-        @Override
-        protected void onPostExecute(List<Event> events) {
-            if (events == null) {
-                return;
-            }
-
-            updateUi(events);
-        }
+    @Override
+    public Loader<List<Event>> onCreateLoader(int id, Bundle bundle) {
+        // Create a new loader for the given URL
+        return new EventLoader(getContext(), LINKKI_EVENTS_URL);
     }
+
+    @Override
+    public void onLoadFinished(Loader<List<Event>> loader, List<Event> events) {
+
+        /*mProgressBar.setVisibility(View.GONE);*/
+
+        // Clear the adapter of previous earthquake data
+        mAdapter.clear();
+
+        // If there is a valid list of Events, then add them to the adapter's
+        // data set. This will trigger the ListView to update.
+        if (events != null && !events.isEmpty()) {
+            mAdapter.addAll(events);
+        }
+
+        /*mEmptyStateTextView.setText("No earthquakes data found.");*/
+
+        Log.e(LOG_TAG, "onLoadFinished();");
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Event>> loader) {
+        // Loader reset, so we can clear out our existing data.
+        mAdapter.clear();
+        Log.e(LOG_TAG, "onLoaderReset();");
+    }
+
+
 }

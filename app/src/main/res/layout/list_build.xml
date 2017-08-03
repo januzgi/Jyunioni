@@ -11,21 +11,21 @@
         android:drawSelectorOnTop="true"
         android:orientation="vertical" />
 
+    <!-- Empty view is only visible when the list has no items. -->
+    <TextView
+        android:id="@+id/emptyView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textAppearance="?android:textAppearanceMedium" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:layout_centerInParent="true" />
 
 </RelativeLayout>
 
 
 
- <!--   &lt;!&ndash; Empty view is only visible when the list has no items. &ndash;&gt;
-<TextView
-android:id="@+id/emptyView"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_centerInParent="true"
-android:textAppearance="?android:textAppearanceMedium" />
-
-<ProgressBar
-android:id="@+id/progressBar"
-android:layout_width="88dp"
-android:layout_height="88dp"
-android:layout_centerInParent="true" />-->

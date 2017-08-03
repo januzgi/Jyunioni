@@ -113,7 +113,7 @@ public final class Queries {
      * Return an {@link List<Event>} object by parsing out information from the HTTP response.
      * Event image, name, timestamp, general information, url and group's color id is needed.
      */
-    public static List<Event> extractDetails(String httpResponseString) {
+    public static List<Event> extractLinkkiEventDetails(String httpResponseString) {
         // TODO: Entä jos kuussa ei olekaan tapahtumia
 
         // TODO: kuinka pitkälle tulevaisuuteen näytetään
@@ -244,8 +244,10 @@ public final class Queries {
      * Query data from different websites and return a list of {@link Event} objects.
      */
     public static List<Event> fetchEventData(String requestUrl) {
-
         Log.e(LOG_TAG, "fetchEventData(); at Queries.java");
+        // TODO: Tsekkaa URL:ista minkä ainejärjestön se on ja sitten menee sen mukaan eri extract aliohjelmiin.
+
+        List<Event> events = new ArrayList<>();
 
         // Create URL object
         URL url = createUrl(requestUrl);
@@ -258,8 +260,14 @@ public final class Queries {
             Log.e(LOG_TAG, "IOException when making the HTTP request in fetchEventData() at Queries.java ", e);
         }
 
-        // Extract relevant fields from the HTTP response and create a list of Events
-        List<Event> events = extractDetails(httpResponse);
+        /**
+         * Check which group's event's are to be extracted.
+         */
+        if ( requestUrl.contains("linkkijkl.fi")) {
+            // Extract relevant fields from the HTTP response and create a list of Events
+            events = extractLinkkiEventDetails(httpResponse);
+        }
+
 
         // Return the list of Events
         return events;
