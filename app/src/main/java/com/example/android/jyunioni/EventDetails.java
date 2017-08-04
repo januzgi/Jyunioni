@@ -21,14 +21,10 @@ import android.widget.Toast;
 
 public class EventDetails extends AppCompatActivity {
 
-    /**
-     * Tag for the log messages
-     */
+    /** Tag for the log messages */
     public static final String LOG_TAG = EventDetails.class.getSimpleName();
 
-    /**
-     * Private variables for updating the UI with the information from the event page.
-     */
+    /** Private variables for updating the UI with the information from the event page. */
     private String eventNameAndTimestamp = null;
     private String eventName = null;
     private String eventInformation = null;
@@ -41,14 +37,11 @@ public class EventDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_details);
 
-
         Intent intent = getIntent();
         Bundle intentData = intent.getExtras();
 
         if(intentData != null)
         {
-            String j = (String) intentData.get("name");
-
             // Get the event's name and the timestamp.
             eventName = intent.getStringExtra("EVENT_NAME");
             eventNameAndTimestamp = eventName + "\n" + intent.getStringExtra("EVENT_TIMESTAMP");
@@ -135,4 +128,6 @@ public class EventDetails extends AppCompatActivity {
         }
         return true;
     }
+
+
 }

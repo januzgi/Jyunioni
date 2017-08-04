@@ -29,9 +29,8 @@ import java.util.ArrayList;
  */
 public class ShoutboxFragment extends Fragment {
 
-    public ShoutboxFragment() {
-        // Required empty public constructor
-    }
+    /** Required empty public constructor */
+    public ShoutboxFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,9 +44,12 @@ public class ShoutboxFragment extends Fragment {
         return rootView;
     }
 
+    /** When the activity is stopped, release possible resources */
     @Override
     public void onStop() {
         super.onStop();
-        // When the activity is stopped, release possible resources
+
     }
+
+
 }

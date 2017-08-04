@@ -25,19 +25,16 @@ public class ShoutboxMessage {
     /** String for the event name */
     private String mMessage;
 
-
     /**
      * Create a new ShoutboxMessage object.
      *
-     * @param message is the string from the HTTP request which is the event's name.
+     * @param message the message string.
      */
     public ShoutboxMessage(String message) {
         mMessage = message;
     }
 
-    /**
-     * Get the strings that are in the shoutbox.
-     */
+    /** Get the strings that are in the shoutbox. */
     public String getShoutboxMessage() {
         return mMessage;
     }

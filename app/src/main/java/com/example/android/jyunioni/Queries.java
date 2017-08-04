@@ -29,9 +29,7 @@ public final class Queries {
     private Queries() {
     }
 
-    /**
-     * Returns new URL object from the given string URL.
-     */
+    /** Returns new URL object from the given string URL. */
     public static URL createUrl(String stringUrl) {
         URL url;
 
@@ -44,10 +42,7 @@ public final class Queries {
         return url;
     }
 
-
-    /**
-     * Make an HTTP request to the given URL and return a String as the response.
-     */
+    /** Make an HTTP request to the given URL and return a String as the response. */
     public static String makeHttpRequest(URL url) throws IOException {
         if (url == null) return "";
 
@@ -86,11 +81,7 @@ public final class Queries {
         return response;
     }
 
-
-    /**
-     * Convert the {@link InputStream} into a String which contains the
-     * whole HTTP response from the server.
-     */
+    /** Convert the {@link InputStream} into a String which contains the whole HTTP response from the server. */
     public static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
         if (inputStream != null) {
@@ -107,12 +98,8 @@ public final class Queries {
         return output.toString();
     }
 
-
-
-    /**
-     * Return an {@link List<Event>} object by parsing out information from the HTTP response.
-     * Event image, name, timestamp, general information, url and group's color id is needed.
-     */
+    /** Return an {@link List<Event>} object by parsing out information from the HTTP response.
+     * Event image, name, timestamp, general information, url and group's color id is needed. */
     public static List<Event> extractLinkkiEventDetails(String httpResponseString) {
         // TODO: Entä jos kuussa ei olekaan tapahtumia
 
@@ -234,15 +221,11 @@ public final class Queries {
             if (loopCount == eventsCount) break;
         }
 
-
         return extractedEvents;
-
     }
 
 
-    /**
-     * Query data from different websites and return a list of {@link Event} objects.
-     */
+    /** Query data from different websites and return a list of {@link Event} objects. */
     public static List<Event> fetchEventData(String requestUrl) {
         // TODO: Tsekkaa URL:ista minkä ainejärjestön se on ja sitten menee sen mukaan eri extract aliohjelmiin.
 
@@ -267,9 +250,9 @@ public final class Queries {
             events = extractLinkkiEventDetails(httpResponse);
         }
 
-
         // Return the list of Events
         return events;
     }
+
 
 }

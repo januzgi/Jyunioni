@@ -21,9 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * {@link Fragment} that displays a list of events.
+ * This fragment displays a list of events and has Loadermanager implemented to use the once fetched data.
  */
 public class EventsFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Event>> {
+
 
     /**
      * Constant value for the earthquake loader ID. We can choose any integer.
@@ -35,40 +36,26 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     LoaderManager loaderManager;
 
 
-    /**
-     * Tag for the log messages
-     */
+    /** Tag for the log messages */
     public static final String LOG_TAG = EventDetails.class.getSimpleName();
 
-    /**
-     * Different groups event's page URL.
-     */
+    /** Different groups event's page URL. */
     private final String LINKKI_EVENTS_URL = "http://linkkijkl.fi/events/2017-09/?ical=1&tribe_display=month";
     // TODO: add different groups URL
 
-    /**
-     * Adapter for the list of events
-     */
+    /** Adapter for the list of events */
     private EventAdapter mAdapter;
 
-    /**
-     * To update the UI from onCreateView and updateUi methods.
-     */
+    /** To update the UI from onCreateView and updateUi methods. */
     private View rootView;
 
-    /**
-     * TextView that is displayed when the list is empty
-     */
+    /** TextView that is displayed when the list is empty */
     private TextView mEmptyStateTextView;
 
-    /**
-     * Progressbar to be shown when fetching data.
-     */
+    /** Progressbar to be shown when fetching data. */
     private ProgressBar mProgressBar;
 
-    /**
-     * Required empty public constructor
-     */
+    /** Required empty public constructor */
     public EventsFragment() { }
 
 
@@ -76,12 +63,6 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.list_build, container, false);
-
-        // TODO: kun ohjelma laitetaan syrjään niin tallenna tiedot
-        // TODO: Eli kun käyttäjä painaa esim back tarpeeks monesti et pääsee työpöydälle
-
-
-
 
         // Find the ListView object in the view hierarchy.
         // ListView with the view ID called events_list is declared in the list_build.xml layout file.
@@ -102,9 +83,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         // ListView uses the EventAdapter so ListView will display list items for each Event in the list.
         eventsListView.setAdapter(mAdapter);
 
-        /**
-         * Set a click listener to open the event's details via an intent
-         */
+        /** Set a click listener to open the event's details via an intent */
         eventsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -169,6 +148,8 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onResume() {
+        // TODO: ei tunnu vaikuttavan mitenkään?
+        loaderManager = getActivity().getLoaderManager();
         loaderManager.initLoader(EVENT_LOADER_ID, null, this).forceLoad();
         super.onResume();
     }
@@ -202,5 +183,6 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         // Loader reset, so we can clear out our existing data.
         mAdapter.clear();
     }
+
 
 }

@@ -17,11 +17,11 @@ import java.util.List;
  */
 public class EventAdapter extends ArrayAdapter<Event>  {
 
-    /**
-     * Create a new {@link EventAdapter} object.
+
+    /** Create a new EventAdapter object.
      *
-     * @param context is the current context (i.e. Activity) that the adapter is being created in.
-     * @param events is the list of {@link Event}s to be displayed.
+     * @param context is the current context (Activity) that the adapter is being created in.
+     * @param events is the list of Events to be displayed.
      */
     public EventAdapter(Context context, List<Event> events) {
         super(context, 0, events);
@@ -78,4 +78,6 @@ public class EventAdapter extends ArrayAdapter<Event>  {
         // the ListView.
         return listItemView;
     }
+
+
 }

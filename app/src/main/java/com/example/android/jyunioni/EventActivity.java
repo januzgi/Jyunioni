@@ -34,4 +34,6 @@ public class EventActivity extends AppCompatActivity {
         //      by calling onPageTitle()
         tabLayout.setupWithViewPager(viewPager);
     }
+
+
 }
