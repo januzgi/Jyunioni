@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -123,5 +124,15 @@ public class EventDetails extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * Handles the 'up-navigation' properly when going back to events list from event details.
+     * This way the app won't reload the data.
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            onBackPressed();
+        }
+        return true;
+    }
 }

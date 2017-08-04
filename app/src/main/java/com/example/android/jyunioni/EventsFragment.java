@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,12 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
      */
     private static final int EVENT_LOADER_ID = 1;
     LoaderManager loaderManager;
+
+
+    /**
+     * Tag for the log messages
+     */
+    public static final String LOG_TAG = EventDetails.class.getSimpleName();
 
     /**
      * Different groups event's page URL.
@@ -69,6 +76,12 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.list_build, container, false);
+
+        // TODO: kun ohjelma laitetaan syrjään niin tallenna tiedot
+        // TODO: Eli kun käyttäjä painaa esim back tarpeeks monesti et pääsee työpöydälle
+
+
+
 
         // Find the ListView object in the view hierarchy.
         // ListView with the view ID called events_list is declared in the list_build.xml layout file.
@@ -141,6 +154,8 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             // because this activity implements the LoaderCallbacks interface).
             loaderManager.initLoader(EVENT_LOADER_ID, null, this);
 
+            Log.e(LOG_TAG, "EventsFragment.java, initLoader()");
+
         } else {
             // Otherwise, display error
             // First, hide loading indicator so error message will be visible
@@ -162,10 +177,11 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onLoadFinished(Loader<List<Event>> loader, List<Event> events) {
+        Log.e(LOG_TAG, "EventsFragment.java onLoadFinished()");
 
         mProgressBar.setVisibility(View.GONE);
 
-        // Clear the adapter of previous earthquake data
+        // Clear the adapter of previous events data
         mAdapter.clear();
 
         // If there is a valid list of Events, then add them to the adapter's
@@ -185,24 +201,17 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onResume() {
-        /*getActivity().getLoaderManager();*/
+        Log.e(LOG_TAG, "EventsFragment.java onResume()");
+        /*loaderManager.initLoader(EVENT_LOADER_ID, null, this);*/
         super.onResume();
     }
 
-    /**
-     * Call LoaderManager from here so the data won't be lost when screen is being tilted.
-     */
+
+    // Call LoaderManager from here so the data won't be lost when screen is being tilted.
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        getActivity().getLoaderManager();
+        Log.e(LOG_TAG, "EventsFragment.java onActivityCreated()");
+        /*loaderManager.initLoader(EVENT_LOADER_ID, null, this);*/
         super.onActivityCreated(savedInstanceState);
     }
 }
-
-/*
-https://stackoverflow.com/questions/12507617/android-loader-not-triggering-callbacks-on-screen-rotate
-*/
-
-/*
-http://www.androiddesignpatterns.com/2012/08/implementing-loaders.html
-*/
