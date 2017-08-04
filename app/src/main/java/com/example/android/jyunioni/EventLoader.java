@@ -21,12 +21,12 @@ public class EventLoader extends AsyncTaskLoader<List<Event>> {
     public EventLoader(Context context, String url) {
         super(context);
         mUrl = url;
-        Log.e(LOG_TAG, "EventLoader(); aka onCreateLoader(); callback");
+        Log.e(LOG_TAG, "EventLoader(); ");
     }
 
     @Override
     protected void onStartLoading() {
-        Log.e(LOG_TAG, "onStartLoading(); at EventLoader.java");
+        Log.e(LOG_TAG, "onStartLoading();");
         forceLoad();
     }
 
@@ -35,7 +35,7 @@ public class EventLoader extends AsyncTaskLoader<List<Event>> {
      */
     @Override
     public List<Event> loadInBackground() {
-        Log.e(LOG_TAG, "loadInBackground(); at EventLoader.java");
+        Log.e(LOG_TAG, "loadInBackground();");
         if (mUrl == null) {
             return null;
         }

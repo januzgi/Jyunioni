@@ -152,9 +152,8 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             // Initialize the loader. Pass in the int ID constant defined above and pass in null for
             // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
             // because this activity implements the LoaderCallbacks interface).
-            loaderManager.initLoader(EVENT_LOADER_ID, null, this);
-
-            Log.e(LOG_TAG, "EventsFragment.java, initLoader()");
+            loaderManager.initLoader(EVENT_LOADER_ID, null, this).forceLoad();
+            Log.e(LOG_TAG, " initLoader()");
 
         } else {
             // Otherwise, display error
@@ -168,6 +167,11 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        loaderManager.initLoader(EVENT_LOADER_ID, null, this).forceLoad();
+        super.onResume();
+    }
 
     @Override
     public Loader<List<Event>> onCreateLoader(int id, Bundle bundle) {
@@ -177,7 +181,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onLoadFinished(Loader<List<Event>> loader, List<Event> events) {
-        Log.e(LOG_TAG, "EventsFragment.java onLoadFinished()");
+        Log.e(LOG_TAG, " onLoadFinished()");
 
         mProgressBar.setVisibility(View.GONE);
 
@@ -199,19 +203,4 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         mAdapter.clear();
     }
 
-    @Override
-    public void onResume() {
-        Log.e(LOG_TAG, "EventsFragment.java onResume()");
-        /*loaderManager.initLoader(EVENT_LOADER_ID, null, this);*/
-        super.onResume();
-    }
-
-
-    // Call LoaderManager from here so the data won't be lost when screen is being tilted.
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        Log.e(LOG_TAG, "EventsFragment.java onActivityCreated()");
-        /*loaderManager.initLoader(EVENT_LOADER_ID, null, this);*/
-        super.onActivityCreated(savedInstanceState);
-    }
 }
