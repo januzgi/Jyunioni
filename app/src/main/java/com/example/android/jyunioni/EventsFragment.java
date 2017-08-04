@@ -8,7 +8,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,36 +26,47 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
 
     /**
-     * Constant value for the earthquake loader ID. We can choose any integer.
-     * This really only comes into play if you're using multiple loaders.
-     *
-     * Also create the loader.
+     * Constant value for the earthquake loader ID.
+     * Create the loader.
      */
     private static final int EVENT_LOADER_ID = 1;
-    LoaderManager loaderManager;
 
+    /**
+     * Tag for the log messages
+     */
+    /*public static final String LOG_TAG = EventDetails.class.getSimpleName();*/
 
-    /** Tag for the log messages */
-    public static final String LOG_TAG = EventDetails.class.getSimpleName();
-
-    /** Different groups event's page URL. */
+    /**
+     * Different groups event's page URL.
+     */
     private final String LINKKI_EVENTS_URL = "http://linkkijkl.fi/events/2017-09/?ical=1&tribe_display=month";
     // TODO: add different groups URL
 
-    /** Adapter for the list of events */
+    /**
+     * Adapter for the list of events
+     */
     private EventAdapter mAdapter;
 
-    /** To update the UI from onCreateView and updateUi methods. */
+    /**
+     * To update the UI from onCreateView and updateUi methods.
+     */
     private View rootView;
 
-    /** TextView that is displayed when the list is empty */
+    /**
+     * TextView that is displayed when the list is empty
+     */
     private TextView mEmptyStateTextView;
 
-    /** Progressbar to be shown when fetching data. */
+    /**
+     * Progressbar to be shown when fetching data.
+     */
     private ProgressBar mProgressBar;
 
-    /** Required empty public constructor */
-    public EventsFragment() { }
+    /**
+     * Required empty public constructor
+     */
+    public EventsFragment() {
+    }
 
 
     @Override
@@ -116,6 +126,12 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             }
         });
 
+        return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         // Check using the ConnectivityManager if there's an internet connection or one is just being made.
         ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -123,35 +139,35 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         // Get details on the currently active default data network
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
+
+
         // If there is a network connection, fetch data
         if (activeNetwork != null && activeNetwork.isConnected()) {
+
             // Get a reference to the LoaderManager, in order to interact with loaders.
-            loaderManager = getActivity().getLoaderManager();
+            LoaderManager loaderManager = getActivity().getLoaderManager();
 
             // Initialize the loader. Pass in the int ID constant defined above and pass in null for
             // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
             // because this activity implements the LoaderCallbacks interface).
-            loaderManager.initLoader(EVENT_LOADER_ID, null, this).forceLoad();
-            Log.e(LOG_TAG, " initLoader()");
-
+            loaderManager.initLoader(EVENT_LOADER_ID, null, this);
         } else {
             // Otherwise, display error
             // First, hide loading indicator so error message will be visible
 
             mProgressBar.setVisibility(View.GONE);
             mEmptyStateTextView.setText("No internet connection.");
-
         }
 
-        return rootView;
     }
 
+    // TODO: ei tunnu vaikuttavan mitenkään?
     @Override
     public void onResume() {
-        // TODO: ei tunnu vaikuttavan mitenkään?
-        loaderManager = getActivity().getLoaderManager();
-        loaderManager.initLoader(EVENT_LOADER_ID, null, this).forceLoad();
         super.onResume();
+
+        LoaderManager loaderManager = getActivity().getLoaderManager();
+        loaderManager.initLoader(EVENT_LOADER_ID, null, EventsFragment.this).forceLoad();
     }
 
     @Override
@@ -162,8 +178,6 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onLoadFinished(Loader<List<Event>> loader, List<Event> events) {
-        Log.e(LOG_TAG, " onLoadFinished()");
-
         mProgressBar.setVisibility(View.GONE);
 
         // Clear the adapter of previous events data
@@ -176,6 +190,8 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         }
 
         mEmptyStateTextView.setText("No events data found.");
+
+        getLoaderManager().destroyLoader(EVENT_LOADER_ID);
     }
 
     @Override

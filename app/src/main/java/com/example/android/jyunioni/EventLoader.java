@@ -2,7 +2,6 @@ package com.example.android.jyunioni;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
-import android.util.Log;
 
 import java.util.List;
 
@@ -12,37 +11,47 @@ import java.util.List;
 public class EventLoader extends AsyncTaskLoader<List<Event>> {
 
     /** Tag for log messages */
-    private static final String LOG_TAG = EventLoader.class.getName();
+    /*private static final String LOG_TAG = EventLoader.class.getName();*/
 
     /** Query URL */
     private String mUrl;
 
+
+    private List<Event> mEvents;
+
+
     public EventLoader(Context context, String url) {
         super(context);
-
-        Log.e(LOG_TAG, "EventLoader(); ");
-
         mUrl = url;
     }
 
     @Override
     protected void onStartLoading() {
-        Log.e(LOG_TAG, "onStartLoading();");
-        forceLoad();
+        if(mEvents != null){
+            deliverResult(mEvents);
+        }
 
+        if (takeContentChanged() || mEvents == null){
+            forceLoad();
+        }
+    }
+
+
+    @Override
+    public void deliverResult(List<Event> events) {
+        mEvents = events;
+        super.deliverResult(mEvents);
     }
 
     /** This is on a background thread. */
     @Override
     public List<Event> loadInBackground() {
-        Log.e(LOG_TAG, "loadInBackground();");
-
         if (mUrl == null) {
             return null;
         }
 
         // Perform the network request, parse the response, and extract a list of events.
-        List<Event> mEvents = Queries.fetchEventData(mUrl);
+        mEvents = Queries.fetchEventData(mUrl);
         return mEvents;
     }
 
