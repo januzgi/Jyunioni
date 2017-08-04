@@ -4,7 +4,6 @@ import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,10 +16,6 @@ public class EventLoader extends AsyncTaskLoader<List<Event>> {
 
     /** Query URL */
     private String mUrl;
-
-    /** List for the events. */
-    List<Event> mEvents = new ArrayList<>();
-
 
     public EventLoader(Context context, String url) {
         super(context);
@@ -37,7 +32,6 @@ public class EventLoader extends AsyncTaskLoader<List<Event>> {
 
     }
 
-
     /** This is on a background thread. */
     @Override
     public List<Event> loadInBackground() {
@@ -48,7 +42,9 @@ public class EventLoader extends AsyncTaskLoader<List<Event>> {
         }
 
         // Perform the network request, parse the response, and extract a list of events.
-        mEvents = Queries.fetchEventData(mUrl);
+        List<Event> mEvents = Queries.fetchEventData(mUrl);
         return mEvents;
     }
+
+
 }
