@@ -40,6 +40,8 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
      * Different groups event's page URL.
      */
     private final String LINKKI_EVENTS_URL = "http://linkkijkl.fi/events/2017-09/?ical=1&tribe_display=month";
+    private final String PORSSI_EVENTS_URL = "http://www.porssiry.fi/tapahtumat/";
+
     // TODO: add different groups URL
 
     /**
@@ -161,7 +163,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
     }
 
-    // TODO: ei tunnu vaikuttavan mitenkään?
+
     @Override
     public void onResume() {
         super.onResume();

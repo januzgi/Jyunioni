@@ -227,6 +227,7 @@ public final class Queries {
 
     /** Query data from different websites and return a list of {@link Event} objects. */
     public static List<Event> fetchEventData(String requestUrl) {
+
         // TODO: Tsekkaa URL:ista minkä ainejärjestön se on ja sitten menee sen mukaan eri extract aliohjelmiin.
 
         List<Event> events = new ArrayList<>();
