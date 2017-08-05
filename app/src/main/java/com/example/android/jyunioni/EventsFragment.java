@@ -167,7 +167,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         super.onResume();
 
         LoaderManager loaderManager = getActivity().getLoaderManager();
-        loaderManager.initLoader(EVENT_LOADER_ID, null, EventsFragment.this).forceLoad();
+        loaderManager.restartLoader(EVENT_LOADER_ID, null, EventsFragment.this).forceLoad();
     }
 
     @Override
