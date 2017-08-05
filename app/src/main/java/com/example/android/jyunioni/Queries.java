@@ -230,11 +230,11 @@ public final class Queries {
     }
 
 
-    /** Return an {@link List<Event>} object by parsing out information from the HTTP response.
+    /** Return an {@link Event} object by parsing out information from the HTTP response.
      * Event image, name, timestamp, general information, url and group's color id is needed. */
-    public static List<Event> extractPorssiEventDetails(String url) {
+    public static Event extractPorssiEventDetails(String url) {
         // Create the Event and List<Event> objects instance
-        List<Event> extractedEvents = new ArrayList<>();
+        Event event = null;
 
         String content = null;
 
@@ -246,15 +246,69 @@ public final class Queries {
             Log.e(LOG_TAG, "IOException at extractPorssiEventDetails()\n" + e);
         }
 
-        // Parse the data in the linkkiDetailsParser class and create an Event object
+
+        // Parse the data in the porssiDetailsParser class and create an Event object
+        Scanner scanner = new Scanner(content).useDelimiter("[\n]");
+
+        // Variables for the different values of an Event object
+        String eventName = null;
+        String eventInformation = null;
+
+        String eventDate = null;
+        String eventTime = null;
+        String eventTimestamp = null;
 
 
+        // Helper variable for the scanner loops
+        String line;
+
+        while (scanner.hasNext()) {
+            line = scanner.next();
+
+            if (line.contains("<h1>")){
+                eventName = porssiDetailsParser.extractEventName(line);
+
+            } else if (line.contains("dashicons-calendar-alt\"></span>")){
+                eventDate = porssiDetailsParser.extractDate(line);
+
+            } else if (line.contains("dashicons-clock\"></span>")){
+                eventTime = porssiDetailsParser.extractTime(line);
+                eventTimestamp = eventDate + " " + eventTime;
+                System.out.println(eventTimestamp);
+
+            } else if (line.contains("<div class=\"row\" data-equalizer data-equalizer-mq=\"medium-up\">")){
+                // Skip to the first line of the <p> element where the event information is.
+                line = scanner.next();
+                line = scanner.next();
+
+                // If there's an image, skip over it
+                if (line.contains("<p><img src")){
+                    line = scanner.next();
+                }
+
+                boolean pElements = true;
+
+                // Make a String out of the <p> content
+                while (pElements){
+                    eventInformation = eventInformation + "\n" + line.trim();
+                    line = scanner.next();
+                    // If the <p> element still continues
+                    if (line.contains("<p>") == false) pElements = false;
+                }
+                eventInformation = porssiDetailsParser.extractEventInformation(eventInformation);
+
+            }
+        }
+
+        // TODO: create the Event with the fetched data
+        // String eventName, String eventTimestamp, String eventInformation, int imageResourceId, int groupColorId, String url) {
+        event = new Event(eventName, eventTimestamp, eventInformation, R.drawable.porssi_ry_icon, R.color.color_porssi_ry, url);
 
 
-        Log.e(LOG_TAG, content);
+        Log.e(LOG_TAG, eventDate + "\n" + eventTimestamp + "\n" + eventInformation + "\n" + url);
 
 
-        return extractedEvents;
+        return event;
     }
 
 
@@ -310,18 +364,22 @@ public final class Queries {
                 porssiUrl = "http://www.porssiry.fi/events/kaupunkikierros-tutustumisilta-2/"; /*porssiEventUrls.get(j)*/
 
                 // Extract relevant fields from the HTTP response and create a list of Porssi's Events
-                eventsPorssi = (extractPorssiEventDetails(porssiUrl));
+
+                Event porssiEvent = null;
+
+                porssiEvent = (extractPorssiEventDetails(porssiUrl));
+
+                eventsPorssi.add(porssiEvent);
+
+
 
 
                 /** Fetch each event's data using the URL array to create the Event objects. */
-                /*for (int j = 0; j < porssiEventUrls.size(); j++){
+/*                for (int j = 0; j < porssiEventUrls.size(); j++){
                     linkkiUrl = createUrl("http://www.porssiry.fi/events/kaupunkikierros-tutustumisilta-2/"); porssiEventUrls.get(j)
 
                     // Extract relevant fields from the HTTP response and create a list of Porssi's Events
                     eventsPorssi = (extractPorssiEventDetails(sendHttpRequest(linkkiUrl)));
-
-
-
                 }*/
 
 
@@ -331,7 +389,7 @@ public final class Queries {
 
         // Add all events from different groups lists to the mainList
         allEventsList.addAll(eventsLinkki);
-        /*allEventsList.addAll(eventsPorssi);*/
+        allEventsList.addAll(eventsPorssi);
 
         // Return the list of all Events from different groups.
         return allEventsList;
