@@ -2,6 +2,11 @@ package com.example.android.jyunioni;
 
 import android.util.Log;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -353,9 +358,7 @@ public final class Queries {
         List<Event> eventsPorssi = new ArrayList<>();
         List<Event> allEventsList = new ArrayList<>();
 
-        // TODO: Tsekkaa URL:ista minkä ainejärjestön se on ja sitten menee sen mukaan eri extract aliohjelmiin.
-
-        // TODO: Lopputuloksena on eventsList jossa on eri Events objektit Pörssin ja Linkin tapahtumista
+        List<String> porssiEventUrls = new ArrayList<>();
 
         // Create a URL object
         URL url;
@@ -375,11 +378,35 @@ public final class Queries {
 
             } else if (requestUrl[i].contains("porssiry.fi")) {
 
-                url = createUrl(requestUrl[i]);
+                // Get just the "css-events-list" HTML div's data from Pörssi's website using jsoup library.
+                /** jsoup HTML parser library @ https://jsoup.org */
+                try {
 
+                    Document document = Jsoup.connect(requestUrl[i]).get();
+
+                    /** https://jsoup.org/cookbook/extracting-data/selector-syntax */
+                    Elements eventUrlElements = document.getElementsByClass("css-events-list").select("[href]");
+
+                    int j = 0;
+                    // Put the elements content (the URL's) from href fields to a String List
+                    for (Element element : eventUrlElements) {
+                         porssiEventUrls.add(element.attr("href"));
+                        Log.e(LOG_TAG, porssiEventUrls.get(j));
+                        j++;
+                    }
+                } catch (IOException e){
+                    Log.e(LOG_TAG, "Problem in jsouping.\n" + e);
+                }
+
+
+                /*for (int j = 0; j < porssiEventUrls.size(); j++)
+
+                * Fetch each event's data using the URL array to create the Event objects.
                 // Extract relevant fields from the HTTP response and create a list of Porssi's Events
-                /*eventsPorssi = (extractPorssiEventDetails(sendHttpRequest(url)));*/
-                extractPorssiEventDetails(sendHttpRequest(url));
+                eventsPorssi = (extractPorssiEventDetails(sendHttpRequest(url)));
+
+                url = createUrl(requestUrl[i]);
+                extractPorssiEventDetails(sendHttpRequest(url));*/
 
             }
         }
