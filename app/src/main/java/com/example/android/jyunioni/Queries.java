@@ -175,33 +175,33 @@ public final class Queries {
 
                 // Event's starting time
                 if (line.contains("DTSTART;")) {
-                    eventTimeStart = Parser.extractTime(line);
+                    eventTimeStart = linkkiDetailsParser.extractTime(line);
                 }
 
                 // Event's ending time
                 else if (line.contains("DTEND;")) {
-                    eventTimeEnd = Parser.extractTime(line);
+                    eventTimeEnd = linkkiDetailsParser.extractTime(line);
                     // Get the timestamp from the starting and ending times of the event
-                    eventTimestamp = Parser.checkEventTimestamp(eventTimeStart, eventTimeEnd);
+                    eventTimestamp = linkkiDetailsParser.checkEventTimestamp(eventTimeStart, eventTimeEnd);
                 }
 
 
                 // Event's name
                 else if (line.contains("SUMMARY")) {
-                    eventName = Parser.extractField(line);
+                    eventName = linkkiDetailsParser.extractField(line);
                 }
 
 
                 // Event's description / overall information
                 else if (line.contains("DESCRIPTION:")) {
-                    eventInformation = Parser.extractDescriptionField(line);
+                    eventInformation = linkkiDetailsParser.extractDescriptionField(line);
                 }
 
 
                 // Event's URL
                 // Skip the first URL, which is the "X-ORIGINAL-URL:" and add only the 'events' to the list
                 else if (line.contains("URL") && line.contains("event")) {
-                    eventUrl = Parser.extractUrl(line);
+                    eventUrl = linkkiDetailsParser.extractUrl(line);
 
                     // Match up the event's group image and color according to the URL where the info was extracted from
                     if (eventUrl.contains("linkkijkl")) {
@@ -238,7 +238,6 @@ public final class Queries {
 
         String content = null;
 
-
         // Fetch the event's raw html data from the url
         try {
             Document document = Jsoup.connect(url).get();
@@ -247,7 +246,7 @@ public final class Queries {
             Log.e(LOG_TAG, "IOException at extractPorssiEventDetails()\n" + e);
         }
 
-        // Parse the data in the Parser class and create an Event object
+        // Parse the data in the linkkiDetailsParser class and create an Event object
 
 
 

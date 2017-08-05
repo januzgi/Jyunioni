@@ -11,7 +11,7 @@ import static com.example.android.jyunioni.EventDetails.LOG_TAG;
  * Created by JaniS on 1.8.2017.
  * Class in which the parsing methods are for the Linkki Jyväskylä Ry's events.
  */
-public class Parser {
+public class linkkiDetailsParser {
 
 
     /**
@@ -39,7 +39,7 @@ public class Parser {
             Date timestamp = defaultFormat.parse(date + " " + time);
             result = newFormat.format(timestamp);
         } catch (Exception e) {
-            Log.e(LOG_TAG, "Problem in parsing the dates at extractTime method in Parser class.");
+            Log.e(LOG_TAG, "Problem in parsing the dates at extractTime method in linkkiDetailsParser class.");
         }
 
         return result;
