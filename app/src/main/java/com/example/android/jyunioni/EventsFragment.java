@@ -37,12 +37,13 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     /*public static final String LOG_TAG = EventDetails.class.getSimpleName();*/
 
     /**
+     * A String array for the different groups event URL's.
      * Different groups event's page URL.
      */
+    private String[] allEventPageUrls = new String [2];
     private final String LINKKI_EVENTS_URL = "http://linkkijkl.fi/events/2017-09/?ical=1&tribe_display=month";
     private final String PORSSI_EVENTS_URL = "http://www.porssiry.fi/tapahtumat/";
 
-    // TODO: add different groups URL
 
     /**
      * Adapter for the list of events
@@ -75,6 +76,10 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.list_build, container, false);
+
+        // Add the event URL's to the String array
+        allEventPageUrls[0] = LINKKI_EVENTS_URL;
+        allEventPageUrls[1] = PORSSI_EVENTS_URL;
 
         // Find the ListView object in the view hierarchy.
         // ListView with the view ID called events_list is declared in the list_build.xml layout file.
@@ -175,7 +180,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public Loader<List<Event>> onCreateLoader(int id, Bundle bundle) {
         // Create a new loader for the given URL
-        return new EventLoader(getContext(), LINKKI_EVENTS_URL);
+        return new EventLoader(getContext(), allEventPageUrls);
     }
 
     @Override

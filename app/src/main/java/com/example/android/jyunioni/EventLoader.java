@@ -10,19 +10,16 @@ import java.util.List;
  */
 public class EventLoader extends AsyncTaskLoader<List<Event>> {
 
-    /** Tag for log messages */
-    /*private static final String LOG_TAG = EventLoader.class.getName();*/
-
     /** Query URL */
-    private String mUrl;
+    private String[] mUrls;
 
 
     private List<Event> mEvents;
 
 
-    public EventLoader(Context context, String url) {
+    public EventLoader(Context context, String[] urls) {
         super(context);
-        mUrl = url;
+        mUrls = urls;
     }
 
     @Override
@@ -46,12 +43,12 @@ public class EventLoader extends AsyncTaskLoader<List<Event>> {
     /** This is on a background thread. */
     @Override
     public List<Event> loadInBackground() {
-        if (mUrl == null) {
+        if (mUrls == null) {
             return null;
         }
 
         // Perform the network request, parse the response, and extract a list of events.
-        mEvents = Queries.fetchEventData(mUrl);
+        mEvents = Queries.fetchEventData(mUrls);
         return mEvents;
     }
 

@@ -225,34 +225,185 @@ public final class Queries {
     }
 
 
+    /** Return an {@link List<Event>} object by parsing out information from the HTTP response.
+     * Event image, name, timestamp, general information, url and group's color id is needed. */
+    public static List<Event> extractPorssiEventDetails(String httpResponseString) {
+        // Create the Event and List<Event> objects instance
+        List<Event> extractedEvents = new ArrayList<>();
+
+        Log.e(LOG_TAG, httpResponseString);
+
+/*
+        // Helper variable for the scanner loops
+        String line;
+
+        // The amount of events is counted using every event's starting symbol
+        String eventBegin = "BEGIN:VEVENT";
+
+        // Create a scanner and loop through the string to count the amount of
+        // separate events in the string
+        Scanner eventsCountScanner = new Scanner(httpResponseString).useDelimiter("[\n]");
+
+        // Create a variable to initialize right size string arrays later
+        int eventsCount = 0;
+
+        // If the line contains the beginning of a new event, then add one to
+        // the events counter
+        while (eventsCountScanner.hasNext()) {
+            line = eventsCountScanner.next();
+            if (line.contains(eventBegin))
+                eventsCount++;
+        }
+
+
+        // Create strings for the different fields that are extracted from
+        // the HTTP response string
+        String eventTimeStart = "";
+        String eventTimeEnd = "";
+        String eventTimestamp = "";
+
+        String eventName = "";
+        String eventInformation = "";
+        String eventUrl = "";
+
+        int eventImageId = -1;
+        int eventGroupColorId = -1;
+
+        // Scan through the fields and add the contents to the corresponding
+        // String arrays. Use 'newline' as a limiter to go to nextLine().
+        Scanner fieldsScanner = new Scanner(httpResponseString).useDelimiter("[\n]");
+
+        // When the for -loop has been done (one event has been extracted, this
+        // adds by one)
+        int loopCount = 0;
+
+
+        // When there's still text left in the scanner and there are events in the HTTP response
+        while (fieldsScanner.hasNext() && eventsCount != 0) {
+
+            // Get the different fields information to desired String arrays,
+            // from which they can easily be matched up.
+            // Add the fields to the "results" string array
+            for (int i = 0; i < eventsCount; i++) {
+
+                // Use the scanner to parse the details of each event
+                line = fieldsScanner.next();
+
+                // Event's starting time
+                if (line.contains("DTSTART;")) {
+                    eventTimeStart = Parser.extractTime(line);
+                }
+
+                // Event's ending time
+                else if (line.contains("DTEND;")) {
+                    eventTimeEnd = Parser.extractTime(line);
+                    // Get the timestamp from the starting and ending times of the event
+                    eventTimestamp = Parser.checkEventTimestamp(eventTimeStart, eventTimeEnd);
+                }
+
+
+                // Event's name
+                else if (line.contains("SUMMARY")) {
+                    eventName = Parser.extractField(line);
+                }
+
+
+                // Event's description / overall information
+                else if (line.contains("DESCRIPTION:")) {
+                    eventInformation = Parser.extractDescriptionField(line);
+                }
+
+
+                // Event's URL
+                // Skip the first URL, which is the "X-ORIGINAL-URL:" and add only the 'events' to the list
+                else if (line.contains("URL") && line.contains("event")) {
+                    eventUrl = Parser.extractUrl(line);
+
+                    // Match up the event's group image and color according to the URL where the info was extracted from
+                    if (eventUrl.contains("linkkijkl")) {
+                        eventImageId = R.drawable.linkki_jkl_icon;
+                        eventGroupColorId = R.color.color_linkki_jkl;
+                    }
+                }
+
+                // If this was the end of the event, add the event details to an object in events arraylist
+                else if (line.contains("END:VEVENT")) {
+
+                    extractedEvents.add(new Event(eventName, eventTimestamp, eventInformation, eventImageId, eventGroupColorId, eventUrl));
+
+                    // If there is the "event end" then exit the for loop back to
+                    // the while loop
+                    loopCount++;
+                    break;
+                }
+
+            }
+            // If the loop has gone through all the events
+            if (loopCount == eventsCount) break;
+        }*/
+
+        return extractedEvents;
+    }
+
+
     /** Query data from different websites and return a list of {@link Event} objects. */
-    public static List<Event> fetchEventData(String requestUrl) {
+    public static List<Event> fetchEventData(String[] requestUrl) {
+
+        List<Event> eventsLinkki = new ArrayList<>();
+        List<Event> eventsPorssi = new ArrayList<>();
+        List<Event> allEventsList = new ArrayList<>();
 
         // TODO: Tsekkaa URL:ista minkä ainejärjestön se on ja sitten menee sen mukaan eri extract aliohjelmiin.
 
-        List<Event> events = new ArrayList<>();
+        // TODO: Lopputuloksena on eventsList jossa on eri Events objektit Pörssin ja Linkin tapahtumista
 
-        // Create URL object
-        URL url = createUrl(requestUrl);
+        // Create a URL object
+        URL url;
 
+        /**
+         * Check which groups URL's are on the StringArray of URL's.
+         * Fetch data from all the URL's in the stringArray.
+         */
+        for (int i = 0; i < requestUrl.length; i++){
+
+            if (requestUrl[i].contains("linkkijkl.fi")) {
+
+                url = createUrl(requestUrl[i]);
+
+                // Extract relevant fields from the HTTP response and create a list of Linkki's Events
+                eventsLinkki = extractLinkkiEventDetails(sendHttpRequest(url));
+
+            } else if (requestUrl[i].contains("porssiry.fi")) {
+
+                url = createUrl(requestUrl[i]);
+
+                // Extract relevant fields from the HTTP response and create a list of Porssi's Events
+                /*eventsPorssi = (extractPorssiEventDetails(sendHttpRequest(url)));*/
+                extractPorssiEventDetails(sendHttpRequest(url));
+
+            }
+        }
+
+        // Add all events from different groups lists to the mainList
+        allEventsList.addAll(eventsLinkki);
+        /*allEventsList.addAll(eventsPorssi);*/
+
+        // Return the list of all Events from different groups.
+        return allEventsList;
+    }
+
+    /**
+     * Do a small method call which all different URL's need.
+     */
+    private static String sendHttpRequest(URL url){
         // Perform HTTP request to the URL and receive a string response back
         String httpResponse = null;
         try {
             httpResponse = makeHttpRequest(url);
         } catch (IOException e) {
-            Log.e(LOG_TAG, "IOException when making the HTTP request in fetchEventData() at Queries.java ", e);
+            Log.e(LOG_TAG, "IOException when making the HTTP request in sendHttpRequest at Queries.java ", e);
         }
-
-        /**
-         * Check which group's event's are to be extracted.
-         */
-        if ( requestUrl.contains("linkkijkl.fi")) {
-            // Extract relevant fields from the HTTP response and create a list of Events
-            events = extractLinkkiEventDetails(httpResponse);
-        }
-
-        // Return the list of Events
-        return events;
+        return httpResponse;
     }
 
 
