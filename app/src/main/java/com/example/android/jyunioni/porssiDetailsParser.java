@@ -2,6 +2,10 @@ package com.example.android.jyunioni;
 
 import android.util.Log;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import static com.example.android.jyunioni.EventDetails.LOG_TAG;
 
 /**
@@ -49,6 +53,9 @@ public class porssiDetailsParser {
     public static String extractDate(String line){
         String result = null;
 
+        // Trim the line in case of extra spaces
+        line = line.trim();
+
         // If the event is on many days like this: pe 15.09.2017 - su 17.09.2017
         // Then the line will be more than 155 and otherwise less than 149 in length
         if (line.length() > 80) {
@@ -60,13 +67,20 @@ public class porssiDetailsParser {
             startDay = startDay.substring(0, startDay.lastIndexOf(".") + 1);
             endDay = endDay.substring(0, endDay.lastIndexOf(".") + 1);
             // startDay + endDay "15.09. 17.09."
-            result = startDay + " -" + endDay;
-            Log.e(LOG_TAG, result);
+
+            // Format startDay and endDay to not contain extra 0's.
+            try {
+                SimpleDateFormat newFormat = new SimpleDateFormat("d.M.");
+                Date startDate = newFormat.parse(startDay);
+                Date endDate = newFormat.parse(endDay);
+                result = newFormat.format(startDate) + " - " + newFormat.format(endDate);
+            } catch (ParseException e){
+                Log.e(LOG_TAG, "Parsing problem at extractDate().\n" + e);
+            }
+            // "15.9. - 17.9."
 
             return result;
         }
-
-        Log.e(LOG_TAG, line);
 
         // Default is that it's a one day event.
         result = line.substring(line.lastIndexOf(">"), line.length()).trim();
@@ -76,6 +90,16 @@ public class porssiDetailsParser {
         // Only the date needed
         result = result.substring(0, result.lastIndexOf(".") + 1);
         // result now "29.08."
+
+        try {
+            SimpleDateFormat newFormat = new SimpleDateFormat("d.M.");
+            Date startDate = newFormat.parse(result);
+            result = newFormat.format(startDate);
+        } catch (ParseException e){
+            Log.e(LOG_TAG, "Parsing problem at extractDate().\n" + e);
+        }
+        // result now "29.8."
+
 
         return result;
     }

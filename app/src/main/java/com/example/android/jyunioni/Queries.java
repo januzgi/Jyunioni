@@ -16,6 +16,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -356,9 +358,7 @@ public final class Queries {
                     Log.e(LOG_TAG, "Problem in jsouping.\n" + e);
                 }
 
-                Event porssiEvent = null; /*extractPorssiEventDetails("http://www.porssiry.fi/events/syysvaellus/");*/
-
-               /* eventsPorssi.add(porssiEvent);*/
+                Event porssiEvent = null;
 
                 /** Fetch each event's data using the URL array to create the Event objects. */
                 for (int j = 0; j < porssiEventUrls.size(); j++){
@@ -375,6 +375,34 @@ public final class Queries {
         // Add all events from different groups lists to the mainList
         allEventsList.addAll(eventsLinkki);
         allEventsList.addAll(eventsPorssi);
+
+
+        // TODO: arrange the list by the event's timestamp field.
+
+        boolean loop = true;
+        int k = 0;
+
+        while (loop){
+            k++;
+            if (k == allEventsList.size()) loop = false;
+        }
+
+        class CustomComparator implements Comparator<Event> {
+            @Override
+            public int compare(Event o1, Event o2) {
+                return o1.getEventTimestamp().compareTo(o2.getEventTimestamp());
+            }
+        }
+
+        Collections.sort(allEventsList, new CustomComparator());
+
+
+        while (loop){
+            k++;
+            if (k == allEventsList.size()) loop = false;
+        }
+
+
 
         // Return the list of all Events from different groups.
         return allEventsList;
