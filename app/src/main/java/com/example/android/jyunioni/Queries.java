@@ -359,30 +359,16 @@ public final class Queries {
                     Log.e(LOG_TAG, "Problem in jsouping.\n" + e);
                 }
 
-
-
-                porssiUrl = "http://www.porssiry.fi/events/kaupunkikierros-tutustumisilta-2/"; /*porssiEventUrls.get(j)*/
-
-                // Extract relevant fields from the HTTP response and create a list of Porssi's Events
-
                 Event porssiEvent = null;
 
-                porssiEvent = (extractPorssiEventDetails(porssiUrl));
-
-                eventsPorssi.add(porssiEvent);
-
-
-
-
                 /** Fetch each event's data using the URL array to create the Event objects. */
-/*                for (int j = 0; j < porssiEventUrls.size(); j++){
-                    linkkiUrl = createUrl("http://www.porssiry.fi/events/kaupunkikierros-tutustumisilta-2/"); porssiEventUrls.get(j)
+                for (int j = 0; j < porssiEventUrls.size(); j++){
+                    porssiUrl = porssiEventUrls.get(j);
 
                     // Extract relevant fields from the HTTP response and create a list of Porssi's Events
-                    eventsPorssi = (extractPorssiEventDetails(sendHttpRequest(linkkiUrl)));
-                }*/
-
-
+                    porssiEvent = (extractPorssiEventDetails(porssiUrl));
+                    eventsPorssi.add(porssiEvent);
+                }
 
             }
         }
