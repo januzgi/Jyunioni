@@ -68,10 +68,12 @@
         android:padding="@dimen/custom_double_padding">
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
             android:text="@string/event_details_button_text"
-            android:id="@+id/event_details_button"/>
+            android:id="@+id/event_details_button"
+            android:background="@drawable/custom_buttons"
+            android:layout_margin="@dimen/custom_normal_padding"/>
 
     </LinearLayout>
 

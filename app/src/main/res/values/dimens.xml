@@ -6,6 +6,10 @@
     <!-- Height of event's details and additional information -->
     <dimen name="event_details_item_height">172dp</dimen>
 
+    <!-- Button size -->
+    <dimen name="button_width">180dp</dimen>
+    <dimen name="button_height">50dp</dimen>
+
     <!-- Paddings -->
     <dimen name="custom_normal_padding">16dp</dimen>
     <dimen name="custom_double_padding">32dp</dimen>

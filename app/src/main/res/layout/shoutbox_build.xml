@@ -10,7 +10,7 @@
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
         android:id="@+id/message_layout"
-        android:padding="16dp">
+        android:padding="@dimen/custom_double_padding">
 
         <EditText
             android:layout_width="match_parent"
@@ -20,11 +20,13 @@
 
         <Button
             android:id="@+id/send_message"
-            android:layout_width="88dp"
-            android:layout_height="44dp"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
             android:gravity="center"
             android:layout_gravity="center"
-            android:text="send" />
+            android:text="send"
+            android:background="@drawable/custom_buttons"
+            android:layout_margin="@dimen/custom_normal_padding"/>
     </LinearLayout>
 
 
