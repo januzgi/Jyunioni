@@ -11,7 +11,7 @@ public class Event {
     private String mEventName = "";
 
     /** String for the event's timestamp */
-    private String mEventTimestamp = "";
+    private long mEventTimestamp = 0;
 
     /** Image resource ID for the event's hosting group */
     private int mImageResourceId = NO_IMAGE_PROVIDED;
@@ -31,13 +31,13 @@ public class Event {
     /** Create a new Event object.
      *
      * @param eventName       is the string from the HTTP request which is the event's name.
-     * @param eventTimestamp  is the string from the HTTP request which is the event's timestamp.
+     * @param eventTimestamp  is the long from the HTTP request which is the event's timestamp.
      * @param eventInformation is the overall instructions or description about the event.
      * @param imageResourceId is the drawable resource ID for the group that hosts the event.
      * @param groupColorId    The theme color of the group which hosts the event.
      * @param url             The url of the event's page
      */
-    public Event(String eventName, String eventTimestamp, String eventInformation, int imageResourceId, int groupColorId, String url) {
+    public Event(String eventName, long eventTimestamp, String eventInformation, int imageResourceId, int groupColorId, String url) {
         this.mEventName = eventName;
         this.mEventTimestamp = eventTimestamp;
         this.mEventInformation = eventInformation;
@@ -52,7 +52,7 @@ public class Event {
     }
 
     /** Getter for event timestamp */
-    public String getEventTimestamp() {
+    public long getEventTimestamp() {
         return this.mEventTimestamp;
     }
 
@@ -72,6 +72,5 @@ public class Event {
     public boolean hasImage() {
         return this.mImageResourceId != NO_IMAGE_PROVIDED;
     }
-
 
 }

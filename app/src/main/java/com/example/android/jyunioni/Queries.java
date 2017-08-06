@@ -389,8 +389,8 @@ public final class Queries {
 
         class CustomComparator implements Comparator<Event> {
             @Override
-            public int compare(Event o1, Event o2) {
-                return o1.getEventTimestamp().compareTo(o2.getEventTimestamp());
+            public int compare(Event event1, Event event2) {
+                return event1.getEventTimestamp().compareTo(event2.getEventTimestamp());
             }
         }
 
