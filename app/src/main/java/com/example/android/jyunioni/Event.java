@@ -1,11 +1,17 @@
 package com.example.android.jyunioni;
 
+import android.util.Log;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static com.example.android.jyunioni.EventDetails.LOG_TAG;
+
 /**
- * {@link Event} represents a vocabulary word that the user wants to learn.
- * It contains resource IDs for the default translation, Miwok translation, audio file, and
- * optional image file for that word.
+ * Event represents a groups event. Implements Comparable<T> to list the events according their starting date.
  */
-public class Event {
+public class Event implements Comparable<Event> {
 
     /** String for the event name */
     private String mEventName = "";
@@ -54,24 +60,6 @@ public class Event {
     /** Getter for event timestamp */
     public String getEventTimestamp() { return this.mEventTimestamp; }
 
-    /** Getter for the event's month */
-    public String getEventMonth() {
-        String result = "0";
-        String timestamp = this.getEventTimestamp();
-
-        // "11.9. 18:00 - 22:00"
-
-        // Get the starting date (before the HH:MM stamp)
-        String startingDate = timestamp.substring(0, timestamp.indexOf(" "));
-        // "11.9."
-
-        // Pick the month between the dots
-        result = startingDate.substring(startingDate.indexOf(".") + 1, startingDate.lastIndexOf("."));
-        // timestamp "9"
-
-        return result;
-    }
-
     /** Getter for the image resource ID of the event hosting group. */
     public int getImageResourceId() { return this.mImageResourceId; }
 
@@ -87,6 +75,36 @@ public class Event {
     /** Returns whether or not there is an image for this word. */
     public boolean hasImage() {
         return this.mImageResourceId != NO_IMAGE_PROVIDED;
+    }
+
+    /** Getter for the event's starting date */
+    public Date getEventStartDate() {
+        Date result = null;
+
+        // "11.9. 18:00 - 22:00"
+        String timestamp = this.getEventTimestamp();
+
+        // Get the starting date (before the HH:MM stamp) e.g. "11.9."
+        String startDateString = timestamp.substring(0, timestamp.indexOf(" "));
+
+        // Create a Date object
+        try {
+            SimpleDateFormat newFormat = new SimpleDateFormat("d.M.");
+            result = newFormat.parse(startDateString);
+            Log.e(LOG_TAG, result.toString());
+        } catch (ParseException e) {
+            Log.e(LOG_TAG, "Parsing problem at getEventStartDate().\n" + e);
+        }
+
+        return result;
+    }
+
+    /** Check for NullPointers, thus override. */
+    @Override
+    public int compareTo(Event event) {
+        if (this.getEventStartDate() == null || event.getEventStartDate() == null)
+            return 0;
+        return this.getEventStartDate().compareTo(event.getEventStartDate());
     }
 
 }

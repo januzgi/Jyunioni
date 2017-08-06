@@ -373,10 +373,10 @@ public final class Queries {
         }
 
         // Add all events from different groups lists to the mainList
-        allEventsList.addAll(eventsLinkki);
         allEventsList.addAll(eventsPorssi);
+        allEventsList.addAll(eventsLinkki);
 
-        /*allEventsList = organizeEventsByTimestamp(allEventsList);*/
+        allEventsList = organizeEventsByTimestamp(allEventsList);
 
 
         // Return the list of all Events from different groups.
@@ -392,14 +392,11 @@ public final class Queries {
         class EventTimeComparator implements Comparator<Event> {
             @Override
             public int compare(Event event1, Event event2) {
-                return event1.getEventMonth().compareTo(event2.getEventMonth());
+                return event1.getEventStartDate().compareTo(event2.getEventStartDate());
             }
         }
 
         Collections.sort(allEventsList, new EventTimeComparator());
-
-
-
 
         return allEventsList;
     }
