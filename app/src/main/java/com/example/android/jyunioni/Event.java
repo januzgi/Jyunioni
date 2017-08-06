@@ -54,6 +54,24 @@ public class Event {
     /** Getter for event timestamp */
     public String getEventTimestamp() { return this.mEventTimestamp; }
 
+    /** Getter for the event's month */
+    public String getEventMonth() {
+        String result = "0";
+        String timestamp = this.getEventTimestamp();
+
+        // "11.9. 18:00 - 22:00"
+
+        // Get the starting date (before the HH:MM stamp)
+        String startingDate = timestamp.substring(0, timestamp.indexOf(" "));
+        // "11.9."
+
+        // Pick the month between the dots
+        result = startingDate.substring(startingDate.indexOf(".") + 1, startingDate.lastIndexOf("."));
+        // timestamp "9"
+
+        return result;
+    }
+
     /** Getter for the image resource ID of the event hosting group. */
     public int getImageResourceId() { return this.mImageResourceId; }
 

@@ -376,35 +376,31 @@ public final class Queries {
         allEventsList.addAll(eventsLinkki);
         allEventsList.addAll(eventsPorssi);
 
-
-        // TODO: arrange the list by the event's timestamp field.
-
-        boolean loop = true;
-        int k = 0;
-
-        while (loop){
-            k++;
-            if (k == allEventsList.size()) loop = false;
-        }
-
-        class CustomComparator implements Comparator<Event> {
-            @Override
-            public int compare(Event event1, Event event2) {
-                return event1.getEventTimestamp().compareTo(event2.getEventTimestamp());
-            }
-        }
-
-        Collections.sort(allEventsList, new CustomComparator());
-
-
-        while (loop){
-            k++;
-            if (k == allEventsList.size()) loop = false;
-        }
-
+        /*allEventsList = organizeEventsByTimestamp(allEventsList);*/
 
 
         // Return the list of all Events from different groups.
+        return allEventsList;
+    }
+
+
+    // TODO: Organize events by timestamp so that today's event is on top and so list continues
+    /** Compare timestamps of different event's to sort them accordingly */
+    public static List<Event> organizeEventsByTimestamp(List<Event> allEventsList) {
+
+        /** Arrange the list by the event's timestamp field using Comparator class. */
+        class EventTimeComparator implements Comparator<Event> {
+            @Override
+            public int compare(Event event1, Event event2) {
+                return event1.getEventMonth().compareTo(event2.getEventMonth());
+            }
+        }
+
+        Collections.sort(allEventsList, new EventTimeComparator());
+
+
+
+
         return allEventsList;
     }
 
