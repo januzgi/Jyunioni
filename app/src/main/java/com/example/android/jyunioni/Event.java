@@ -11,7 +11,7 @@ public class Event {
     private String mEventName = "";
 
     /** String for the event's timestamp */
-    private long mEventTimestamp = 0;
+    private String mEventTimestamp = "";
 
     /** Image resource ID for the event's hosting group */
     private int mImageResourceId = NO_IMAGE_PROVIDED;
@@ -37,7 +37,7 @@ public class Event {
      * @param groupColorId    The theme color of the group which hosts the event.
      * @param url             The url of the event's page
      */
-    public Event(String eventName, long eventTimestamp, String eventInformation, int imageResourceId, int groupColorId, String url) {
+    public Event(String eventName, String eventTimestamp, String eventInformation, int imageResourceId, int groupColorId, String url) {
         this.mEventName = eventName;
         this.mEventTimestamp = eventTimestamp;
         this.mEventInformation = eventInformation;
@@ -52,9 +52,7 @@ public class Event {
     }
 
     /** Getter for event timestamp */
-    public long getEventTimestamp() {
-        return this.mEventTimestamp;
-    }
+    public String getEventTimestamp() { return this.mEventTimestamp; }
 
     /** Getter for the image resource ID of the event hosting group. */
     public int getImageResourceId() { return this.mImageResourceId; }
