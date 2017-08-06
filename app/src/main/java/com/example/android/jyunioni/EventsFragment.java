@@ -4,10 +4,12 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +43,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
      * A String array for the different groups event URL's.
      * Different groups event's page URL.
      */
-    private String[] allEventPageUrls = new String [2];
+    private String[] allEventPageUrls = new String[2];
     private final String LINKKI_EVENTS_URL = "http://linkkijkl.fi/events/2017-09/?ical=1&tribe_display=month";
     private final String PORSSI_EVENTS_URL = "http://www.porssiry.fi/tapahtumat/";
 
@@ -100,6 +103,21 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         // ListView uses the EventAdapter so ListView will display list items for each Event in the list.
         eventsListView.setAdapter(mAdapter);
 
+
+        // Create a toast to keep the user entertained and up-to-date on what's happening.
+        Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.fetching_event_data, Toast.LENGTH_LONG);
+        // Return the default View of the Toast.
+        View toastView = toast.getView();
+
+        /* And now you can get the TextView of the default View of the Toast. */
+        TextView toastMessage = (TextView) toastView.findViewById(android.R.id.message);
+        toastMessage.setTextSize(16);
+        toastMessage.setTextColor(Color.parseColor("#FFFFFF"));
+        toastMessage.setGravity(Gravity.CENTER);
+        toastMessage.setCompoundDrawablePadding(8);
+        toastView.setBackgroundColor(Color.parseColor("#FF9100"));
+        toast.show();
+
         /** Set a click listener to open the event's details via an intent */
         eventsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -145,7 +163,6 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
         // Get details on the currently active default data network
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-
 
 
         // If there is a network connection, fetch data

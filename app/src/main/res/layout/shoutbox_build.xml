@@ -1,32 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Jani Suoranta 18.7.2017-->
+<?xml version="1.0" encoding="utf-8"?><!-- Jani Suoranta 18.7.2017-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/message_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
-        android:orientation="vertical"
         android:layout_alignParentBottom="true"
-        android:id="@+id/message_layout"
-        android:padding="@dimen/custom_double_padding">
+        android:orientation="vertical"
+        android:padding="@dimen/custom_double_padding"
+        android:visibility="visible">
 
         <EditText
+            android:id="@+id/users_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Message"
-            android:id="@+id/users_message" />
+            android:hint="Message" />
 
         <Button
             android:id="@+id/send_message"
             android:layout_width="@dimen/button_width"
             android:layout_height="@dimen/button_height"
-            android:gravity="center"
             android:layout_gravity="center"
-            android:text="send"
+            android:layout_margin="@dimen/custom_normal_padding"
             android:background="@drawable/custom_buttons"
-            android:layout_margin="@dimen/custom_normal_padding"/>
+            android:gravity="center"
+            android:text="send"
+            android:textColor="@drawable/button_text_color" />
     </LinearLayout>
 
 
@@ -37,10 +38,10 @@
 
         <ListView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/shoutbox_list"
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:drawSelectorOnTop="true"/>
+            android:drawSelectorOnTop="true"
+            android:orientation="vertical" />
 
     </LinearLayout>
 

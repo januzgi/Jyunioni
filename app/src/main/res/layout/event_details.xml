@@ -44,16 +44,16 @@
                 android:id="@+id/event_information_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fadeScrollbars="true"
+                android:fadingEdge="vertical"
                 android:gravity="bottom"
                 android:hint="Tapahtuman tiedot"
                 android:padding="@dimen/custom_normal_padding"
+                android:scrollbarStyle="insideOverlay"
+                android:scrollbars="vertical"
                 android:textAppearance="?android:textAppearanceSmall"
                 android:textColor="@android:color/darker_gray"
-                android:textStyle="bold"
-                android:scrollbars="vertical"
-                android:scrollbarStyle="insideOverlay"
-                android:fadeScrollbars="true"
-                android:fadingEdge="vertical" />
+                android:textStyle="bold" />
         </ScrollView>
 
 
@@ -68,12 +68,13 @@
         android:padding="@dimen/custom_double_padding">
 
         <Button
+            android:id="@+id/event_details_button"
             android:layout_width="@dimen/button_width"
             android:layout_height="@dimen/button_height"
-            android:text="@string/event_details_button_text"
-            android:id="@+id/event_details_button"
+            android:layout_margin="@dimen/custom_normal_padding"
             android:background="@drawable/custom_buttons"
-            android:layout_margin="@dimen/custom_normal_padding"/>
+            android:text="@string/event_details_button_text"
+            android:textColor="@drawable/button_text_color" />
 
     </LinearLayout>
 

@@ -15,6 +15,9 @@
     <!-- Toast text to tell the user that the app opens a browser -->
     <string name="moving_to_event_page">Avataan tapahtuman sivu...</string>
 
+    <!--Toast text to tell event's are being fetched-->
+    <string name="fetching_event_data">...haetaan tapahtumia...</string>
+
     <!-- Toast text to tell the user if the intent contained no data for some reason -->
     <string name="no_event_data_found">Tapahtuman dataa ei löytynyt.</string>
 

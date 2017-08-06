@@ -1,15 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- (C) Jani Suoranta 17.7.2017 -->
+<?xml version="1.0" encoding="utf-8"?><!-- (C) Jani Suoranta 17.7.2017 -->
 <resources>
 
-    <!-- Primary dark color of the app. Shown in the status bar -->
-    <color name="primary_dark_color">#FFAB40</color>
+    <!-- Shown in the status bar -->
+    <color name="status_bar_color">#FFAB40</color>
 
     <!-- Primary color of the app. Shown in the app bar and the background of fragments -->
     <color name="primary_color">#FF9100</color>
 
     <!-- Background color for app -->
     <color name="background">#FFFFFF</color>
+
+    <!--Colors for the buttons and toasts-->
+    <color name="start_color">#FFD180</color>
+    <color name="center_color">#FF9100</color>
+    <color name="end_color">#FFAB40</color>
 
 
     <!-- Theme colors for each group -->
