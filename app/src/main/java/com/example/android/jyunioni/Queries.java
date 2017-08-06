@@ -246,6 +246,8 @@ public final class Queries {
             Log.e(LOG_TAG, "IOException at extractPorssiEventDetails()\n" + e);
         }
 
+        Log.e(LOG_TAG, content);
+
 
         // Parse the data in the porssiDetailsParser class and create an Event object
         Scanner scanner = new Scanner(content).useDelimiter("[\n]");
@@ -274,7 +276,6 @@ public final class Queries {
             } else if (line.contains("dashicons-clock\"></span>")){
                 eventTime = porssiDetailsParser.extractTime(line);
                 eventTimestamp = eventDate + " " + eventTime;
-                System.out.println(eventTimestamp);
 
             } else if (line.contains("<div class=\"row\" data-equalizer data-equalizer-mq=\"medium-up\">")){
                 // Skip to the first line of the <p> element where the event information is.
@@ -359,16 +360,18 @@ public final class Queries {
                     Log.e(LOG_TAG, "Problem in jsouping.\n" + e);
                 }
 
-                Event porssiEvent = null;
+                Event porssiEvent = extractPorssiEventDetails("http://www.porssiry.fi/events/syysvaellus/");
+
+                eventsPorssi.add(porssiEvent);
 
                 /** Fetch each event's data using the URL array to create the Event objects. */
-                for (int j = 0; j < porssiEventUrls.size(); j++){
+              /*  for (int j = 0; j < porssiEventUrls.size(); j++){
                     porssiUrl = porssiEventUrls.get(j);
 
                     // Extract relevant fields from the HTTP response and create a list of Porssi's Events
                     porssiEvent = (extractPorssiEventDetails(porssiUrl));
                     eventsPorssi.add(porssiEvent);
-                }
+                }*/
 
             }
         }
