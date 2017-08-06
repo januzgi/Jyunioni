@@ -305,10 +305,6 @@ public final class Queries {
         // String eventName, String eventTimestamp, String eventInformation, int imageResourceId, int groupColorId, String url) {
         event = new Event(eventName, eventTimestamp, eventInformation, R.drawable.porssi_ry_icon, R.color.color_porssi_ry, url);
 
-
-        Log.e(LOG_TAG, eventDate + "\n" + eventTimestamp + "\n" + eventInformation + "\n" + url);
-
-
         return event;
     }
 
@@ -360,18 +356,18 @@ public final class Queries {
                     Log.e(LOG_TAG, "Problem in jsouping.\n" + e);
                 }
 
-                Event porssiEvent = extractPorssiEventDetails("http://www.porssiry.fi/events/syysvaellus/");
+                Event porssiEvent = null; /*extractPorssiEventDetails("http://www.porssiry.fi/events/syysvaellus/");*/
 
-                eventsPorssi.add(porssiEvent);
+               /* eventsPorssi.add(porssiEvent);*/
 
                 /** Fetch each event's data using the URL array to create the Event objects. */
-              /*  for (int j = 0; j < porssiEventUrls.size(); j++){
+                for (int j = 0; j < porssiEventUrls.size(); j++){
                     porssiUrl = porssiEventUrls.get(j);
 
                     // Extract relevant fields from the HTTP response and create a list of Porssi's Events
                     porssiEvent = (extractPorssiEventDetails(porssiUrl));
                     eventsPorssi.add(porssiEvent);
-                }*/
+                }
 
             }
         }

@@ -22,6 +22,11 @@ public class porssiDetailsParser {
         result = result.replaceAll("</p>", "");
         result = result.replaceAll("&nbsp;", "");
 
+        // In case there is no content in the information field.
+        if (result.length() < 10 || result.contains(("<")) || result.contains(">")){
+            result = "Katso lisätiedot tapahtumasivulta.";
+        }
+
         return result;
     }
 
