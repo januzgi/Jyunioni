@@ -3,18 +3,18 @@
 <resources>
 
     <!-- Primary dark color of the app. Shown in the status bar -->
-    <color name="primary_dark_color">#0D47A1</color>
+    <color name="primary_dark_color">#FFAB40</color>
 
     <!-- Primary color of the app. Shown in the app bar and the background of fragments -->
-    <color name="primary_color">#536DFE</color>
+    <color name="primary_color">#FF9100</color>
 
     <!-- Background color for app -->
     <color name="background">#FFFFFF</color>
 
 
     <!-- Theme colors for each group -->
-    <!-- Default -->
-    <color name="color_default">#FFFFFF</color>
+    <!-- Progressbar color -->
+    <color name="color_progress_bar">#536DFE</color>
 
     <!-- Pörssi Ry -->
     <color name="color_porssi_ry">#3A53A4</color>

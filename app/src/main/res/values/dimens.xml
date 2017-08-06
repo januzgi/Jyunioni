@@ -6,6 +6,7 @@
     <!-- Height of event's details and additional information -->
     <dimen name="event_details_item_height">172dp</dimen>
 
-    <!-- Default padding -->
-    <dimen name="custom_default_padding">16dp</dimen>
+    <!-- Paddings -->
+    <dimen name="custom_normal_padding">16dp</dimen>
+    <dimen name="custom_double_padding">32dp</dimen>
 </resources>
