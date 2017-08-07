@@ -9,8 +9,11 @@
     <!-- Category name for the shoutbox -->
     <string name="category_shoutbox">Shoutboksi</string>
 
-    <!-- IcsEvent details button text -->
+    <!-- event_details.xml website intent button text -->
     <string name="event_details_button_text">Tapahtumasivulle</string>
+
+    <!--Hint text for user in the editText in shoutbox_build.xml-->
+    <string name="shoutbox_edit_text_hint">Viesti</string>
 
     <!-- Toast text to tell the user that the app opens a browser -->
     <string name="moving_to_event_page">Avataan tapahtuman sivu...</string>

@@ -14,6 +14,7 @@
     <color name="start_color">#FFD180</color>
     <color name="center_color">#FF9100</color>
     <color name="end_color">#FFAB40</color>
+    <color name="state_pressed">#FFF3E0</color>
 
 
     <!-- Theme colors for each group -->

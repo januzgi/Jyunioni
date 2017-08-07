@@ -16,18 +16,19 @@
             android:id="@+id/users_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Message" />
+            android:hint="@string/shoutbox_edit_text_hint" />
 
-        <Button
+        <ImageButton
             android:id="@+id/send_message"
             android:layout_width="@dimen/button_width"
             android:layout_height="@dimen/button_height"
             android:layout_gravity="center"
             android:layout_margin="@dimen/custom_normal_padding"
+            android:adjustViewBounds="true"
             android:background="@drawable/custom_buttons"
-            android:gravity="center"
-            android:text="send"
-            android:textColor="@drawable/button_text_color" />
+            android:scaleType="center"
+            android:src="@drawable/ic_send_white_24dp" />
+
     </LinearLayout>
 
 
