@@ -23,21 +23,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This fragment displays a list of events and has Loadermanager implemented to use the once fetched data.
+ * This fragment displays a list of events and has LoaderManager implemented to use the once fetched data.
  */
 public class EventsFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Event>> {
 
 
     /**
      * Constant value for the earthquake loader ID.
-     * Create the loader.
      */
     private static final int EVENT_LOADER_ID = 1;
 
     /**
      * Tag for the log messages
      */
-    /*public static final String LOG_TAG = EventDetails.class.getSimpleName();*/
+    public static final String LOG_TAG = EventDetails.class.getSimpleName();
 
     /**
      * A String array for the different groups event URL's.
@@ -54,11 +53,6 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     private EventAdapter mAdapter;
 
     /**
-     * To update the UI from onCreateView and updateUi methods.
-     */
-    private View rootView;
-
-    /**
      * TextView that is displayed when the list is empty
      */
     private TextView mEmptyStateTextView;
@@ -71,14 +65,13 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     /**
      * Required empty public constructor
      */
-    public EventsFragment() {
-    }
+    public EventsFragment() {}
 
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.list_build, container, false);
+        View rootView = inflater.inflate(R.layout.list_build, container, false);
 
         // Add the event URL's to the String array
         allEventPageUrls[0] = LINKKI_EVENTS_URL;
@@ -102,7 +95,6 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
         // ListView uses the EventAdapter so ListView will display list items for each Event in the list.
         eventsListView.setAdapter(mAdapter);
-
 
         // Create a toast to keep the user entertained and up-to-date on what's happening.
         Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.fetching_event_data, Toast.LENGTH_LONG);
@@ -180,7 +172,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             // First, hide loading indicator so error message will be visible
 
             mProgressBar.setVisibility(View.GONE);
-            mEmptyStateTextView.setText("No internet connection.");
+            mEmptyStateTextView.setText(R.string.no_internet_connection);
         }
 
     }
@@ -213,7 +205,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             mAdapter.addAll(events);
         }
 
-        mEmptyStateTextView.setText("No events data found.");
+        mEmptyStateTextView.setText(R.string.no_event_data_found);
 
         getLoaderManager().destroyLoader(EVENT_LOADER_ID);
     }

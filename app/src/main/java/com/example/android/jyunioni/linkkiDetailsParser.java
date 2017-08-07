@@ -34,7 +34,6 @@ public class linkkiDetailsParser {
 
         SimpleDateFormat defaultFormat = new SimpleDateFormat("yyyyMMdd hhmm");
         SimpleDateFormat newFormat = new SimpleDateFormat("d.M. HH:mm");
-
         try {
             Date timestamp = defaultFormat.parse(date + " " + time);
             result = newFormat.format(timestamp);

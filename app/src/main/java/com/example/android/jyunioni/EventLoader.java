@@ -7,6 +7,10 @@ import java.util.List;
 
 /**
  * Created by JaniS on 3.8.2017.
+ *
+ * EventLoader makes it possible to perform heavy HTTP and parsing tasks in a background thread.
+ * UI will remain being updated in the main thread so usability won't be compromised during loading data
+ * with tasks taking quite long time.
  */
 public class EventLoader extends AsyncTaskLoader<List<Event>> {
 

@@ -4,10 +4,10 @@
     <string name="app_name">Jyunioni</string>
 
     <!-- Category name for events -->
-    <string name="category_events">Events</string>
+    <string name="category_events">Tapahtumat</string>
 
     <!-- Category name for the shoutbox -->
-    <string name="category_shoutbox">Shoutbox</string>
+    <string name="category_shoutbox">Shoutboksi</string>
 
     <!-- IcsEvent details button text -->
     <string name="event_details_button_text">Tapahtumasivulle</string>

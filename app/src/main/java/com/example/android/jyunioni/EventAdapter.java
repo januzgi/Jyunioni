@@ -12,8 +12,8 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * {@link EventAdapter} is an {@link ArrayAdapter} that can provide the layout for each list item
- * based on a data source, which is a list of {@link Event} objects.
+ * EventAdapter is an ArrayAdapter that provides the layout for each list item
+ * based on a data source, which is a list of Event objects.
  */
 public class EventAdapter extends ArrayAdapter<Event>  {
 
@@ -71,7 +71,6 @@ public class EventAdapter extends ArrayAdapter<Event>  {
         // Find the color that the resource ID maps to and
         // set the background color of the text container View
         textContainer.setBackgroundColor(ContextCompat.getColor(getContext(), currentEvent.getGroupColorId()));
-        // Toimii myös yllä olevaan 'setBackgroundColor': /*getContext().getResources().getColor(R.color.color_linkki_jkl)*/
 
 
         // Return the whole list item layout (containing 2 TextViews and the ImageView) so that it can be shown in

@@ -16,13 +16,12 @@
 package com.example.android.jyunioni;
 
 /**
- * {@link ShoutboxMessage} is the class for shoutbox messages.
- * This class contains String for the message, database where the messages are being saved and
- * the updating mechanism for keeping the shoutbox in real time with the server.
+ * ShoutboxMessage is the class for shoutbox messages.
+ * This class contains String for the message, database where the messages are being saved.
  */
 public class ShoutboxMessage {
 
-    /** String for the event name */
+    /** String for the message */
     private String mMessage;
 
     /**
@@ -34,8 +33,8 @@ public class ShoutboxMessage {
         mMessage = message;
     }
 
-    /** Get the strings that are in the shoutbox. */
-    public String getShoutboxMessage() {
+    /** Get the strings that are posted into the shoutbox. */
+    public String getShoutboxMessages() {
         return mMessage;
     }
 

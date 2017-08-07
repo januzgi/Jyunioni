@@ -5,6 +5,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
+/**
+ * Main activity which compiles viewpager and tablayout together with the fragments being used.
+ */
 public class EventActivity extends AppCompatActivity {
 
 

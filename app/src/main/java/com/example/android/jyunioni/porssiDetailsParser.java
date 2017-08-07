@@ -10,10 +10,13 @@ import static com.example.android.jyunioni.EventDetails.LOG_TAG;
 
 /**
  * Created by JaniS on 5.8.2017.
+ *
+ * Parser class to get the event's data from Pörssi Ry website's HTTP response.
+ * Scanner scans through the response and this class gets one line of that response to according method for parsing.
  */
-
 public class porssiDetailsParser {
 
+    /** Extract the event's overview / description information */
     public static String extractEventInformation(String rawInformation){
         String result = null;
 
@@ -35,6 +38,7 @@ public class porssiDetailsParser {
     }
 
 
+    /** Extract the event's name */
     public static String extractEventName(String line){
         String result = null;
 
@@ -50,6 +54,7 @@ public class porssiDetailsParser {
     }
 
 
+    /** Extract the event's date */
     public static String extractDate(String line){
         String result = null;
 
@@ -104,6 +109,7 @@ public class porssiDetailsParser {
         return result;
     }
 
+    /** Extract the event's time */
     public static String extractTime(String line) {
         String result = null;
 

@@ -24,19 +24,99 @@ import java.util.Scanner;
 import static com.example.android.jyunioni.EventDetails.LOG_TAG;
 
 /**
- * Helper methods related to requesting and receiving earthquake data from USGS.
+ * Created by JaniS on 29.7.2017.
+ * <p>
+ * Class for performing queries to the websites of different group's.
+ * Calls methods in parsing classes to form the Event objects.
+ * Queries is called from a Loader performing tasks in a background thread.
  */
 public final class Queries {
 
     /**
-     * Create a private constructor because no one should ever create a {@link Queries} object.
-     * This class is only meant to hold static variables and methods, which can be accessed
-     * directly from the class name QueryUtils (and an object instance of QueryUtils is not needed).
+     * Private constructor
      */
     private Queries() {
     }
 
-    /** Returns new URL object from the given string URL. */
+
+    /**
+     * Query data from different websites and return a list of Event objects.
+     */
+    public static List<Event> fetchEventData(String[] requestUrl) {
+
+        List<Event> eventsLinkki = new ArrayList<>();
+        List<Event> eventsPorssi = new ArrayList<>();
+        List<Event> allEventsList = new ArrayList<>();
+
+        List<String> porssiEventUrls = new ArrayList<>();
+
+        // Create URL objects
+        URL linkkiUrl;
+        String porssiUrl;
+
+        /**
+         * Check which groups URL's are on the StringArray of URL's.
+         * Fetch data from all the URL's in the stringArray.
+         */
+        for (int i = 0; i < requestUrl.length; i++) {
+
+            if (requestUrl[i].contains("linkkijkl.fi")) {
+
+                linkkiUrl = createUrl(requestUrl[i]);
+
+                // Extract relevant fields from the HTTP response and create a list of Linkki's Events
+                eventsLinkki = extractLinkkiEventDetails(sendHttpRequest(linkkiUrl));
+
+            } else if (requestUrl[i].contains("porssiry.fi")) {
+
+                // Get just the "css-events-list" HTML div's data from Pörssi's website using jsoup library.
+                /** jsoup HTML parser library @ https://jsoup.org */
+                try {
+
+                    Document document = Jsoup.connect(requestUrl[i]).get();
+
+                    /** https://jsoup.org/cookbook/extracting-data/selector-syntax */
+                    Elements eventUrlElements = document.getElementsByClass("css-events-list").select("[href]");
+
+                    int j = 0;
+                    // Put the elements content (the URL's) from href fields to a String List
+                    for (Element element : eventUrlElements) {
+                        porssiEventUrls.add(element.attr("href"));
+                        j++;
+                    }
+                } catch (IOException e) {
+                    Log.e(LOG_TAG, "Problem in jsouping.\n" + e);
+                }
+
+                Event porssiEvent = null;
+
+                /** Fetch each event's data using the URL array to create the Event objects. */
+                for (int j = 0; j < porssiEventUrls.size(); j++) {
+                    porssiUrl = porssiEventUrls.get(j);
+
+                    // Extract relevant fields from the HTTP response and create a list of Porssi's Events
+                    porssiEvent = (extractPorssiEventDetails(porssiUrl));
+                    eventsPorssi.add(porssiEvent);
+                }
+
+            }
+        }
+
+        // Add all events from different groups lists to the mainList
+        allEventsList.addAll(eventsPorssi);
+        allEventsList.addAll(eventsLinkki);
+
+        allEventsList = organizeEventsByTimestamp(allEventsList);
+
+
+        // Return the list of all Events from different groups.
+        return allEventsList;
+    }
+
+
+    /**
+     * Returns new URL object from the given string URL.
+     */
     public static URL createUrl(String stringUrl) {
         URL url;
 
@@ -49,7 +129,9 @@ public final class Queries {
         return url;
     }
 
-    /** Make an HTTP request to the given URL and return a String as the response. */
+    /**
+     * Make an HTTP request to the given URL and return the response as a String.
+     */
     public static String makeHttpRequest(URL url) throws IOException {
         if (url == null) return "";
 
@@ -74,7 +156,7 @@ public final class Queries {
 
         } catch (IOException e) {
             Log.e(LOG_TAG, "IOexception message when making HTTP request." +
-                    "\n(This comes from the catch block inside the method makeHttpRequest in EventActivity.): " + e);
+                    "\n(This comes from the catch block inside the method makeHttpRequest in Queries.): " + e);
         } finally {
             if (urlConnection != null) {
                 // Anyhow disconnect when finished.
@@ -88,7 +170,9 @@ public final class Queries {
         return response;
     }
 
-    /** Convert the {@link InputStream} into a String which contains the whole HTTP response from the server. */
+    /**
+     * Convert the InputStream into a String which contains the whole HTTP response from the server.
+     */
     public static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
         if (inputStream != null) {
@@ -105,8 +189,10 @@ public final class Queries {
         return output.toString();
     }
 
-    /** Return an {@link List<Event>} object by parsing out information from the HTTP response.
-     * Event image, name, timestamp, general information, url and group's color id is needed. */
+    /**
+     * Return an {@link List<Event>} object by parsing out information from the HTTP response.
+     * Event name, timestamp, general information, image ID, group's color id and event url is needed.
+     */
     public static List<Event> extractLinkkiEventDetails(String httpResponseString) {
         // TODO: Entä jos kuussa ei olekaan tapahtumia
 
@@ -232,8 +318,10 @@ public final class Queries {
     }
 
 
-    /** Return an {@link Event} object by parsing out information from the HTTP response.
-     * Event image, name, timestamp, general information, url and group's color id is needed. */
+    /**
+     * Return an Event object by parsing out information from the HTTP response.
+     * Event name, timestamp, general information, image ID, group's color id and event url is needed.
+     */
     public static Event extractPorssiEventDetails(String url) {
         // Create the Event and List<Event> objects instance
         Event event = null;
@@ -269,30 +357,30 @@ public final class Queries {
         while (scanner.hasNext()) {
             line = scanner.next();
 
-            if (line.contains("<h1>")){
+            if (line.contains("<h1>")) {
                 eventName = porssiDetailsParser.extractEventName(line);
 
-            } else if (line.contains("dashicons-calendar-alt\"></span>")){
+            } else if (line.contains("dashicons-calendar-alt\"></span>")) {
                 eventDate = porssiDetailsParser.extractDate(line);
 
-            } else if (line.contains("dashicons-clock\"></span>")){
+            } else if (line.contains("dashicons-clock\"></span>")) {
                 eventTime = porssiDetailsParser.extractTime(line);
                 eventTimestamp = eventDate + " " + eventTime;
 
-            } else if (line.contains("<div class=\"row\" data-equalizer data-equalizer-mq=\"medium-up\">")){
+            } else if (line.contains("<div class=\"row\" data-equalizer data-equalizer-mq=\"medium-up\">")) {
                 // Skip to the first line of the <p> element where the event information is.
                 line = scanner.next();
                 line = scanner.next();
 
                 // If there's an image, skip over it
-                if (line.contains("<p><img src")){
+                if (line.contains("<p><img src")) {
                     line = scanner.next();
                 }
 
                 boolean pElements = true;
 
                 // Make a String out of the <p> content
-                while (pElements){
+                while (pElements) {
                     eventInformation = eventInformation + "\n" + line.trim();
                     line = scanner.next();
                     // If the <p> element still continues
@@ -303,89 +391,16 @@ public final class Queries {
             }
         }
 
-        // TODO: create the Event with the fetched data
-        // String eventName, String eventTimestamp, String eventInformation, int imageResourceId, int groupColorId, String url) {
+        // Create the Event with the fetched data
         event = new Event(eventName, eventTimestamp, eventInformation, R.drawable.porssi_ry_icon, R.color.color_porssi_ry, url);
 
         return event;
     }
 
 
-    /** Query data from different websites and return a list of {@link Event} objects. */
-    public static List<Event> fetchEventData(String[] requestUrl) {
-
-        List<Event> eventsLinkki = new ArrayList<>();
-        List<Event> eventsPorssi = new ArrayList<>();
-        List<Event> allEventsList = new ArrayList<>();
-
-        List<String> porssiEventUrls = new ArrayList<>();
-
-        // Create URL objects
-        URL linkkiUrl;
-        String porssiUrl;
-
-        /**
-         * Check which groups URL's are on the StringArray of URL's.
-         * Fetch data from all the URL's in the stringArray.
-         */
-        for (int i = 0; i < requestUrl.length; i++){
-
-            if (requestUrl[i].contains("linkkijkl.fi")) {
-
-                linkkiUrl = createUrl(requestUrl[i]);
-
-                // Extract relevant fields from the HTTP response and create a list of Linkki's Events
-                eventsLinkki = extractLinkkiEventDetails(sendHttpRequest(linkkiUrl));
-
-            } else if (requestUrl[i].contains("porssiry.fi")) {
-
-                // Get just the "css-events-list" HTML div's data from Pörssi's website using jsoup library.
-                /** jsoup HTML parser library @ https://jsoup.org */
-                try {
-
-                    Document document = Jsoup.connect(requestUrl[i]).get();
-
-                    /** https://jsoup.org/cookbook/extracting-data/selector-syntax */
-                    Elements eventUrlElements = document.getElementsByClass("css-events-list").select("[href]");
-
-                    int j = 0;
-                    // Put the elements content (the URL's) from href fields to a String List
-                    for (Element element : eventUrlElements) {
-                         porssiEventUrls.add(element.attr("href"));
-                        j++;
-                    }
-                } catch (IOException e){
-                    Log.e(LOG_TAG, "Problem in jsouping.\n" + e);
-                }
-
-                Event porssiEvent = null;
-
-                /** Fetch each event's data using the URL array to create the Event objects. */
-                for (int j = 0; j < porssiEventUrls.size(); j++){
-                    porssiUrl = porssiEventUrls.get(j);
-
-                    // Extract relevant fields from the HTTP response and create a list of Porssi's Events
-                    porssiEvent = (extractPorssiEventDetails(porssiUrl));
-                    eventsPorssi.add(porssiEvent);
-                }
-
-            }
-        }
-
-        // Add all events from different groups lists to the mainList
-        allEventsList.addAll(eventsPorssi);
-        allEventsList.addAll(eventsLinkki);
-
-        allEventsList = organizeEventsByTimestamp(allEventsList);
-
-
-        // Return the list of all Events from different groups.
-        return allEventsList;
-    }
-
-
-    // TODO: Organize events by timestamp so that today's event is on top and so list continues
-    /** Compare timestamps of different event's to sort them accordingly */
+    /**
+     * Organize events by timestamp so that today's event is on top and so list continues
+     */
     public static List<Event> organizeEventsByTimestamp(List<Event> allEventsList) {
 
         /** Arrange the list by the event's timestamp field using Comparator class. */
@@ -404,7 +419,7 @@ public final class Queries {
     /**
      * Do a small method call which all different URL's need.
      */
-    private static String sendHttpRequest(URL url){
+    private static String sendHttpRequest(URL url) {
         // Perform HTTP request to the URL and receive a string response back
         String httpResponse = null;
         try {

@@ -17,8 +17,10 @@ import android.widget.Toast;
 
 /**
  * Created by JaniS on 20.7.2017.
+ *
+ * Class for single Event's details. Clicking an item in the main list gets you to event details.
+ * This class handles the event details.
  */
-
 public class EventDetails extends AppCompatActivity {
 
     /** Tag for the log messages */
