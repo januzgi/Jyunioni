@@ -61,6 +61,8 @@ public class porssiDetailsParser {
         // Trim the line in case of extra spaces
         line = line.trim();
 
+        // TODO: Timestamp korjaten, että alkamisaika menee alkamispäivälle ja loppumisaika loppumispäivälle.
+
         // If the event is on many days like this: pe 15.09.2017 - su 17.09.2017
         // Then the line will be more than 155 and otherwise less than 149 in length
         if (line.length() > 80) {

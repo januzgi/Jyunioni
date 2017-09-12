@@ -25,8 +25,8 @@ public class linkkiDetailsParser {
      */
     public static String extractTime(String line) {
 
-        String date = "";
-        String time = "";
+        String date;
+        String time;
         String result = "";
 
         line = extractField(line);
@@ -67,7 +67,7 @@ public class linkkiDetailsParser {
     /**
      * Check if the event happens only on one day. If, then use the date on the startTime only.
      *
-     * @example Example input: "7.9. 17:00", "7.9. 23:30" , Example output: "7.9. 17:00 - 23:30"
+     * Example input: "7.9. 17:00", "7.9. 23:30" , Example output: "7.9. 17:00 - 23:30"
      *
      * @param startTime Events starting date and time.
      * @param endTime Events ending date and time.
@@ -76,9 +76,15 @@ public class linkkiDetailsParser {
     public static String checkEventTimestamp(String startTime, String endTime){
         String result = startTime + " - " + endTime;
 
-        String startDate = startTime.substring(0, startTime.lastIndexOf("."));
-        String endDate = endTime.substring(0, endTime.lastIndexOf(".")).toString();
+        // TODO: kaupunkisuunnistus fukseille jotenkin näyttää 00:00
 
+        // Check if the event doesn't have starting or ending hours.
+        if (!startTime.contains(":") || !endTime.contains(":")) return result;
+
+        String startDate = startTime.substring(0, startTime.lastIndexOf("."));
+        String endDate = endTime.substring(0, endTime.lastIndexOf("."));
+
+        // Check if it's only one day event.
         if (startDate.equals(endDate)){
             result = startTime + " - " + endTime.substring(endTime.lastIndexOf(".") + 2, endTime.length());
         }
@@ -93,10 +99,8 @@ public class linkkiDetailsParser {
      * @return Substring of the line after the ':'
      */
     public static String extractField(String line) {
-        // Get the string after the ':'
-        String result = line.substring(line.lastIndexOf(':') + 1);
-
-        return result;
+        // Return the string after the ':'
+        return line.substring(line.lastIndexOf(':') + 1);
     }
 
     /**
@@ -107,9 +111,7 @@ public class linkkiDetailsParser {
      */
     public static String extractUrl(String line) {
         // Get the string after the first ':'
-        String result = line.substring(line.indexOf(':') + 1);
-
-        return result;
+        return line.substring(line.indexOf(':') + 1);
     }
 
     /**
