@@ -5,13 +5,16 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.example.android.jyunioni.EventDetails.LOG_TAG;
-
 /**
  * Created by JaniS on 1.8.2017.
  * Class in which the parsing methods are for the Linkki Jyväskylä Ry's events.
  */
 public class linkkiDetailsParser {
+
+    /**
+     * Tag for the log messages
+     */
+    public static final String LOG_TAG = EventDetails.class.getSimpleName();
 
 
     /**
@@ -21,21 +24,38 @@ public class linkkiDetailsParser {
      * @return Formatted timestamp.
      */
     public static String extractTime(String line) {
+
         String date = "";
         String time = "";
-        String result = "Katso tiedot.";
+        String result = "";
 
         line = extractField(line);
-        // Line is now this format: 20170723T170000
+        // Line is now this format: "20170723T170000" or "20170829"
 
-        date = line.substring(0, line.indexOf('T'));
-        time = line.substring(line.indexOf('T') + 1, line.indexOf('T') + 5);
-        // date + " " + time --- is now this format: 20170723 1700
+        // If the line contains only the date of the event and no hours, for example: "20170723T170000"
+        if (line.contains("T")){
+            date = line.substring(0, line.indexOf('T'));
+            time = line.substring(line.indexOf('T') + 1, line.indexOf('T') + 5);
+            // date + " " + time --- is now this format: 20170723 1700
 
-        SimpleDateFormat defaultFormat = new SimpleDateFormat("yyyyMMdd hhmm");
-        SimpleDateFormat newFormat = new SimpleDateFormat("d.M. HH:mm");
+            SimpleDateFormat defaultFormat = new SimpleDateFormat("yyyyMMdd hhmm");
+            SimpleDateFormat newFormat = new SimpleDateFormat("d.M. HH:mm");
+            try {
+                Date timestamp = defaultFormat.parse(date + " " + time);
+                result = newFormat.format(timestamp);
+            } catch (Exception e) {
+                Log.e(LOG_TAG, "Problem in parsing the dates at extractTime method in linkkiDetailsParser class.");
+            }
+
+            return result;
+        }
+
+        // If the line is without the 'T', for example: "20170829"
+        // then format the date without the time as follows.
+        SimpleDateFormat defaultFormat = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat newFormat = new SimpleDateFormat("d.M.");
         try {
-            Date timestamp = defaultFormat.parse(date + " " + time);
+            Date timestamp = defaultFormat.parse(line);
             result = newFormat.format(timestamp);
         } catch (Exception e) {
             Log.e(LOG_TAG, "Problem in parsing the dates at extractTime method in linkkiDetailsParser class.");

@@ -202,6 +202,8 @@ public final class Queries {
         // TODO: jos se ei ole validi niin onko parempi vain luoda objekti, joka sanoo, että katso
         // TODO: tulevia tapahtumia Linkin kalenterista ja ohjata Linkin tapahtumien sivulle?
 
+        Log.e(LOG_TAG, httpResponseString);
+
 
         // Create the Event and List<Event> objects instance
         List<Event> extractedEvents = new ArrayList<>();
