@@ -38,7 +38,7 @@ public class linkkiDetailsParser {
             time = line.substring(line.indexOf('T') + 1, line.indexOf('T') + 5);
             // date + " " + time --- is now this format: 20170723 1700
 
-            SimpleDateFormat defaultFormat = new SimpleDateFormat("yyyyMMdd hhmm");
+            SimpleDateFormat defaultFormat = new SimpleDateFormat("yyyyMMdd HHmm");
             SimpleDateFormat newFormat = new SimpleDateFormat("d.M. HH:mm");
             try {
                 Date timestamp = defaultFormat.parse(date + " " + time);
@@ -76,16 +76,14 @@ public class linkkiDetailsParser {
     public static String checkEventTimestamp(String startTime, String endTime){
         String result = startTime + " - " + endTime;
 
-        // TODO: kaupunkisuunnistus fukseille jotenkin näyttää 00:00
-
-        // Check if the event doesn't have starting or ending hours.
-        if (!startTime.contains(":") || !endTime.contains(":")) return result;
-
         String startDate = startTime.substring(0, startTime.lastIndexOf("."));
         String endDate = endTime.substring(0, endTime.lastIndexOf("."));
 
         // Check if it's only one day event.
         if (startDate.equals(endDate)){
+            // Check if the event doesn't have starting or ending hours. Then just return one date.
+            if (!startTime.contains(":") || !endTime.contains(":")) return startTime + " ";
+
             result = startTime + " - " + endTime.substring(endTime.lastIndexOf(".") + 2, endTime.length());
         }
 
