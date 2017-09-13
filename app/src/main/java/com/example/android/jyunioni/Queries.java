@@ -40,82 +40,6 @@ public final class Queries {
 
 
     /**
-     * Query data from different websites and return a list of Event objects.
-     */
-    public static List<Event> fetchEventData(String[] requestUrl) {
-
-        List<Event> eventsLinkki = new ArrayList<>();
-        List<Event> eventsPorssi = new ArrayList<>();
-        List<Event> allEventsList = new ArrayList<>();
-
-        List<String> porssiEventUrls = new ArrayList<>();
-
-        // Create URL objects
-        URL linkkiUrl;
-        String porssiUrl;
-
-        /**
-         * Check which groups URL's are on the StringArray of URL's.
-         * Fetch data from all the URL's in the stringArray.
-         */
-        for (int i = 0; i < requestUrl.length; i++) {
-
-            if (requestUrl[i].contains("linkkijkl.fi")) {
-
-                linkkiUrl = createUrl(requestUrl[i]);
-
-                // Extract relevant fields from the HTTP response and create a list of Linkki's Events.
-                // Then add the events to the Linkki's Events list.
-                eventsLinkki.addAll(extractLinkkiEventDetails(sendHttpRequest(linkkiUrl)));
-
-            } else if (requestUrl[i].contains("porssiry.fi")) {
-
-                // Get just the "css-events-list" HTML div's data from Pörssi's website using jsoup library.
-                /** jsoup HTML parser library @ https://jsoup.org */
-                try {
-
-                    Document document = Jsoup.connect(requestUrl[i]).get();
-
-                    /** https://jsoup.org/cookbook/extracting-data/selector-syntax */
-                    Elements eventUrlElements = document.getElementsByClass("css-events-list").select("[href]");
-
-                    int j = 0;
-                    // Put the elements content (the URL's) from href fields to a String List
-                    for (Element element : eventUrlElements) {
-                        porssiEventUrls.add(element.attr("href"));
-                        j++;
-                    }
-                } catch (IOException e) {
-                    Log.e(LOG_TAG, "Problem in jsouping.\n" + e);
-                }
-
-                Event porssiEvent = null;
-
-                /** Fetch each event's data using the URL array to create the Event objects. */
-                for (int j = 0; j < porssiEventUrls.size(); j++) {
-                    porssiUrl = porssiEventUrls.get(j);
-
-                    // Extract relevant fields from the HTTP response and create a list of Porssi's Events
-                    porssiEvent = (extractPorssiEventDetails(porssiUrl));
-                    eventsPorssi.add(porssiEvent);
-                }
-
-            }
-        }
-
-        // Add all events from different groups lists to the mainList
-        allEventsList.addAll(eventsPorssi);
-        allEventsList.addAll(eventsLinkki);
-
-        allEventsList = organizeEventsByTimestamp(allEventsList);
-
-
-        // Return the list of all Events from different groups.
-        return allEventsList;
-    }
-
-
-    /**
      * Returns new URL object from the given string URL.
      */
     public static URL createUrl(String stringUrl) {
@@ -390,14 +314,90 @@ public final class Queries {
 
 
     /**
+     * Query data from different websites and return a list of Event objects.
+     */
+    public static List<Event> fetchEventData(String[] requestUrl) {
+
+        List<Event> eventsLinkki = new ArrayList<>();
+        List<Event> eventsPorssi = new ArrayList<>();
+        List<Event> allEventsList = new ArrayList<>();
+
+        List<String> porssiEventUrls = new ArrayList<>();
+
+        // Create URL objects
+        URL linkkiUrl;
+        String porssiUrl;
+
+        /**
+         * Check which groups URL's are on the StringArray of URL's.
+         * Fetch data from all the URL's in the stringArray.
+         */
+        for (int i = 0; i < requestUrl.length; i++) {
+
+            if (requestUrl[i].contains("linkkijkl.fi")) {
+
+                linkkiUrl = createUrl(requestUrl[i]);
+
+                // Extract relevant fields from the HTTP response and create a list of Linkki's Events.
+                // Then add the events to the Linkki's Events list.
+                eventsLinkki.addAll(extractLinkkiEventDetails(sendHttpRequest(linkkiUrl)));
+
+            } else if (requestUrl[i].contains("porssiry.fi")) {
+
+                // Get just the "css-events-list" HTML div's data from Pörssi's website using jsoup library.
+                /** jsoup HTML parser library @ https://jsoup.org */
+                try {
+
+                    Document document = Jsoup.connect(requestUrl[i]).get();
+
+                    /** https://jsoup.org/cookbook/extracting-data/selector-syntax */
+                    Elements eventUrlElements = document.getElementsByClass("css-events-list").select("[href]");
+
+                    int j = 0;
+                    // Put the elements content (the URL's) from href fields to a String List
+                    for (Element element : eventUrlElements) {
+                        porssiEventUrls.add(element.attr("href"));
+                        j++;
+                    }
+                } catch (IOException e) {
+                    Log.e(LOG_TAG, "Problem in jsouping.\n" + e);
+                }
+
+                Event porssiEvent = null;
+
+                /** Fetch each event's data using the URL array to create the Event objects. */
+                for (int j = 0; j < porssiEventUrls.size(); j++) {
+                    porssiUrl = porssiEventUrls.get(j);
+
+                    // Extract relevant fields from the HTTP response and create a list of Porssi's Events
+                    porssiEvent = (extractPorssiEventDetails(porssiUrl));
+                    eventsPorssi.add(porssiEvent);
+                }
+
+            }
+        }
+
+        // Add all events from different groups list's to the allEventsList
+        allEventsList.addAll(eventsPorssi);
+        allEventsList.addAll(eventsLinkki);
+
+        allEventsList = organizeEventsByTimestamp(allEventsList);
+
+        // Return the list of all Events from different groups.
+        return allEventsList;
+    }
+
+
+    /**
      * Organize events by timestamp so that today's event is on top and so list continues
      */
-    public static List<Event> organizeEventsByTimestamp(List<Event> allEventsList) {
+    public static List<Event> organizeEventsByTimestamp(final List<Event> allEventsList) {
 
         /** Arrange the list by the event's timestamp field using Comparator class. */
         class EventTimeComparator implements Comparator<Event> {
             @Override
             public int compare(Event event1, Event event2) {
+
                 return event1.getEventStartDate().compareTo(event2.getEventStartDate());
             }
         }
