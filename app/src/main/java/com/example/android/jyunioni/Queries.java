@@ -38,11 +38,6 @@ public final class Queries {
     private Queries() {
     }
 
-    /**
-     * Create the Linkki event's list as a global variable, because there are 2 URL's to fetch the event's from.
-     */
-    private static List<Event> eventsLinkki = new ArrayList<>();
-
 
     /**
      * Query data from different websites and return a list of Event objects.
@@ -70,7 +65,7 @@ public final class Queries {
                 linkkiUrl = createUrl(requestUrl[i]);
 
                 // Extract relevant fields from the HTTP response and create a list of Linkki's Events.
-                // Then add the events to the list Linkki's Events list.
+                // Then add the events to the Linkki's Events list.
                 eventsLinkki.addAll(extractLinkkiEventDetails(sendHttpRequest(linkkiUrl)));
 
             } else if (requestUrl[i].contains("porssiry.fi")) {
