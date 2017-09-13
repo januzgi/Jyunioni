@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by JaniS on 1.8.2017.
@@ -38,8 +39,8 @@ public class linkkiDetailsParser {
             time = line.substring(line.indexOf('T') + 1, line.indexOf('T') + 5);
             // date + " " + time --- is now this format: 20170723 1700
 
-            SimpleDateFormat defaultFormat = new SimpleDateFormat("yyyyMMdd HHmm");
-            SimpleDateFormat newFormat = new SimpleDateFormat("d.M. HH:mm");
+            SimpleDateFormat defaultFormat = new SimpleDateFormat("yyyyMMdd HHmm", Locale.ENGLISH);
+            SimpleDateFormat newFormat = new SimpleDateFormat("d.M. HH:mm", Locale.ENGLISH);
             try {
                 Date timestamp = defaultFormat.parse(date + " " + time);
                 result = newFormat.format(timestamp);
@@ -52,8 +53,8 @@ public class linkkiDetailsParser {
 
         // If the line is without the 'T', for example: "20170829"
         // then format the date without the time as follows.
-        SimpleDateFormat defaultFormat = new SimpleDateFormat("yyyyMMdd");
-        SimpleDateFormat newFormat = new SimpleDateFormat("d.M.");
+        SimpleDateFormat defaultFormat = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
+        SimpleDateFormat newFormat = new SimpleDateFormat("d.M.", Locale.ENGLISH);
         try {
             Date timestamp = defaultFormat.parse(line);
             result = newFormat.format(timestamp);

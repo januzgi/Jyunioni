@@ -38,6 +38,11 @@ public final class Queries {
     private Queries() {
     }
 
+    /**
+     * Create the Linkki event's list as a global variable, because there are 2 URL's to fetch the event's from.
+     */
+    private static List<Event> eventsLinkki = new ArrayList<>();
+
 
     /**
      * Query data from different websites and return a list of Event objects.
@@ -64,8 +69,9 @@ public final class Queries {
 
                 linkkiUrl = createUrl(requestUrl[i]);
 
-                // Extract relevant fields from the HTTP response and create a list of Linkki's Events
-                eventsLinkki = extractLinkkiEventDetails(sendHttpRequest(linkkiUrl));
+                // Extract relevant fields from the HTTP response and create a list of Linkki's Events.
+                // Then add the events to the list Linkki's Events list.
+                eventsLinkki.addAll(extractLinkkiEventDetails(sendHttpRequest(linkkiUrl)));
 
             } else if (requestUrl[i].contains("porssiry.fi")) {
 
@@ -194,16 +200,7 @@ public final class Queries {
      * Event name, timestamp, general information, image ID, group's color id and event url is needed.
      */
     public static List<Event> extractLinkkiEventDetails(String httpResponseString) {
-        // TODO: Entä jos kuussa ei olekaan tapahtumia
-
-        // TODO: kuinka pitkälle tulevaisuuteen näytetään
-
-        // TODO: URL:in muokkaus pitää automatisoida. Eli jos ei ole tässä kuussa tapahtumia, kokeile seuraavaa kuuta,
-        // TODO: jos se ei ole validi niin onko parempi vain luoda objekti, joka sanoo, että katso
-        // TODO: tulevia tapahtumia Linkin kalenterista ja ohjata Linkin tapahtumien sivulle?
-
-        Log.e(LOG_TAG, httpResponseString);
-
+        // TODO: Menneiden tapahtumien poisjättäminen.
 
         // Create the Event and List<Event> objects instance
         List<Event> extractedEvents = new ArrayList<>();
@@ -271,6 +268,7 @@ public final class Queries {
                 // Event's ending time
                 else if (line.contains("DTEND;")) {
                     eventTimeEnd = linkkiDetailsParser.extractTime(line);
+
                     // Get the timestamp from the starting and ending times of the event
                     eventTimestamp = linkkiDetailsParser.checkEventTimestamp(eventTimeStart, eventTimeEnd);
                 }
@@ -338,9 +336,6 @@ public final class Queries {
             Log.e(LOG_TAG, "IOException at extractPorssiEventDetails()\n" + e);
         }
 
-        Log.e(LOG_TAG, content);
-
-
         // Parse the data in the porssiDetailsParser class and create an Event object
         Scanner scanner = new Scanner(content).useDelimiter("[\n]");
 
@@ -349,7 +344,6 @@ public final class Queries {
         String eventInformation = null;
 
         String eventDate = null;
-        String eventTime = null;
         String eventTimestamp = null;
 
 
@@ -366,7 +360,7 @@ public final class Queries {
                 eventDate = porssiDetailsParser.extractDate(line);
 
             } else if (line.contains("dashicons-clock\"></span>")) {
-                eventTime = porssiDetailsParser.extractTime(line);
+                String eventTime = porssiDetailsParser.extractTime(line);
                 eventTimestamp = eventDate + " " + eventTime;
 
             } else if (line.contains("<div class=\"row\" data-equalizer data-equalizer-mq=\"medium-up\">")) {

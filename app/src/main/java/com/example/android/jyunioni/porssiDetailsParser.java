@@ -40,9 +40,8 @@ public class porssiDetailsParser {
 
     /** Extract the event's name */
     public static String extractEventName(String line){
-        String result = null;
 
-        result = line.substring(line.indexOf(">") + 1, line.lastIndexOf("<"));
+        String result = line.substring(line.indexOf(">") + 1, line.lastIndexOf("<"));
         result = result.replace("&amp;", "&");
 
         // If line is longer than 20 then split into two lines
@@ -56,7 +55,7 @@ public class porssiDetailsParser {
 
     /** Extract the event's date */
     public static String extractDate(String line){
-        String result = null;
+        String result;
 
         // Trim the line in case of extra spaces
         line = line.trim();
@@ -113,10 +112,9 @@ public class porssiDetailsParser {
 
     /** Extract the event's time */
     public static String extractTime(String line) {
-        String result = null;
 
-        result = line.substring(line.lastIndexOf(">") + 1, line.length()).trim();
-        // If 00:00 then leave the time blank
+        String result = line.substring(line.lastIndexOf(">") + 1, line.length()).trim();
+        // If "00:00" then leave the time blank
         if (result.equals("00:00")) result = "";
 
         return result;

@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -40,12 +41,8 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
     /**
      * A String array for the different groups event URL's.
-     * Different groups event's page URL.
      */
-    private String[] allEventPageUrls = new String[2];
-    private final String LINKKI_EVENTS_URL = "http://linkkijkl.fi/events/2017-09/?ical=1&tribe_display=month";
-    private final String PORSSI_EVENTS_URL = "http://www.porssiry.fi/tapahtumat/";
-
+    private String[] allEventPageUrls = new String[3];
 
     /**
      * Adapter for the list of events
@@ -73,9 +70,21 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.list_build, container, false);
 
+        // Get Linkki's events for this and the next month.
+        // The method returns January as 0, thus the +1.
+        int monthNow = Calendar.getInstance().get(Calendar.MONTH) + 1;
+
+        // Different groups event's page URL.
+        String LINKKI_THIS_MONTH_EVENTS_URL = "http://linkkijkl.fi/events/?ical=1&tribe-bar-date=2017-" + monthNow;
+        monthNow++;
+        String LINKKI_NEXT_MONTH_EVENTS_URL = "http://linkkijkl.fi/events/?ical=1&tribe-bar-date=2017-" + monthNow;
+
+        String PORSSI_EVENTS_URL = "http://www.porssiry.fi/tapahtumat/";
+
         // Add the event URL's to the String array
-        allEventPageUrls[0] = LINKKI_EVENTS_URL;
-        allEventPageUrls[1] = PORSSI_EVENTS_URL;
+        allEventPageUrls[0] = LINKKI_THIS_MONTH_EVENTS_URL;
+        allEventPageUrls[1] = LINKKI_NEXT_MONTH_EVENTS_URL;
+        allEventPageUrls[2] = PORSSI_EVENTS_URL;
 
         // Find the ListView object in the view hierarchy.
         // ListView with the view ID called events_list is declared in the list_build.xml layout file.
