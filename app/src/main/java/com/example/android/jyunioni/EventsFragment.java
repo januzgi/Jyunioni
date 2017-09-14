@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * This fragment displays a list of events and has LoaderManager implemented to use the once fetched data.
  */
-public class EventsFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Event>> {
+class EventsFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Event>> {
 
 
     /**

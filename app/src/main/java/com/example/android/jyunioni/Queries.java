@@ -30,7 +30,7 @@ import static com.example.android.jyunioni.EventDetails.LOG_TAG;
  * Calls methods in parsing classes to form the Event objects.
  * Queries is called from a Loader performing tasks in a background thread.
  */
-public final class Queries {
+final class Queries {
 
     /**
      * Private constructor

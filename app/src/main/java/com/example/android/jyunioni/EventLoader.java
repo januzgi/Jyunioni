@@ -12,7 +12,7 @@ import java.util.List;
  * UI will remain being updated in the main thread so usability won't be compromised during loading data
  * with tasks taking quite long time.
  */
-public class EventLoader extends AsyncTaskLoader<List<Event>> {
+class EventLoader extends AsyncTaskLoader<List<Event>> {
 
     /** Query URL */
     private String[] mUrls;

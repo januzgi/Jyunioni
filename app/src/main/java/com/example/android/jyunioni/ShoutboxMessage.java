@@ -19,7 +19,7 @@ package com.example.android.jyunioni;
  * ShoutboxMessage is the class for shoutbox messages.
  * This class contains String for the message, database where the messages are being saved.
  */
-public class ShoutboxMessage {
+class ShoutboxMessage {
 
     /** String for the message */
     private String mMessage;

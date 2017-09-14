@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * ShoutboxFragment displays a view in which the messages in the shoutbox are shown.
  */
-public class ShoutboxFragment extends Fragment {
+class ShoutboxFragment extends Fragment {
 
     /** Required empty public constructor */
     public ShoutboxFragment() {}

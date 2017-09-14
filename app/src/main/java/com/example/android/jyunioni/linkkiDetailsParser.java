@@ -10,7 +10,7 @@ import java.util.Locale;
  * Created by JaniS on 1.8.2017.
  * Class in which the parsing methods are for the Linkki Jyväskylä Ry's events.
  */
-public class linkkiDetailsParser {
+class linkkiDetailsParser {
 
     /**
      * Tag for the log messages

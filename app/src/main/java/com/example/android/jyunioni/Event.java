@@ -11,7 +11,7 @@ import static com.example.android.jyunioni.EventDetails.LOG_TAG;
 /**
  * Event represents a groups event. Implements Comparable<T> to list the events according their starting date.
  */
-public class Event implements Comparable<Event> {
+class Event implements Comparable<Event> {
 
     /** String for the event name */
     private String mEventName = "";

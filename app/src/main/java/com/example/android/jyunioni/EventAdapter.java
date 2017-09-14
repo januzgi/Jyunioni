@@ -15,7 +15,7 @@ import java.util.List;
  * EventAdapter is an ArrayAdapter that provides the layout for each list item
  * based on a data source, which is a list of Event objects.
  */
-public class EventAdapter extends ArrayAdapter<Event>  {
+class EventAdapter extends ArrayAdapter<Event>  {
 
 
     /** Create a new EventAdapter object.
