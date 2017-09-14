@@ -2,6 +2,10 @@ package com.example.android.jyunioni;
 
 import android.util.Log;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,23 +22,32 @@ class porssiDetailsParser {
 
     /** Extract the event's overview / description information */
     public static String extractEventInformation(String rawInformation){
-        String result = null;
 
         // There is a mystery "null" in the beginning of "rawInformation" so take that off
-        result = rawInformation.substring(rawInformation.indexOf("\n") + 1, rawInformation.length()).trim();
+        rawInformation = rawInformation.substring(rawInformation.indexOf("\n") + 1, rawInformation.length()).trim();
 
-        // Information comes in the form where <p> element marks are still there, so get rid of them.
+        // Information comes in the form where many HTML element tags are still there, so get rid of them.
+        // Using jsoup: https://stackoverflow.com/questions/12943734/jsoup-strip-all-formatting-and-link-tags-keep-text-only
         // e.g. a line from rawInformation: "<p>MISSÄ: Lähtö MaD:n edestä</p>"
-        result = result.replaceAll("<p>", "");
-        result = result.replaceAll("</p>", "");
-        result = result.replaceAll("&nbsp;", "");
+        StringBuilder result = new StringBuilder();
+        Document document = Jsoup.parse(rawInformation);
 
-        // In case there is no content in the information field.
-        if (result.length() < 10 || result.contains(("<")) || result.contains(">")){
-            result = "Katso lisätiedot tapahtumasivulta.";
+        for (Element element : document.select("p"))
+        {
+            result.append(element.text() + "\n");
         }
 
-        return result;
+        // In case there is no content in the information field.
+        if (result.length() < 2){
+            return result.append("Katso lisää tapahtumasivulta!").toString();
+
+        }
+
+        result.append("..." + "\n"
+                + "..." + "\n"
+                + "Katso lisää tapahtumasivulta!");
+
+        return result.toString();
     }
 
 
@@ -43,11 +56,6 @@ class porssiDetailsParser {
 
         String result = line.substring(line.indexOf(">") + 1, line.lastIndexOf("<"));
         result = result.replace("&amp;", "&");
-
-        // If line is longer than 20 then split into two lines
-        if (result.length() > 25){
-            result = result.substring(0, result.lastIndexOf(" ")) + "\n" + result.substring(result.lastIndexOf(" "), result.length()).trim();
-        }
 
         return result;
     }

@@ -5,4 +5,6 @@ package com.example.android.jyunioni;
  */
 
 class dumppiDetailsParser {
+
+
 }

@@ -17,9 +17,7 @@ class EventLoader extends AsyncTaskLoader<List<Event>> {
     /** Query URL */
     private String[] mUrls;
 
-
     private List<Event> mEvents;
-
 
     public EventLoader(Context context, String[] urls) {
         super(context);

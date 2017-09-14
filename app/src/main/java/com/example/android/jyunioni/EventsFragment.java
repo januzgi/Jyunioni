@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * This fragment displays a list of events and has LoaderManager implemented to use the once fetched data.
  */
-class EventsFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Event>> {
+public class EventsFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Event>> {
 
 
     /**
@@ -70,6 +70,8 @@ class EventsFragment extends Fragment implements LoaderManager.LoaderCallbacks<L
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.list_build, container, false);
 
+        // TODO: fragment to save data for future use
+
         // Get Linkki's events for this and the next month.
         // The method returns January as 0, thus the +1.
         int monthNow = Calendar.getInstance().get(Calendar.MONTH) + 1;
@@ -81,10 +83,13 @@ class EventsFragment extends Fragment implements LoaderManager.LoaderCallbacks<L
 
         String PORSSI_EVENTS_URL = "http://www.porssiry.fi/tapahtumat/";
 
+        /*String DUMPPI_EVENTS_URL = "http://dumppi.fi/tapahtumat/";*/
+
         // Add the event URL's to the String array
         allEventPageUrls[0] = LINKKI_THIS_MONTH_EVENTS_URL;
         allEventPageUrls[1] = LINKKI_NEXT_MONTH_EVENTS_URL;
         allEventPageUrls[2] = PORSSI_EVENTS_URL;
+        /*allEventPageUrls[3] = DUMPPI_EVENTS_URL;*/
 
         // Find the ListView object in the view hierarchy.
         // ListView with the view ID called events_list is declared in the list_build.xml layout file.

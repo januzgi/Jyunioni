@@ -288,19 +288,28 @@ final class Queries {
                 line = scanner.next();
 
                 // If there's an image, skip over it
-                if (line.contains("<p><img src")) {
+                if (line.contains("<p><img ")) {
                     line = scanner.next();
                 }
 
+                // Limit the amount of text in the event information to pElementsMax <p> elements.
+                int pElementsCount = 0;
+                int pElementsMax = 7;
+
                 boolean pElements = true;
 
-                // Make a String out of the <p> content
+                // Make a String out of the <p> content on the event specific site.
                 while (pElements) {
                     eventInformation = eventInformation + "\n" + line.trim();
                     line = scanner.next();
                     // If the <p> element still continues
                     if (line.contains("<p>") == false) pElements = false;
+
+                    // If there has been pElementsMax amount of <p> elements.
+                    pElementsCount++;
+                    if (pElementsCount == pElementsMax) pElements = false;
                 }
+
                 eventInformation = porssiDetailsParser.extractEventInformation(eventInformation);
 
             }
@@ -318,15 +327,20 @@ final class Queries {
      */
     public static List<Event> fetchEventData(String[] requestUrl) {
 
+        // Create URL objects and the Strings for URL's. Create the lists in which the event's will be put into.
         List<Event> eventsLinkki = new ArrayList<>();
+        URL linkkiUrl;
+
         List<Event> eventsPorssi = new ArrayList<>();
+        List<String> porssiEventUrls = new ArrayList<>();
+        String porssiUrl;
+
+/*        List<Event> eventsDumppi = new ArrayList<>();
+        List<String> dumppiEventUrls = new ArrayList<>();
+        String dumppiUrl;*/
+
         List<Event> allEventsList = new ArrayList<>();
 
-        List<String> porssiEventUrls = new ArrayList<>();
-
-        // Create URL objects
-        URL linkkiUrl;
-        String porssiUrl;
 
         /**
          * Check which groups URL's are on the StringArray of URL's.
@@ -334,6 +348,7 @@ final class Queries {
          */
         for (int i = 0; i < requestUrl.length; i++) {
 
+            /** LINKKI JYVÄSKYLÄ RY */
             if (requestUrl[i].contains("linkkijkl.fi")) {
 
                 linkkiUrl = createUrl(requestUrl[i]);
@@ -342,6 +357,7 @@ final class Queries {
                 // Then add the events to the Linkki's Events list.
                 eventsLinkki.addAll(extractLinkkiEventDetails(sendHttpRequest(linkkiUrl)));
 
+                /** PÖRSSI RY */
             } else if (requestUrl[i].contains("porssiry.fi")) {
 
                 // Get just the "css-events-list" HTML div's data from Pörssi's website using jsoup library.
@@ -374,12 +390,47 @@ final class Queries {
                     eventsPorssi.add(porssiEvent);
                 }
 
-            }
+                /** DUMPPI RY */
+            } /*else if (requestUrl[i].contains("dumppi.fi")) {
+
+                // Get just the "css-events-list" HTML div's data from Dumppi's website using jsoup library.
+                * jsoup HTML parser library @ https://jsoup.org
+                try {
+
+                    Document document = Jsoup.connect(requestUrl[i]).get();
+
+                    * https://jsoup.org/cookbook/extracting-data/selector-syntax
+                    Elements eventUrlElements = document.getElementsByClass("css-events-list").select("[href]");
+
+                    int j = 0;
+                    // Put the elements content (the URL's) from href fields to a String List
+                    for (Element element : eventUrlElements) {
+                        porssiEventUrls.add(element.attr("href"));
+                        j++;
+                    }
+                } catch (IOException e) {
+                    Log.e(LOG_TAG, "Problem in jsouping.\n" + e);
+                }
+
+                Event dumppiEvent = null;
+
+                * Fetch each event's data using the URL array to create the Event objects.
+                for (int j = 0; j < dumppiEventUrls.size(); j++) {
+                    dumppiUrl = dumppiEventUrls.get(j);
+
+                    // Extract relevant fields from the HTTP response and create a list of Porssi's Events
+                    dumppiEvent = (extractDumppiEventDetails(porssiUrl));
+                    eventsDumppi.add(dumppiEvent);
+                }
+
+            }*/
+
         }
 
         // Add all events from different groups list's to the allEventsList
         allEventsList.addAll(eventsPorssi);
         allEventsList.addAll(eventsLinkki);
+        /*allEventsList.addAll(eventsDumppi);*/
 
         allEventsList = organizeEventsByTimestamp(allEventsList);
 
