@@ -3,8 +3,11 @@ package com.example.android.jyunioni;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.Scanner;
 
 /**
  * Created by JaniS on 1.8.2017.
@@ -16,6 +19,129 @@ class linkkiDetailsParser {
      * Tag for the log messages
      */
     public static final String LOG_TAG = EventDetails.class.getSimpleName();
+
+
+    /**
+     * Return an {@link List<Event>} object by parsing out information from the HTTP response.
+     * Event name, timestamp, general information, image ID, group's color id and event url is needed.
+     */
+    public static List<Event> extractLinkkiEventDetails(String httpResponseString) {
+        // TODO: Menneiden tapahtumien poisjättäminen.
+
+        // Create the Event and List<Event> objects instance
+        List<Event> extractedEvents = new ArrayList<>();
+
+        // Helper variable for the scanner loops
+        String line;
+
+        // The amount of events is counted using every event's starting symbol
+        String eventBegin = "BEGIN:VEVENT";
+
+        // Create a scanner and loop through the string to count the amount of
+        // separate events in the string
+        Scanner eventsCountScanner = new Scanner(httpResponseString).useDelimiter("[\n]");
+
+        // Create a variable to initialize right size string arrays later
+        int eventsCount = 0;
+
+        // If the line contains the beginning of a new event, then add one to
+        // the events counter
+        while (eventsCountScanner.hasNext()) {
+            line = eventsCountScanner.next();
+            if (line.contains(eventBegin))
+                eventsCount++;
+        }
+
+
+        // Create strings for the different fields that are extracted from
+        // the HTTP response string
+        String eventTimeStart = "";
+        String eventTimeEnd = "";
+        String eventTimestamp = "";
+
+        String eventName = "";
+        String eventInformation = "";
+        String eventUrl = "";
+
+        int eventImageId = -1;
+        int eventGroupColorId = -1;
+
+        // Scan through the fields and add the contents to the corresponding
+        // String arrays. Use 'newline' as a limiter to go to nextLine().
+        Scanner fieldsScanner = new Scanner(httpResponseString).useDelimiter("[\n]");
+
+        // When the for -loop has been done (one event has been extracted, this
+        // adds by one)
+        int loopCount = 0;
+
+
+        // When there's still text left in the scanner and there are events in the HTTP response
+        while (fieldsScanner.hasNext() && eventsCount != 0) {
+
+            // Get the different fields information to desired String arrays,
+            // from which they can easily be matched up.
+            // Add the fields to the "results" string array
+            for (int i = 0; i < eventsCount; i++) {
+
+                // Use the scanner to parse the details of each event
+                line = fieldsScanner.next();
+
+                // Event's starting time
+                if (line.contains("DTSTART;")) {
+                    eventTimeStart = linkkiDetailsParser.extractTime(line);
+                }
+
+                // Event's ending time
+                else if (line.contains("DTEND;")) {
+                    eventTimeEnd = linkkiDetailsParser.extractTime(line);
+
+                    // Get the timestamp from the starting and ending times of the event
+                    eventTimestamp = linkkiDetailsParser.checkEventTimestamp(eventTimeStart, eventTimeEnd);
+                }
+
+
+                // Event's name
+                else if (line.contains("SUMMARY")) {
+                    eventName = linkkiDetailsParser.extractField(line);
+                }
+
+
+                // Event's description / overall information
+                else if (line.contains("DESCRIPTION:")) {
+                    eventInformation = linkkiDetailsParser.extractDescriptionField(line);
+                }
+
+
+                // Event's URL
+                // Skip the first URL, which is the "X-ORIGINAL-URL:" and add only the 'events' to the list
+                else if (line.contains("URL") && line.contains("event")) {
+                    eventUrl = linkkiDetailsParser.extractUrl(line);
+
+                    // Match up the event's group image and color according to the URL where the info was extracted from
+                    if (eventUrl.contains("linkkijkl")) {
+                        eventImageId = R.drawable.linkki_jkl_icon;
+                        eventGroupColorId = R.color.color_linkki_jkl;
+                    }
+                }
+
+                // If this was the end of the event, add the event details to an object in events arraylist
+                else if (line.contains("END:VEVENT")) {
+
+                    extractedEvents.add(new Event(eventName, eventTimestamp, eventInformation, eventImageId, eventGroupColorId, eventUrl));
+
+                    // If there is the "event end" then exit the for loop back to
+                    // the while loop
+                    loopCount++;
+                    break;
+                }
+
+            }
+            // If the loop has gone through all the events
+            if (loopCount == eventsCount) break;
+        }
+
+        return extractedEvents;
+    }
 
 
     /**
