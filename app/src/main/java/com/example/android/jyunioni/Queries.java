@@ -167,8 +167,6 @@ final class Queries {
             }
 
 
-
-
         /**
          * Check which groups URL's are on the StringArray of URL's.
          * Fetch data from all the URL's in the stringArray.
