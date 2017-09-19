@@ -41,6 +41,7 @@ class porssiDetailsParser {
             Log.e(LOG_TAG, "IOException at extractPorssiEventDetails()\n" + e);
         }
 
+
         // Parse the data in the porssiDetailsParser class and create an Event object
         Scanner scanner = new Scanner(content).useDelimiter("[\n]");
 
@@ -55,49 +56,74 @@ class porssiDetailsParser {
         // Helper variable for the scanner loops
         String line;
 
+        boolean loopForName = true;
+        boolean loopForDate = true;
+        boolean loopForTime = true;
+        boolean loopForInformation = true;
+
         while (scanner.hasNext()) {
             line = scanner.next();
 
-            if (line.contains("<h1>")) {
-                eventName = porssiDetailsParser.extractEventName(line);
+            while (loopForName){
+                if (line.contains("<h1>")) {
+                    eventName = porssiDetailsParser.extractEventName(line);
+                    loopForName = false;
 
-            } else if (line.contains("dashicons-calendar-alt\"></span>")) {
-                eventDate = porssiDetailsParser.extractDate(line);
+                    while(loopForDate){
+                        if (line.contains("dashicons-calendar-alt\"></span>")) {
+                            eventDate = porssiDetailsParser.extractDate(line);
+                            loopForDate = false;
 
-            } else if (line.contains("dashicons-clock\"></span>")) {
-                String eventTime = porssiDetailsParser.extractTime(line);
-                eventTimestamp = eventDate + " " + eventTime;
+                            while(loopForTime){
+                                if (line.contains("dashicons-clock\"></span>")) {
+                                    String eventTime = porssiDetailsParser.extractTime(line);
+                                    eventTimestamp = eventDate + " " + eventTime;
+                                    loopForTime = false;
 
-            } else if (line.contains("<div class=\"row\" data-equalizer data-equalizer-mq=\"medium-up\">")) {
-                // Skip to the first line of the <p> element where the event information is.
-                line = scanner.next();
-                line = scanner.next();
+                                    while(loopForInformation){
+                                        if (line.contains("<div class=\"row\" data-equalizer data-equalizer-mq=\"medium-up\">")) {
+                                            // Skip to the first line of the <p> element where the event information is.
+                                            line = scanner.next();
+                                            line = scanner.next();
 
-                // If there's an image, skip over it
-                if (line.contains("<p><img ")) {
-                    line = scanner.next();
+                                            // If there's an image, skip over it
+                                            if (line.contains("<p><img ")) {
+                                                line = scanner.next();
+                                            }
+
+                                            // Limit the amount of text in the event information to pElementsMax <p> elements.
+                                            int pElementsCount = 0;
+                                            int pElementsMax = 7;
+
+                                            boolean pElements = true;
+
+                                            // Make a String out of the <p> content on the event specific site.
+                                            while (pElements) {
+                                                eventInformation = eventInformation + "\n" + line.trim();
+                                                line = scanner.next();
+                                                // If the <p> element still continues
+                                                if (line.contains("<p>") == false) pElements = false;
+
+                                                // If there has been pElementsMax amount of <p> elements.
+                                                pElementsCount++;
+                                                if (pElementsCount == pElementsMax) pElements = false;
+                                            }
+
+                                            eventInformation = porssiDetailsParser.extractEventInformation(eventInformation);
+                                            loopForInformation = false;
+                                        }
+                                        line = scanner.next();
+
+                                    }
+                                }
+                                line = scanner.next();
+                            }
+
+                        }
+                        line = scanner.next();
+                    }
                 }
-
-                // Limit the amount of text in the event information to pElementsMax <p> elements.
-                int pElementsCount = 0;
-                int pElementsMax = 7;
-
-                boolean pElements = true;
-
-                // Make a String out of the <p> content on the event specific site.
-                while (pElements) {
-                    eventInformation = eventInformation + "\n" + line.trim();
-                    line = scanner.next();
-                    // If the <p> element still continues
-                    if (line.contains("<p>") == false) pElements = false;
-
-                    // If there has been pElementsMax amount of <p> elements.
-                    pElementsCount++;
-                    if (pElementsCount == pElementsMax) pElements = false;
-                }
-
-                eventInformation = porssiDetailsParser.extractEventInformation(eventInformation);
-
+                line = scanner.next();
             }
         }
 

@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -37,11 +38,6 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
      * Tag for the log messages
      */
     public static final String LOG_TAG = EventDetails.class.getSimpleName();
-
-    /**
-     * A String array for the different groups event URL's.
-     */
-    private String[] allEventPageUrls = new String[1];
 
     /**
      * Adapter for the list of events
@@ -63,6 +59,11 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
      */
     public EventsFragment() {}
 
+    /**
+     * A String array for the different groups event URL's.
+     */
+    private String[] allEventPageUrls = new String[4];
+
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
@@ -70,25 +71,26 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         View rootView = inflater.inflate(R.layout.list_build, container, false);
 
         // TODO: fragment to save data for future use
+        // TODO: älä hae tapahtumia uusiksi fragmentsiin tultaessa toista kertaa vaan ota ne vaan muistista
 
         // Get Linkki's events for this and the next month.
         // The method returns January as 0, thus the +1.
- /*       int monthNow = Calendar.getInstance().get(Calendar.MONTH) + 1;
+        int monthNow = Calendar.getInstance().get(Calendar.MONTH) + 1;
 
         // Different groups event's page URL.
         String LINKKI_THIS_MONTH_EVENTS_URL = "http://linkkijkl.fi/events/?ical=1&tribe-bar-date=2017-" + monthNow;
         monthNow++;
         String LINKKI_NEXT_MONTH_EVENTS_URL = "http://linkkijkl.fi/events/?ical=1&tribe-bar-date=2017-" + monthNow;
 
-        String PORSSI_EVENTS_URL = "http://www.porssiry.fi/tapahtumat/";*/
+        String PORSSI_EVENTS_URL = "http://www.porssiry.fi/tapahtumat/";
 
         String DUMPPI_EVENTS_URL = "http://dumppi.fi/tapahtumat/";
 
         // Add the event URL's to the String array
-/*        allEventPageUrls[0] = LINKKI_THIS_MONTH_EVENTS_URL;
+        allEventPageUrls[0] = LINKKI_THIS_MONTH_EVENTS_URL;
         allEventPageUrls[1] = LINKKI_NEXT_MONTH_EVENTS_URL;
-        allEventPageUrls[2] = PORSSI_EVENTS_URL;*/
-        allEventPageUrls[0] = DUMPPI_EVENTS_URL;
+        allEventPageUrls[2] = PORSSI_EVENTS_URL;
+        allEventPageUrls[3] = DUMPPI_EVENTS_URL;
 
         // Find the ListView object in the view hierarchy.
         // ListView with the view ID called events_list is declared in the list_build.xml layout file.
@@ -120,7 +122,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         toastMessage.setTextColor(Color.parseColor("#FFFFFF"));
         toastMessage.setGravity(Gravity.CENTER);
         toastMessage.setCompoundDrawablePadding(8);
-        toastView.setBackgroundColor(Color.parseColor("#FF9100"));
+        toastView.setBackgroundColor(getResources().getColor((R.color.primary_color)));
         toast.show();
 
         /** Set a click listener to open the event's details via an intent */

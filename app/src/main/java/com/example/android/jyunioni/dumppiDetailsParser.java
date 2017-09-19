@@ -20,6 +20,9 @@ class dumppiDetailsParser {
     /**
      * Return an Event object by parsing out information from the HTTP response.
      * Event name, timestamp, general information, image ID, group's color id and event url is needed.
+     *
+     * Execution time faster with the while loop -structure than with if else -structure. Tested in Eclipse using the same feed
+     * using System.nanoTime(): https://stackoverflow.com/questions/6646467/how-to-find-time-taken-to-run-java-program
      */
     public static Event extractDumppiEventDetails(String url) {
         // Create the Event and List<Event> objects instance
@@ -38,7 +41,9 @@ class dumppiDetailsParser {
             Log.e(LOG_TAG, "IOException at extractDumppiEventDetails()\n" + e);
         }
 
-        // Parse the data in the dumppiDetailsParser class and create an Event object
+        // Check that there's content.
+        if (content == null) return event;
+        // Parse the data in the porssiDetailsParser class and create an Event object
         Scanner scanner = new Scanner(content).useDelimiter("[\n]");
 
         // Variables for the different values of an Event object
@@ -46,43 +51,66 @@ class dumppiDetailsParser {
         String eventInformation = null;
         String eventTimestamp = null;
 
-
-        // Helper variable for the scanner loops
+        // Helper variables for the scanner loops
         String line;
+
+        boolean loopForName = true;
+        boolean loopForTimestamp = true;
+        boolean loopForInformation = true;
 
         while (scanner.hasNext()) {
             line = scanner.next();
+            line = scanner.next();
 
-            if (line.contains("<h2 class=\"post-title\"><a href=\"")) {
-                eventName = dumppiDetailsParser.extractEventName(line);
+            while (loopForName) {
+                if (line.contains("<h2 class=\"post-title\"><a href=\"")) {
+                    eventName = dumppiDetailsParser.extractEventName(line);
+                    loopForName = false;
 
-            } else if (line.contains("<p> <strong>Päiväys ja aika</strong><br>")) {
-                eventTimestamp = dumppiDetailsParser.extractTimestamp(line);
+                    while (loopForTimestamp) {
+                        if (line.contains("<p> <strong>Päiväys ja aika</strong><br>")) {
+                            eventTimestamp = dumppiDetailsParser.extractTimestamp(line);
+                            loopForTimestamp = false;
 
-            } else if (line.contains("<br style=\"clear:both\">")) {
-                // Skip to the first line of the <p> element where the event information is.
-                line = scanner.next();
+                            while (loopForInformation) {
+                                if (line.contains("<br style=\"clear:both\">")) {
+                                    // Skip to the first line of the <p> element
+                                    // where the event information is.
+                                    line = scanner.next();
 
-                // Limit the amount of text in the event information to pElementsMax <p> elements.
-                int pElementsCount = 0;
-                int pElementsMax = 7;
+                                    // Limit the amount of text in the event
+                                    // information to pElementsMax <p> elements.
+                                    int pElementsCount = 0;
+                                    int pElementsMax = 7;
 
-                boolean loop = true;
+                                    boolean loop = true;
 
-                // Make a String out of the <p> content on the event specific site.
-                while (loop) {
-                    eventInformation = eventInformation + "\n" + line.trim();
-                    line = scanner.next();
-                    // If the </ul> element ends, then the information we need ends.
-                    if (line.contains("</ul>")) loop = false;
+                                    // Make a String out of the <p> content on
+                                    // the event specific site.
+                                    while (loop) {
+                                        eventInformation = eventInformation + "\n" + line.trim();
+                                        line = scanner.next();
+                                        // If the </ul> element ends, then the information we need ends.
+                                        if (line.contains("</ul>")) loop = false;
 
-                    // If there has been pElementsMax amount of <p> elements.
-                    pElementsCount++;
-                    if (pElementsCount == pElementsMax) loop = false;
+                                        // If there has been pElementsMax amount
+                                        // of <p> elements.
+                                        pElementsCount++;
+                                        if (pElementsCount == pElementsMax) loop = false;
+                                    }
+
+                                    eventInformation = dumppiDetailsParser.extractEventInformation(eventInformation);
+                                    loopForInformation = false;
+                                }
+                                line = scanner.next();
+                            }
+                        }
+                        line = scanner.next();
+                    }
                 }
-
-                eventInformation = dumppiDetailsParser.extractEventInformation(eventInformation);
+                line = scanner.next();
             }
+            break;
         }
 
         // Create the Event with the fetched data
@@ -90,6 +118,7 @@ class dumppiDetailsParser {
 
         return event;
     }
+
 
     /** Extract the event's overview / description information */
     public static String extractEventInformation(String rawInformation){

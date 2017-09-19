@@ -2,10 +2,10 @@
 <resources>
 
     <!-- Shown in the status bar -->
-    <color name="status_bar_color">#FFAB40</color>
+    <color name="status_bar_color">#FF9100</color>
 
     <!-- Primary color of the app. Shown in the app bar and the background of fragments -->
-    <color name="primary_color">#FF9100</color>
+    <color name="primary_color">#FFAB40</color>
 
     <!-- Background color for app -->
     <color name="background">#FFFFFF</color>

@@ -26,7 +26,6 @@ class linkkiDetailsParser {
      * Event name, timestamp, general information, image ID, group's color id and event url is needed.
      */
     public static List<Event> extractLinkkiEventDetails(String httpResponseString) {
-        // TODO: Menneiden tapahtumien poisjättäminen.
 
         // Create the Event and List<Event> objects instance
         List<Event> extractedEvents = new ArrayList<>();
