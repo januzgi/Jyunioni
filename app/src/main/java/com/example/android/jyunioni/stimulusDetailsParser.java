@@ -12,10 +12,11 @@ import java.util.Scanner;
 import static com.example.android.jyunioni.EventDetails.LOG_TAG;
 
 /**
- * Created by Jani Suoranta on 14.9.2017.
- * Class in which the parsing methods are for the Dumppi Ry's events.
+ * Created by JaniS on 19.9.2017.
+ *
+ * Class in which the parsing methods are for the Stimulus Ry 's events.
  */
-class dumppiDetailsParser {
+class stimulusDetailsParser {
 
 
     /**
@@ -25,7 +26,7 @@ class dumppiDetailsParser {
      * Execution time faster with the while loop -structure than with if else -structure. Tested in Eclipse using the same feed
      * using System.nanoTime(): https://stackoverflow.com/questions/6646467/how-to-find-time-taken-to-run-java-program
      */
-    public static Event extractDumppiEventDetails(String url) {
+    public static Event extractStimulusEventDetails(String url) {
         // Create the Event and List<Event> objects instance
         Event event = null;
 
@@ -34,12 +35,11 @@ class dumppiDetailsParser {
         // Fetch the event's raw html data from the url
         try {
             Document document = Jsoup.connect(url).get();
-
-            // Select div with class="uutinen"
-            content = document.select("div.uutinen").first().toString();
+            // Select div with id="breadcrump"
+            content = document.select("div#ilmo_content").toString();
 
         } catch (IOException e) {
-            Log.e(LOG_TAG, "IOException at extractDumppiEventDetails()\n" + e);
+            Log.e(LOG_TAG, "IOException at extractStimulusEventDetails()\n" + e);
         }
 
         // Check that there's content.
@@ -115,7 +115,7 @@ class dumppiDetailsParser {
         }
 
         // Create the Event with the fetched data
-        event = new Event(eventName, eventTimestamp, eventInformation, R.drawable.dumppi_ry_icon, R.color.color_dumppi_ry, url);
+        event = new Event(eventName, eventTimestamp, eventInformation, R.drawable.stimulus_ry_icon, R.color.color_stimulus_ry, url);
 
         return event;
     }
@@ -189,7 +189,6 @@ class dumppiDetailsParser {
 
         return result;
     }
-
 
 
 }

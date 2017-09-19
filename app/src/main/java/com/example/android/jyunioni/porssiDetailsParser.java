@@ -36,6 +36,7 @@ class porssiDetailsParser {
         // Fetch the event's raw html data from the url
         try {
             Document document = Jsoup.connect(url).get();
+            // Select div with id="content"
             content = document.select("div#content").toString();
         } catch (IOException e) {
             Log.e(LOG_TAG, "IOException at extractPorssiEventDetails()\n" + e);

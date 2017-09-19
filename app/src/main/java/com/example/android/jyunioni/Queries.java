@@ -132,6 +132,10 @@ final class Queries {
         List<String> dumppiEventUrls = new ArrayList<>();
         String dumppiUrl;
 
+        List<Event> eventsStimulus = new ArrayList<>();
+        List<String> stimulusEventUrls = new ArrayList<>();
+        String stimulusUrl;
+
         List<Event> allEventsList = new ArrayList<>();
 
 
@@ -210,9 +214,43 @@ final class Queries {
                 for (int j = 0; j < dumppiEventUrls.size(); j++) {
                     dumppiUrl = dumppiEventUrls.get(j);
 
-                    // Extract relevant fields from the HTTP response and create a list of Porssi's Events
+                    // Extract relevant fields from the HTTP response and create a list of Dumppi's Events
                     dumppiEvent = dumppiDetailsParser.extractDumppiEventDetails(dumppiUrl);
                     eventsDumppi.add(dumppiEvent);
+                }
+
+                /** STIMULUS RY */
+            } else if (requestUrl[i].contains("stimulus.fi")) {
+
+                Log.e(LOG_TAG, "Stimulusta katsomassa...");
+
+                // Get just the "ilmo_content" HTML div's data from Stimulus's website using jsoup library.
+                /** jsoup HTML parser library @ https://jsoup.org */
+                try {
+
+                    Document documentStimulus = Jsoup.connect(requestUrl[i]).get();
+
+                    /** https://jsoup.org/cookbook/extracting-data/selector-syntax */
+                    // Elements stimulusEventUrlElements = documentStimulus.select("div#ilmo_content"); // .select("[href]")
+                    Elements stimulusEventUrlElements = documentStimulus.getElementsByClass("tapahtuma_nosto").select("[href]");
+
+                    // Put the elements content (the URL's) from href fields to a String List
+                    for (Element element : stimulusEventUrlElements) {
+                        stimulusEventUrls.add(element.attr("href"));
+                    }
+                } catch (IOException e) {
+                    Log.e(LOG_TAG, "Problem in jsouping Stimulus Ry's events.\n" + e);
+                }
+
+                Event stimulusEvent;
+
+                /** Fetch each event's data using the URL array to create the Event objects. */
+                for (int j = 0; j < stimulusEventUrls.size(); j++) {
+                    stimulusUrl = stimulusEventUrls.get(j);
+
+                    // Extract relevant fields from the HTTP response and create a list of Stimulus's Events
+                    stimulusEvent = stimulusDetailsParser.extractStimulusEventDetails(stimulusUrl);
+                    eventsStimulus.add(stimulusEvent);
                 }
 
             }
@@ -223,6 +261,7 @@ final class Queries {
         allEventsList.addAll(eventsPorssi);
         allEventsList.addAll(eventsLinkki);
         allEventsList.addAll(eventsDumppi);
+        allEventsList.addAll(eventsStimulus);
 
         allEventsList = organizeEventsByTimestamp(allEventsList);
 
