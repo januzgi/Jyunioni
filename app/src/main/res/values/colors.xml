@@ -10,6 +10,9 @@
     <!-- Background color for app -->
     <color name="background">#FFFFFF</color>
 
+    <!-- Progressbar color -->
+    <color name="color_progress_bar">#536DFE</color>
+
     <!--Colors for the buttons and toasts-->
     <color name="start_color">#FFD180</color>
     <color name="center_color">#FF9100</color>
@@ -18,8 +21,6 @@
 
 
     <!-- Theme colors for each group -->
-    <!-- Progressbar color -->
-    <color name="color_progress_bar">#536DFE</color>
 
     <!-- Pörssi Ry -->
     <color name="color_porssi_ry">#3A53A4</color>
@@ -29,5 +30,8 @@
 
     <!-- Linkki Jyväskylä Ry -->
     <color name="color_linkki_jkl">#035CFF</color>
+
+    <!-- Stimulus Ry -->
+    <color name="color_stimulus_ry">#FFF12D</color>
 
 </resources>
