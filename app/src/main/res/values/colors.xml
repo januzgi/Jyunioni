@@ -20,18 +20,23 @@
     <color name="state_pressed">#FFF3E0</color>
 
 
-    <!-- Theme colors for each group -->
+    <!-- Theme colors for each group. For readability,
+    using original group logo's colors monochromatic tints (from left) #2 option from: http://www.color-hex.com/ -->
 
     <!-- Pörssi Ry -->
-    <color name="color_porssi_ry">#3A53A4</color>
+    <color name="color_porssi_ry">#2D407E</color>
+    <!--#3A53A4-->
 
     <!-- Dumppi Ry -->
-    <color name="color_dumppi_ry">#7A122C</color>
+    <color name="color_dumppi_ry">#4E0B1C</color>
+    <!--#7A122C-->
 
     <!-- Linkki Jyväskylä Ry -->
-    <color name="color_linkki_jkl">#035CFF</color>
+    <color name="color_linkki_jkl">#0049CF</color>
+    <!--#035CFF-->
 
     <!-- Stimulus Ry -->
-    <color name="color_stimulus_ry">#FFF12D</color>
+    <color name="color_stimulus_ry">#F9E800</color>
+    <!--#FFF12D-->
 
 </resources>

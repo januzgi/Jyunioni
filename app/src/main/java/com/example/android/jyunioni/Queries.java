@@ -222,8 +222,6 @@ final class Queries {
                 /** STIMULUS RY */
             } else if (requestUrl[i].contains("stimulus.fi")) {
 
-                Log.e(LOG_TAG, "Stimulusta katsomassa...");
-
                 // Get just the "ilmo_content" HTML div's data from Stimulus's website using jsoup library.
                 /** jsoup HTML parser library @ https://jsoup.org */
                 try {

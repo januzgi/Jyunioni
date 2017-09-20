@@ -62,7 +62,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     /**
      * A String array for the different groups event URL's.
      */
-    private String[] allEventPageUrls = new String[1];
+    private String[] allEventPageUrls = new String[5];
 
 
     @Override
@@ -89,11 +89,11 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         String STIMULUS_EVENTS_URL = "http://www.stimulus.fi/ilmoittautuminen.php";
 
         // Add the event URL's to the String array
-/*        allEventPageUrls[0] = LINKKI_THIS_MONTH_EVENTS_URL;
+        allEventPageUrls[0] = LINKKI_THIS_MONTH_EVENTS_URL;
         allEventPageUrls[1] = LINKKI_NEXT_MONTH_EVENTS_URL;
         allEventPageUrls[2] = PORSSI_EVENTS_URL;
-        allEventPageUrls[3] = DUMPPI_EVENTS_URL;*/
-        allEventPageUrls[0] = STIMULUS_EVENTS_URL;
+        allEventPageUrls[3] = DUMPPI_EVENTS_URL;
+        allEventPageUrls[4] = STIMULUS_EVENTS_URL;
 
         // Find the ListView object in the view hierarchy.
         // ListView with the view ID called events_list is declared in the list_build.xml layout file.
