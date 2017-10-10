@@ -20,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -62,8 +61,12 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     /**
      * A String array for the different groups event URL's.
      */
-    private String[] allEventPageUrls = new String[5];
+    private String[] allEventPageUrls = new String[1];
 
+    /**
+     * int for the no event data or no internet connection message.
+     */
+    private int noConnectionOrData = R.string.no_event_data_found;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
@@ -73,27 +76,20 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         // TODO: fragment to save data for future use
         // TODO: älä hae tapahtumia uusiksi fragmentsiin tultaessa toista kertaa vaan ota ne vaan muistista
 
-        // Get Linkki's events for this and the next month.
-        // The method returns January as 0, thus the +1.
-        int monthNow = Calendar.getInstance().get(Calendar.MONTH) + 1;
+        // Different groups event's list .txt address in the server.
+        String LINKKI_EVENTS_URL = "http://users.jyu.fi/~jatasuor/linkkiEvents.txt";
 
-        // Different groups event's page URL.
-        String LINKKI_THIS_MONTH_EVENTS_URL = "http://linkkijkl.fi/events/?ical=1&tribe-bar-date=2017-" + monthNow;
-        monthNow++;
-        String LINKKI_NEXT_MONTH_EVENTS_URL = "http://linkkijkl.fi/events/?ical=1&tribe-bar-date=2017-" + monthNow;
+  /*      String PORSSI_EVENTS_URL = "http://www.porssiry.fi/tapahtumat/";
 
-        String PORSSI_EVENTS_URL = "http://www.porssiry.fi/tapahtumat/";
+        String DUMPPI_EVENTS_URL = "https://dumppi.fi/tapahtumat/";
 
-        String DUMPPI_EVENTS_URL = "http://dumppi.fi/tapahtumat/";
-
-        String STIMULUS_EVENTS_URL = "http://www.stimulus.fi/ilmoittautuminen.php";
+        String STIMULUS_EVENTS_URL = "http://stimulus.fi/ilmoittautuminen.php";*/
 
         // Add the event URL's to the String array
-        allEventPageUrls[0] = LINKKI_THIS_MONTH_EVENTS_URL;
-        allEventPageUrls[1] = LINKKI_NEXT_MONTH_EVENTS_URL;
-        allEventPageUrls[2] = PORSSI_EVENTS_URL;
-        allEventPageUrls[3] = DUMPPI_EVENTS_URL;
-        allEventPageUrls[4] = STIMULUS_EVENTS_URL;
+        allEventPageUrls[0] = LINKKI_EVENTS_URL;
+/*        allEventPageUrls[1] = PORSSI_EVENTS_URL;
+        allEventPageUrls[2] = DUMPPI_EVENTS_URL;
+        allEventPageUrls[3] = STIMULUS_EVENTS_URL;*/
 
         // Find the ListView object in the view hierarchy.
         // ListView with the view ID called events_list is declared in the list_build.xml layout file.
@@ -190,7 +186,8 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             // First, hide loading indicator so error message will be visible
 
             mProgressBar.setVisibility(View.GONE);
-            mEmptyStateTextView.setText(R.string.no_internet_connection);
+            noConnectionOrData = R.string.no_internet_connection;
+            mEmptyStateTextView.setText(noConnectionOrData);
         }
 
     }
@@ -223,7 +220,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             mAdapter.addAll(events);
         }
 
-        mEmptyStateTextView.setText(R.string.no_event_data_found);
+        mEmptyStateTextView.setText(noConnectionOrData);
 
         getLoaderManager().destroyLoader(EVENT_LOADER_ID);
     }

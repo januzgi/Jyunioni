@@ -2,11 +2,6 @@ package com.example.android.jyunioni;
 
 import android.util.Log;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -124,7 +119,7 @@ final class Queries {
         List<Event> eventsLinkki = new ArrayList<>();
         URL linkkiUrl;
 
-        List<Event> eventsPorssi = new ArrayList<>();
+/*        List<Event> eventsPorssi = new ArrayList<>();
         List<String> porssiEventUrls = new ArrayList<>();
         String porssiUrl;
 
@@ -134,7 +129,7 @@ final class Queries {
 
         List<Event> eventsStimulus = new ArrayList<>();
         List<String> stimulusEventUrls = new ArrayList<>();
-        String stimulusUrl;
+        String stimulusUrl;*/
 
         List<Event> allEventsList = new ArrayList<>();
 
@@ -146,24 +141,27 @@ final class Queries {
         for (int i = 0; i < requestUrl.length; i++) {
 
             /** LINKKI JYVÄSKYLÄ RY */
-            if (requestUrl[i].contains("linkkijkl.fi")) {
+            if (requestUrl[i].contains("linkkiEvents.txt")) {
+
+                // TODO: events from the real server address
 
                 linkkiUrl = createUrl(requestUrl[i]);
 
-                // Extract relevant fields from the HTTP response and create a list of Linkki's Events.
+                // Extract Event fields from the .txt response and create a list of Linkki's Events.
                 // Then add the events to the Linkki's Events list.
                 eventsLinkki.addAll(linkkiDetailsParser.extractLinkkiEventDetails(sendHttpRequest(linkkiUrl)));
 
+
                 /** PÖRSSI RY */
-            } else if (requestUrl[i].contains("porssiry.fi")) {
+            } /*else if (requestUrl[i].contains("porssiry.fi")) {
 
                 // Get just the "css-events-list" HTML div's data from Pörssi's website using jsoup library.
-                /** jsoup HTML parser library @ https://jsoup.org */
+                * jsoup HTML parser library @ https://jsoup.org
                 try {
 
                     Document documentPorssi = Jsoup.connect(requestUrl[i]).get();
 
-                    /** https://jsoup.org/cookbook/extracting-data/selector-syntax */
+                    * https://jsoup.org/cookbook/extracting-data/selector-syntax
                     Elements porssiEventUrlElements = documentPorssi.getElementsByClass("css-events-list").select("[href]");
 
                     // Put the elements content (the URL's) from href fields to a String List
@@ -176,7 +174,7 @@ final class Queries {
 
                 Event porssiEvent = null;
 
-                /** Fetch each event's data using the URL array to create the Event objects. */
+                * Fetch each event's data using the URL array to create the Event objects.
                 // The event's page list in http://www.porssiry.fi/tapahtumat/ goes to page 2 after 20 events.
                 // So only fetch the 20 first and not the url "http://www.porssiry.fi/tapahtumat/?pno=2"
                 for (int j = 0; j < porssiEventUrls.size() - 2; j++) {
@@ -185,18 +183,18 @@ final class Queries {
                     // Extract relevant fields from the HTTP response and create a list of Porssi's Events
                     porssiEvent = porssiDetailsParser.extractPorssiEventDetails(porssiUrl);
                     eventsPorssi.add(porssiEvent);
-                }
+                }*/
 
                 /** DUMPPI RY */
-            } else if (requestUrl[i].contains("dumppi.fi")) {
+            /*} else if (requestUrl[i].contains("dumppi.fi")) {
 
                 // Get just the "css-events-list" HTML div's data from Dumppi's website using jsoup library.
-                /** jsoup HTML parser library @ https://jsoup.org */
+                * jsoup HTML parser library @ https://jsoup.org
                 try {
 
                     Document documentDumppi = Jsoup.connect(requestUrl[i]).get();
 
-                    /** https://jsoup.org/cookbook/extracting-data/selector-syntax */
+                    * https://jsoup.org/cookbook/extracting-data/selector-syntax
                     Elements dumppiEventUrlElements = documentDumppi.getElementsByClass("css-events-list").select("[href]");
 
                     // Put the elements content (the URL's) from href fields to a String List
@@ -210,25 +208,25 @@ final class Queries {
 
                 Event dumppiEvent;
 
-                /** Fetch each event's data using the URL array to create the Event objects. */
+                * Fetch each event's data using the URL array to create the Event objects.
                 for (int j = 0; j < dumppiEventUrls.size(); j++) {
                     dumppiUrl = dumppiEventUrls.get(j);
 
                     // Extract relevant fields from the HTTP response and create a list of Dumppi's Events
                     dumppiEvent = dumppiDetailsParser.extractDumppiEventDetails(dumppiUrl);
                     eventsDumppi.add(dumppiEvent);
-                }
+                }*/
 
                 /** STIMULUS RY */
-            } else if (requestUrl[i].contains("stimulus.fi")) {
+            /*} else if (requestUrl[i].contains("stimulus.fi")) {
 
                 // Get just the "ilmo_content" HTML div's data from Stimulus's website using jsoup library.
-                /** jsoup HTML parser library @ https://jsoup.org */
+                * jsoup HTML parser library @ https://jsoup.org
                 try {
 
                     Document documentStimulus = Jsoup.connect(requestUrl[i]).get();
 
-                    /** https://jsoup.org/cookbook/extracting-data/selector-syntax */
+                    * https://jsoup.org/cookbook/extracting-data/selector-syntax
                     // Elements stimulusEventUrlElements = documentStimulus.select("div#ilmo_content"); // .select("[href]")
                     Elements stimulusEventUrlElements = documentStimulus.getElementsByClass("tapahtuma_nosto").select("[href]");
 
@@ -242,7 +240,7 @@ final class Queries {
 
                 Event stimulusEvent;
 
-                /** Fetch each event's data using the URL array to create the Event objects. */
+                * Fetch each event's data using the URL array to create the Event objects.
                 for (int j = 0; j < stimulusEventUrls.size(); j++) {
                     stimulusUrl = stimulusEventUrls.get(j);
 
@@ -251,15 +249,15 @@ final class Queries {
                     eventsStimulus.add(stimulusEvent);
                 }
 
-            }
+            }*/
 
         }
 
         // Add all events from different groups list's to the allEventsList
-        allEventsList.addAll(eventsPorssi);
         allEventsList.addAll(eventsLinkki);
+       /* allEventsList.addAll(eventsPorssi);
         allEventsList.addAll(eventsDumppi);
-        allEventsList.addAll(eventsStimulus);
+        allEventsList.addAll(eventsStimulus);*/
 
         allEventsList = organizeEventsByTimestamp(allEventsList);
 
