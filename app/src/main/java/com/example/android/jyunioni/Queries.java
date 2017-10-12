@@ -113,22 +113,17 @@ final class Queries {
      */
     public static List<Event> fetchEventData(String[] requestUrl) {
 
-        // TODO: switch case rakenne url:in mukaan.
-
         // Create URL objects and the Strings for URL's. Create the lists in which the event's will be put into.
         List<Event> eventsLinkki = new ArrayList<>();
         URL linkkiUrl;
 
-/*        List<Event> eventsPorssi = new ArrayList<>();
-        List<String> porssiEventUrls = new ArrayList<>();
-        String porssiUrl;
+        List<Event> eventsPorssi = new ArrayList<>();
+        URL porssiUrl;
 
-        List<Event> eventsDumppi = new ArrayList<>();
-        List<String> dumppiEventUrls = new ArrayList<>();
+    /*    List<Event> eventsDumppi = new ArrayList<>();
         String dumppiUrl;
 
         List<Event> eventsStimulus = new ArrayList<>();
-        List<String> stimulusEventUrls = new ArrayList<>();
         String stimulusUrl;*/
 
         List<Event> allEventsList = new ArrayList<>();
@@ -149,41 +144,21 @@ final class Queries {
 
                 // Extract Event fields from the .txt response and create a list of Linkki's Events.
                 // Then add the events to the Linkki's Events list.
-                eventsLinkki.addAll(linkkiDetailsParser.extractLinkkiEventDetails(sendHttpRequest(linkkiUrl)));
+                eventsLinkki.addAll(EventDetailsParser.extractEventDetails(sendHttpRequest(linkkiUrl)));
 
 
                 /** PÖRSSI RY */
-            } /*else if (requestUrl[i].contains("porssiry.fi")) {
+            } else if (requestUrl[i].contains("porssiEvents.txt")) {
 
-                // Get just the "css-events-list" HTML div's data from Pörssi's website using jsoup library.
-                * jsoup HTML parser library @ https://jsoup.org
-                try {
+                // TODO: events from the real server address
 
-                    Document documentPorssi = Jsoup.connect(requestUrl[i]).get();
+                porssiUrl = createUrl(requestUrl[i]);
 
-                    * https://jsoup.org/cookbook/extracting-data/selector-syntax
-                    Elements porssiEventUrlElements = documentPorssi.getElementsByClass("css-events-list").select("[href]");
+                // Extract Event fields from the .txt response and create a list of Linkki's Events.
+                // Then add the events to the Linkki's Events list.
+                eventsPorssi.addAll(EventDetailsParser.extractEventDetails(sendHttpRequest(porssiUrl)));
 
-                    // Put the elements content (the URL's) from href fields to a String List
-                    for (Element element : porssiEventUrlElements) {
-                        porssiEventUrls.add(element.attr("href"));
-                    }
-                } catch (IOException e) {
-                    Log.e(LOG_TAG, "Problem in jsouping Pörssi Ry's events.\n" + e);
                 }
-
-                Event porssiEvent = null;
-
-                * Fetch each event's data using the URL array to create the Event objects.
-                // The event's page list in http://www.porssiry.fi/tapahtumat/ goes to page 2 after 20 events.
-                // So only fetch the 20 first and not the url "http://www.porssiry.fi/tapahtumat/?pno=2"
-                for (int j = 0; j < porssiEventUrls.size() - 2; j++) {
-                    porssiUrl = porssiEventUrls.get(j);
-
-                    // Extract relevant fields from the HTTP response and create a list of Porssi's Events
-                    porssiEvent = porssiDetailsParser.extractPorssiEventDetails(porssiUrl);
-                    eventsPorssi.add(porssiEvent);
-                }*/
 
                 /** DUMPPI RY */
             /*} else if (requestUrl[i].contains("dumppi.fi")) {

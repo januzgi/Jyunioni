@@ -61,7 +61,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     /**
      * A String array for the different groups event URL's.
      */
-    private String[] allEventPageUrls = new String[1];
+    private String[] allEventPageUrls = new String[2];
 
     /**
      * int for the no event data or no internet connection message.
@@ -79,16 +79,16 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         // Different groups event's list .txt address in the server.
         String LINKKI_EVENTS_URL = "http://users.jyu.fi/~jatasuor/linkkiEvents.txt";
 
-  /*      String PORSSI_EVENTS_URL = "http://www.porssiry.fi/tapahtumat/";
+        String PORSSI_EVENTS_URL = "http://users.jyu.fi/~jatasuor/porssiEvents.txt";
 
-        String DUMPPI_EVENTS_URL = "https://dumppi.fi/tapahtumat/";
+        /*String DUMPPI_EVENTS_URL = "https://dumppi.fi/tapahtumat/";
 
         String STIMULUS_EVENTS_URL = "http://stimulus.fi/ilmoittautuminen.php";*/
 
         // Add the event URL's to the String array
         allEventPageUrls[0] = LINKKI_EVENTS_URL;
-/*        allEventPageUrls[1] = PORSSI_EVENTS_URL;
-        allEventPageUrls[2] = DUMPPI_EVENTS_URL;
+        allEventPageUrls[1] = PORSSI_EVENTS_URL;
+       /* allEventPageUrls[2] = DUMPPI_EVENTS_URL;
         allEventPageUrls[3] = STIMULUS_EVENTS_URL;*/
 
         // Find the ListView object in the view hierarchy.
