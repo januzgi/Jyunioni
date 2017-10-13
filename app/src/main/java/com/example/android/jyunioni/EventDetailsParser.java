@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 /**
  * Created by JaniS on 1.8.2017.
- * Class in which the parsing methods are for the Linkki Jyväskylä Ry's events.
+ * Class in which the parsing methods are for different group's events.
  */
 class EventDetailsParser {
 
@@ -25,7 +25,10 @@ class EventDetailsParser {
         List<Event> extractedEvents = new ArrayList<>();
 
         // If the response is empty or null, then return early.
-        if (httpResponseString == null) return extractedEvents;
+        if (httpResponseString == "") {
+            extractedEvents.add(new Event("Internet yhteys vajaa.", "Tarkista verkon toimivuus.", "Testaa pääsetkö Googleen.", R.drawable.default_icon, R.color.primary_color, "https://www.google.fi"));
+            return extractedEvents;
+        }
 
         // Helper variable for the scanner loops
         String line;
@@ -41,7 +44,8 @@ class EventDetailsParser {
         int eventsCount = 0;
 
         // Check which group's event it is (it's written on the first line of the response) and add according icon and color
-        String whichGroupsEvent = eventsCountScanner.next();
+        String whichGroupsEvent = "";
+        whichGroupsEvent = eventsCountScanner.next();
 
         switch (whichGroupsEvent) {
             case "LINKKI":

@@ -84,6 +84,20 @@ class Event implements Comparable<Event> {
         // "11.9. 18:00 - 22:00"
         String timestamp = this.getEventTimestamp();
 
+        // If the date doesn't contain spaces, it is only one day event without hours
+        if (!timestamp.contains(" ")) {
+            // Create a Date object
+            try {
+                SimpleDateFormat newFormat = new SimpleDateFormat("d.M.");
+                result = newFormat.parse(timestamp);
+                Log.e(LOG_TAG, result.toString());
+            } catch (ParseException e) {
+                Log.e(LOG_TAG, "Parsing problem at getEventStartDate().\n" + e);
+            }
+
+            return result;
+        }
+
         // Get the starting date (before the HH:MM stamp) e.g. "11.9."
         String startDateString = timestamp.substring(0, timestamp.indexOf(" "));
 

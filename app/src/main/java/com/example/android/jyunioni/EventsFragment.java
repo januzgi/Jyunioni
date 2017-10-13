@@ -76,6 +76,9 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         // TODO: fragment to save data for future use
         // TODO: älä hae tapahtumia uusiksi fragmentsiin tultaessa toista kertaa vaan ota ne vaan muistista
 
+        // TODO: events from the real server address
+
+
         // Different groups event's list .txt address in the server.
         String LINKKI_EVENTS_URL = "http://users.jyu.fi/~jatasuor/linkkiEvents.txt";
 

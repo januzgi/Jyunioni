@@ -59,8 +59,8 @@ final class Queries {
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
-            urlConnection.setReadTimeout(10000  /*milliseconds*/);
-            urlConnection.setConnectTimeout(15000  /*milliseconds*/);
+            urlConnection.setReadTimeout(20000  /*milliseconds*/);
+            urlConnection.setConnectTimeout(55000  /*milliseconds*/);
             urlConnection.connect();
 
             if (urlConnection.getResponseCode() == 200) {
@@ -138,8 +138,6 @@ final class Queries {
             /** LINKKI JYVÄSKYLÄ RY */
             if (requestUrl[i].contains("linkkiEvents.txt")) {
 
-                // TODO: events from the real server address
-
                 linkkiUrl = createUrl(requestUrl[i]);
 
                 // Extract Event fields from the .txt response and create a list of Linkki's Events.
@@ -149,8 +147,6 @@ final class Queries {
 
                 /** PÖRSSI RY */
             } else if (requestUrl[i].contains("porssiEvents.txt")) {
-
-                // TODO: events from the real server address
 
                 porssiUrl = createUrl(requestUrl[i]);
 
@@ -230,8 +226,8 @@ final class Queries {
 
         // Add all events from different groups list's to the allEventsList
         allEventsList.addAll(eventsLinkki);
-       /* allEventsList.addAll(eventsPorssi);
-        allEventsList.addAll(eventsDumppi);
+        allEventsList.addAll(eventsPorssi);
+       /* allEventsList.addAll(eventsDumppi);
         allEventsList.addAll(eventsStimulus);*/
 
         allEventsList = organizeEventsByTimestamp(allEventsList);
