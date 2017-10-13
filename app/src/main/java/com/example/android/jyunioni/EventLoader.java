@@ -14,6 +14,11 @@ import java.util.List;
  */
 class EventLoader extends AsyncTaskLoader<List<Event>> {
 
+    /**
+     * Tag for the log messages
+     */
+    public static final String LOG_TAG = EventDetails.class.getSimpleName();
+
     /** Query URL */
     private String[] mUrls;
 
@@ -53,6 +58,5 @@ class EventLoader extends AsyncTaskLoader<List<Event>> {
         mEvents = Queries.fetchEventData(mUrls);
         return mEvents;
     }
-
 
 }

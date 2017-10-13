@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +66,11 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
      * A String array for the different groups event URL's.
      */
     private String[] allEventPageUrls = new String[2];
+
+    /**
+     * Create a global variable to access the internet connection information in the UI and background thread.
+     */
+    public boolean wifiAndInternet = false;
 
     /**
      * int for the no event data or no internet connection message.
@@ -114,7 +123,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         eventsListView.setAdapter(mAdapter);
 
         // Create a toast to keep the user entertained and up-to-date on what's happening.
-        Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.fetching_event_data, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.fetching_event_data, Toast.LENGTH_SHORT);
         // Return the default View of the Toast.
         View toastView = toast.getView();
 
@@ -173,9 +182,28 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         // Get details on the currently active default data network
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
+        // Check if WiFi is connected but there's no internet connection
+        new Runnable() {
+            @Override
+            public void run() {
+                // Moves the current Thread into the background
+                android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+
+                try {
+                    HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.google.fi").openConnection());
+                    urlc.setRequestProperty("User-Agent", "Test");
+                    urlc.setRequestProperty("Connection", "close");
+                    urlc.setConnectTimeout(1500);
+                    urlc.connect();
+                    wifiAndInternet = (urlc.getResponseCode() == 200);
+                } catch (IOException e) {
+                    Log.e(LOG_TAG, "Problem checking internet connection", e);
+                }
+            }
+        };
 
         // If there is a network connection, fetch data
-        if (activeNetwork != null && activeNetwork.isConnected()) {
+        if (activeNetwork != null && activeNetwork.isConnected() && wifiAndInternet) {
 
             // Get a reference to the LoaderManager, in order to interact with loaders.
             LoaderManager loaderManager = getActivity().getLoaderManager();

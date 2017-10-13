@@ -251,6 +251,9 @@ final class Queries {
             }
         }
 
+        // TODO: Delete events with a timestamp that has already passed. Loop through, match timestamp and do possible deletes.
+
+
         Collections.sort(allEventsList, new EventTimeComparator());
 
         String eventName1, eventName2, eventName3;
