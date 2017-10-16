@@ -65,7 +65,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     /**
      * A String array for the different groups event URL's.
      */
-    private String[] allEventPageUrls = new String[2];
+    private String[] allEventPageUrls = new String[3];
 
     /**
      * Create a global variable to access the internet connection information in the UI and background thread.
@@ -93,15 +93,15 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
         String PORSSI_EVENTS_URL = "http://users.jyu.fi/~jatasuor/porssiEvents.txt";
 
-        /*String DUMPPI_EVENTS_URL = "https://dumppi.fi/tapahtumat/";
+        String DUMPPI_EVENTS_URL = "http://users.jyu.fi/~jatasuor/dumppiEvents.txt";
 
-        String STIMULUS_EVENTS_URL = "http://stimulus.fi/ilmoittautuminen.php";*/
+       /* String STIMULUS_EVENTS_URL = "http://stimulus.fi/ilmoittautuminen.php";*/
 
         // Add the event URL's to the String array
         allEventPageUrls[0] = LINKKI_EVENTS_URL;
         allEventPageUrls[1] = PORSSI_EVENTS_URL;
-       /* allEventPageUrls[2] = DUMPPI_EVENTS_URL;
-        allEventPageUrls[3] = STIMULUS_EVENTS_URL;*/
+        allEventPageUrls[2] = DUMPPI_EVENTS_URL;
+        /*allEventPageUrls[3] = STIMULUS_EVENTS_URL;*/
 
         // Find the ListView object in the view hierarchy.
         // ListView with the view ID called events_list is declared in the list_build.xml layout file.
@@ -127,13 +127,13 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         // Return the default View of the Toast.
         View toastView = toast.getView();
 
-        /* And now you can get the TextView of the default View of the Toast. */
+        // Get the TextView of the default View of the Toast.
         TextView toastMessage = (TextView) toastView.findViewById(android.R.id.message);
         toastMessage.setTextSize(16);
         toastMessage.setTextColor(Color.parseColor("#FFFFFF"));
         toastMessage.setGravity(Gravity.CENTER);
-        toastMessage.setCompoundDrawablePadding(8);
-        toastView.setBackgroundColor(getResources().getColor((R.color.primary_color)));
+        /*toastMessage.setCompoundDrawablePadding(8);
+        toastView.setBackgroundColor(getResources().getColor((R.color.primary_color)));*/
         toast.show();
 
         /** Set a click listener to open the event's details via an intent */
@@ -227,6 +227,8 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onResume() {
         super.onResume();
+
+        // TODO: get events data from local storage
 
         LoaderManager loaderManager = getActivity().getLoaderManager();
         loaderManager.restartLoader(EVENT_LOADER_ID, null, EventsFragment.this).forceLoad();
