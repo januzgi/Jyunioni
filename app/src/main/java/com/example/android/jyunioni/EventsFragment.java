@@ -65,7 +65,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     /**
      * A String array for the different groups event URL's.
      */
-    private String[] allEventPageUrls = new String[3];
+    private String[] allEventPageUrls = new String[4];
 
     /**
      * Create a global variable to access the internet connection information in the UI and background thread.
@@ -75,7 +75,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     /**
      * int for the no event data or no internet connection message.
      */
-    private int noConnectionOrData = R.string.no_event_data_found;
+    private int noEventData = R.string.no_event_data_found;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
@@ -95,13 +95,13 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
         String DUMPPI_EVENTS_URL = "http://users.jyu.fi/~jatasuor/dumppiEvents.txt";
 
-       /* String STIMULUS_EVENTS_URL = "http://stimulus.fi/ilmoittautuminen.php";*/
+        String STIMULUS_EVENTS_URL = "http://users.jyu.fi/~jatasuor/stimulusEvents.txt";
 
         // Add the event URL's to the String array
         allEventPageUrls[0] = LINKKI_EVENTS_URL;
         allEventPageUrls[1] = PORSSI_EVENTS_URL;
         allEventPageUrls[2] = DUMPPI_EVENTS_URL;
-        /*allEventPageUrls[3] = STIMULUS_EVENTS_URL;*/
+        allEventPageUrls[3] = STIMULUS_EVENTS_URL;
 
         // Find the ListView object in the view hierarchy.
         // ListView with the view ID called events_list is declared in the list_build.xml layout file.
@@ -217,8 +217,8 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             // First, hide loading indicator so error message will be visible
 
             mProgressBar.setVisibility(View.GONE);
-            noConnectionOrData = R.string.no_internet_connection;
-            mEmptyStateTextView.setText(noConnectionOrData);
+            noEventData = R.string.no_internet_connection;
+            mEmptyStateTextView.setText(noEventData);
         }
 
     }
@@ -253,7 +253,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             mAdapter.addAll(events);
         }
 
-        mEmptyStateTextView.setText(noConnectionOrData);
+        mEmptyStateTextView.setText(noEventData);
 
         getLoaderManager().destroyLoader(EVENT_LOADER_ID);
     }

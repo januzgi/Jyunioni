@@ -116,8 +116,7 @@ class Event implements Comparable<Event> {
     /** Check for NullPointers, thus override. */
     @Override
     public int compareTo(Event event) {
-        if (this.getEventStartDate() == null || event.getEventStartDate() == null)
-            return 0;
+        if (this.getEventStartDate() == null || event.getEventStartDate() == null) return 0;
         return this.getEventStartDate().compareTo(event.getEventStartDate());
     }
 

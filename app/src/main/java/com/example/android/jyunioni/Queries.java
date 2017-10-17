@@ -13,6 +13,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import static com.example.android.jyunioni.EventDetails.LOG_TAG;
@@ -123,8 +124,8 @@ final class Queries {
         List<Event> eventsDumppi = new ArrayList<>();
         URL dumppiUrl;
 
-       /* List<Event> eventsStimulus = new ArrayList<>();
-        String stimulusUrl;*/
+        List<Event> eventsStimulus = new ArrayList<>();
+        URL stimulusUrl;
 
         List<Event> allEventsList = new ArrayList<>();
 
@@ -150,7 +151,7 @@ final class Queries {
 
                 porssiUrl = createUrl(requestUrl[i]);
 
-                // Extract Event fields from the .txt response and create a list of Linkki's Events.
+                // Extract Event fields from the .txt response and create a list of Pörssi's Events.
                 // Then add the events to the Pörssi's Events list.
                 eventsPorssi.addAll(EventDetailsParser.extractEventDetails(sendHttpRequest(porssiUrl)));
 
@@ -160,59 +161,53 @@ final class Queries {
 
                 dumppiUrl = createUrl(requestUrl[i]);
 
-                // Extract Event fields from the .txt response and create a list of Linkki's Events.
+                // Extract Event fields from the .txt response and create a list of Dumppi's Events.
                 // Then add the events to the Dumppi's Events list.
                 eventsDumppi.addAll(EventDetailsParser.extractEventDetails(sendHttpRequest(dumppiUrl)));
 
 
                 /** STIMULUS RY */
-            /* }  else if (requestUrl[i].contains("stimulus.fi")) {
+             }  else if (requestUrl[i].contains("stimulusEvents.txt")) {
 
-                // Get just the "ilmo_content" HTML div's data from Stimulus's website using jsoup library.
-                * jsoup HTML parser library @ https://jsoup.org
-                try {
+                stimulusUrl = createUrl(requestUrl[i]);
 
-                    Document documentStimulus = Jsoup.connect(requestUrl[i]).get();
-
-                    * https://jsoup.org/cookbook/extracting-data/selector-syntax
-                    // Elements stimulusEventUrlElements = documentStimulus.select("div#ilmo_content"); // .select("[href]")
-                    Elements stimulusEventUrlElements = documentStimulus.getElementsByClass("tapahtuma_nosto").select("[href]");
-
-                    // Put the elements content (the URL's) from href fields to a String List
-                    for (Element element : stimulusEventUrlElements) {
-                        stimulusEventUrls.add(element.attr("href"));
-                    }
-                } catch (IOException e) {
-                    Log.e(LOG_TAG, "Problem in jsouping Stimulus Ry's events.\n" + e);
-                }
-
-                Event stimulusEvent;
-
-                * Fetch each event's data using the URL array to create the Event objects.
-                for (int j = 0; j < stimulusEventUrls.size(); j++) {
-                    stimulusUrl = stimulusEventUrls.get(j);
-
-                    // Extract relevant fields from the HTTP response and create a list of Stimulus's Events
-                    stimulusEvent = stimulusDetailsParser.extractStimulusEventDetails(stimulusUrl);
-                    eventsStimulus.add(stimulusEvent);
-                }
-
-            }*/
+                // Extract Event fields from the .txt response and create a list of Stimulus' Events.
+                // Then add the events to the Stimulus' Events list.
+                eventsDumppi.addAll(EventDetailsParser.extractEventDetails(sendHttpRequest(stimulusUrl)));
 
             }
-
         }
+        // Only Linkki's events might be passed one's. Loop them through to delete already passed events.
+        eventsLinkki = deletePassedEvents(eventsLinkki);
 
         // Add all events from different groups list's to the allEventsList
         allEventsList.addAll(eventsLinkki);
         allEventsList.addAll(eventsPorssi);
         allEventsList.addAll(eventsDumppi);
-        /*allEventsList.addAll(eventsStimulus);*/
+        allEventsList.addAll(eventsStimulus);
 
         allEventsList = organizeEventsByTimestamp(allEventsList);
 
         // Return the list of all Events from different groups.
         return allEventsList;
+    }
+
+
+    /**
+     * Delete passed events from Linkki's event's list
+     */
+    public static List<Event> deletePassedEvents(List<Event> eventsLinkki) {
+        // Create today's datestamp
+        Date today = new Date();
+
+        // Loop through events checking for timestamps that are in the history and deleting those events
+        for (int i = 0; i < eventsLinkki.size(); i++) {
+            if (eventsLinkki.get(i).getEventStartDate().before(today)){
+                eventsLinkki.remove(i);
+            }
+        }
+
+        return eventsLinkki;
     }
 
 
@@ -225,13 +220,9 @@ final class Queries {
         class EventTimeComparator implements Comparator<Event> {
             @Override
             public int compare(Event event1, Event event2) {
-
                 return event1.getEventStartDate().compareTo(event2.getEventStartDate());
             }
         }
-
-        // TODO: Delete events with a timestamp that has already passed. Loop through, match timestamp and do possible deletes.
-
 
         Collections.sort(allEventsList, new EventTimeComparator());
 
