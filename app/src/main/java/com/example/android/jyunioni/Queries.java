@@ -11,6 +11,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -177,8 +178,6 @@ final class Queries {
 
             }
         }
-        // Only Linkki's events might be passed one's. Loop them through to delete already passed events.
-        eventsLinkki = deletePassedEvents(eventsLinkki);
 
         // Add all events from different groups list's to the allEventsList
         allEventsList.addAll(eventsLinkki);
@@ -186,7 +185,11 @@ final class Queries {
         allEventsList.addAll(eventsDumppi);
         allEventsList.addAll(eventsStimulus);
 
+        // Organize the events by timestamp in ascending order
         allEventsList = organizeEventsByTimestamp(allEventsList);
+
+        // Events might be passed one's. Loop them through to delete already passed events.
+        allEventsList = deletePassedEvents(allEventsList);
 
         // Return the list of all Events from different groups.
         return allEventsList;
@@ -194,20 +197,25 @@ final class Queries {
 
 
     /**
-     * Delete passed events from Linkki's event's list
+     * Delete passed events from the event's list
      */
-    public static List<Event> deletePassedEvents(List<Event> eventsLinkki) {
-        // Create today's datestamp
-        Date today = new Date();
+    public static List<Event> deletePassedEvents(List<Event> allEventsList) {
+        // Create yesterday's datestamp so that today's events will be shown.
+        // Minus one day from today's Date instance
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -1);
+        Date yesterday = calendar.getTime();
 
         // Loop through events checking for timestamps that are in the history and deleting those events
-        for (int i = 0; i < eventsLinkki.size(); i++) {
-            if (eventsLinkki.get(i).getEventStartDate().before(today)){
-                eventsLinkki.remove(i);
+        for (int i = 0; i < allEventsList.size(); i++) {
+            // If the date is before yesterday then remove the event. Mind the index.
+            if (allEventsList.get(i).getEventStartDate().before(yesterday)){
+                allEventsList.remove(i);
+                i--;
             }
         }
 
-        return eventsLinkki;
+        return allEventsList;
     }
 
 

@@ -83,19 +83,20 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         View rootView = inflater.inflate(R.layout.list_build, container, false);
 
         // TODO: fragment to save data for future use
+        // https://stackoverflow.com/questions/22505327/android-save-restore-fragment-state
+
         // TODO: älä hae tapahtumia uusiksi fragmentsiin tultaessa toista kertaa vaan ota ne vaan muistista
 
         // TODO: events from the real server address
 
-
         // Different groups event's list .txt address in the server.
-        String LINKKI_EVENTS_URL = "http://users.jyu.fi/~jatasuor/linkkiEvents.txt";
+        String LINKKI_EVENTS_URL = "http://users.jyu.fi/~jatasuor/Jyunioni/linkkiEvents.txt";
 
-        String PORSSI_EVENTS_URL = "http://users.jyu.fi/~jatasuor/porssiEvents.txt";
+        String PORSSI_EVENTS_URL = "http://users.jyu.fi/~jatasuor/Jyunioni/porssiEvents.txt";
 
-        String DUMPPI_EVENTS_URL = "http://users.jyu.fi/~jatasuor/dumppiEvents.txt";
+        String DUMPPI_EVENTS_URL = "http://users.jyu.fi/~jatasuor/Jyunioni/dumppiEvents.txt";
 
-        String STIMULUS_EVENTS_URL = "http://users.jyu.fi/~jatasuor/stimulusEvents.txt";
+        String STIMULUS_EVENTS_URL = "http://users.jyu.fi/~jatasuor/Jyunioni/stimulusEvents.txt";
 
         // Add the event URL's to the String array
         allEventPageUrls[0] = LINKKI_EVENTS_URL;
@@ -120,7 +121,13 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         mAdapter = new EventAdapter(getActivity(), new ArrayList<Event>());
 
         // ListView uses the EventAdapter so ListView will display list items for each Event in the list.
-        eventsListView.setAdapter(mAdapter);
+        // Check whether the adapter is already set and contains information.
+        if ( eventsListView.getAdapter() == null )
+            eventsListView.setAdapter(mAdapter);
+        else {
+            /*eventsListView.updateData(myNewData);  //update adapter's data
+            eventsListView.notifyDataSetChanged(); //notifies any View reflecting data to refresh*/
+        }
 
         // Create a toast to keep the user entertained and up-to-date on what's happening.
         Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.fetching_event_data, Toast.LENGTH_SHORT);
@@ -243,9 +250,6 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onLoadFinished(Loader<List<Event>> loader, List<Event> events) {
         mProgressBar.setVisibility(View.GONE);
-
-        // Clear the adapter of previous events data
-        mAdapter.clear();
 
         // If there is a valid list of Events, then add them to the adapter's
         // data set. This will trigger the ListView to update.

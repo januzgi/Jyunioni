@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import static com.example.android.jyunioni.EventDetails.LOG_TAG;
@@ -84,11 +85,18 @@ class Event implements Comparable<Event> {
         // "11.9. 18:00 - 22:00"
         String timestamp = this.getEventTimestamp();
 
+        // Add the year to the timestamp so that the passed events deleting works properly
+        Calendar now = Calendar.getInstance();
+        int year = now.get(Calendar.YEAR);
+        String yearNow = String.valueOf(year);
+
         // If the date doesn't contain spaces, it is only one day event without hours
         if (!timestamp.contains(" ")) {
             // Create a Date object
             try {
-                SimpleDateFormat newFormat = new SimpleDateFormat("d.M.");
+                timestamp += yearNow;
+
+                SimpleDateFormat newFormat = new SimpleDateFormat("d.M.yyyy");
                 result = newFormat.parse(timestamp);
                 Log.e(LOG_TAG, result.toString());
             } catch (ParseException e) {
@@ -103,7 +111,9 @@ class Event implements Comparable<Event> {
 
         // Create a Date object
         try {
-            SimpleDateFormat newFormat = new SimpleDateFormat("d.M.");
+            startDateString += yearNow;
+
+            SimpleDateFormat newFormat = new SimpleDateFormat("d.M.yyyy");
             result = newFormat.parse(startDateString);
             Log.e(LOG_TAG, result.toString());
         } catch (ParseException e) {
