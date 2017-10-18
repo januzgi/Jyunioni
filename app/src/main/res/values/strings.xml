@@ -23,4 +23,7 @@
     <string name="no_internet_connection">Ei internet yhteyttä.</string>
     <!-- Toast text to tell the user if the event's page URL was not found -->
     <string name="webpage_not_found">Tapahtuman osoitetta ei löytynyt.</string>
+
+    <!-- Empty string -->
+    <string name="empty_message"></string>
 </resources>

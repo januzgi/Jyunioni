@@ -2,12 +2,14 @@ package com.example.android.jyunioni;
 
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
@@ -19,8 +21,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.app.AlertDialog;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -60,7 +62,8 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     /**
      * Required empty public constructor
      */
-    public EventsFragment() {}
+    public EventsFragment() {
+    }
 
     /**
      * A String array for the different groups event URL's.
@@ -70,24 +73,20 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     /**
      * Create a global variable to access the internet connection information in the UI and background thread.
      */
-    public boolean wifiAndInternet = false;
+    public boolean internetConnectionEstablished = true;
 
     /**
-     * int for the no event data or no internet connection message.
+     * int for the "no event data" or "no internet connection" messages.
      */
-    private int noEventData = R.string.no_event_data_found;
+    private int emptyStateTextViewMessage = R.string.empty_message;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.list_build, container, false);
 
-        // TODO: fragment to save data for future use
+        // TODO: fragment to save data for future use. onPause() method implementation
         // https://stackoverflow.com/questions/22505327/android-save-restore-fragment-state
-
-        // TODO: älä hae tapahtumia uusiksi fragmentsiin tultaessa toista kertaa vaan ota ne vaan muistista
-
-        // TODO: events from the real server address
 
         // Different groups event's list .txt address in the server.
         String LINKKI_EVENTS_URL = "http://users.jyu.fi/~jatasuor/Jyunioni/linkkiEvents.txt";
@@ -121,27 +120,8 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         mAdapter = new EventAdapter(getActivity(), new ArrayList<Event>());
 
         // ListView uses the EventAdapter so ListView will display list items for each Event in the list.
-        // Check whether the adapter is already set and contains information.
-        if ( eventsListView.getAdapter() == null )
-            eventsListView.setAdapter(mAdapter);
-        else {
-            /*eventsListView.updateData(myNewData);  //update adapter's data
-            eventsListView.notifyDataSetChanged(); //notifies any View reflecting data to refresh*/
-        }
+        eventsListView.setAdapter(mAdapter);
 
-        // Create a toast to keep the user entertained and up-to-date on what's happening.
-        Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.fetching_event_data, Toast.LENGTH_SHORT);
-        // Return the default View of the Toast.
-        View toastView = toast.getView();
-
-        // Get the TextView of the default View of the Toast.
-        TextView toastMessage = (TextView) toastView.findViewById(android.R.id.message);
-        toastMessage.setTextSize(16);
-        toastMessage.setTextColor(Color.parseColor("#FFFFFF"));
-        toastMessage.setGravity(Gravity.CENTER);
-        /*toastMessage.setCompoundDrawablePadding(8);
-        toastView.setBackgroundColor(getResources().getColor((R.color.primary_color)));*/
-        toast.show();
 
         /** Set a click listener to open the event's details via an intent */
         eventsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -197,20 +177,38 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
                 android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 
                 try {
-                    HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.google.fi").openConnection());
-                    urlc.setRequestProperty("User-Agent", "Test");
-                    urlc.setRequestProperty("Connection", "close");
-                    urlc.setConnectTimeout(1500);
-                    urlc.connect();
-                    wifiAndInternet = (urlc.getResponseCode() == 200);
-                } catch (IOException e) {
-                    Log.e(LOG_TAG, "Problem checking internet connection", e);
+                    // URL to a known source
+                    URL url = new URL("http://www.google.com");
+
+                    // Open a connection
+                    HttpURLConnection urlConnect = (HttpURLConnection)url.openConnection();
+
+                    // Trying to retrieve data from the source. If there is no connection, this line will fail.
+                    Object objData = urlConnect.getContent();
+
+                } catch (Exception e) {
+                    Log.e(LOG_TAG, "Problem checking internet connection: ", e);
+                    internetConnectionEstablished = false;
                 }
+
             }
         };
 
+
         // If there is a network connection, fetch data
-        if (activeNetwork != null && activeNetwork.isConnected() && wifiAndInternet) {
+        if (activeNetwork != null && activeNetwork.isConnectedOrConnecting() && internetConnectionEstablished) {
+
+            // Create a toast to keep the user entertained and up-to-date on what's happening.
+            Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.fetching_event_data, Toast.LENGTH_SHORT);
+            // Return the default View of the Toast.
+            View toastView = toast.getView();
+
+            // Get the TextView of the default View of the Toast.
+            TextView toastMessage = (TextView) toastView.findViewById(android.R.id.message);
+            toastMessage.setTextSize(16);
+            toastMessage.setTextColor(Color.parseColor("#FFFFFF"));
+            toastMessage.setGravity(Gravity.CENTER);
+            toast.show();
 
             // Get a reference to the LoaderManager, in order to interact with loaders.
             LoaderManager loaderManager = getActivity().getLoaderManager();
@@ -224,18 +222,50 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             // First, hide loading indicator so error message will be visible
 
             mProgressBar.setVisibility(View.GONE);
-            noEventData = R.string.no_internet_connection;
-            mEmptyStateTextView.setText(noEventData);
+            emptyStateTextViewMessage = R.string.no_internet_connection;
+            mEmptyStateTextView.setText(emptyStateTextViewMessage);
+
+            // Dialog if there's no internet connection available
+            // From: https://stackoverflow.com/questions/25685755/ask-user-to-connect-to-internet-or-quit-app-android
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("No internet connection available.").setCancelable(false)
+                    .setPositiveButton("Connect to WIFI ->", new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int id) {
+                            startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                        }
+                    })
+                    .setNegativeButton("Quit ->", new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int id) {
+                            getActivity().finish();
+                        }
+                    });
+
+            AlertDialog alert = builder.create();
+            alert.show();
+
+/*            try {
+                Thread.sleep(1000000);
+            } catch (InterruptedException e) {
+                Log.e(LOG_TAG, "Problem sleeping Thread: " + e);
+            }*/
+
         }
 
     }
+
+    /*
+    @Override
+    public void onPause() {
+        // TODO: get loaded events data from local storage
+    }
+    */
 
 
     @Override
     public void onResume() {
         super.onResume();
-
-        // TODO: get events data from local storage
 
         LoaderManager loaderManager = getActivity().getLoaderManager();
         loaderManager.restartLoader(EVENT_LOADER_ID, null, EventsFragment.this).forceLoad();
@@ -255,9 +285,9 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         // data set. This will trigger the ListView to update.
         if (events != null && !events.isEmpty()) {
             mAdapter.addAll(events);
+        } else {
+            mEmptyStateTextView.setText(emptyStateTextViewMessage);
         }
-
-        mEmptyStateTextView.setText(noEventData);
 
         getLoaderManager().destroyLoader(EVENT_LOADER_ID);
     }

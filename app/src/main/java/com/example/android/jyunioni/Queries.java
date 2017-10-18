@@ -31,7 +31,8 @@ final class Queries {
     /**
      * Private constructor
      */
-    private Queries() { }
+    private Queries() {
+    }
 
 
     /**
@@ -168,7 +169,7 @@ final class Queries {
 
 
                 /** STIMULUS RY */
-             }  else if (requestUrl[i].contains("stimulusEvents.txt")) {
+            } else if (requestUrl[i].contains("stimulusEvents.txt")) {
 
                 stimulusUrl = createUrl(requestUrl[i]);
 
@@ -209,7 +210,7 @@ final class Queries {
         // Loop through events checking for timestamps that are in the history and deleting those events
         for (int i = 0; i < allEventsList.size(); i++) {
             // If the date is before yesterday then remove the event. Mind the index.
-            if (allEventsList.get(i).getEventStartDate().before(yesterday)){
+            if (allEventsList.get(i).getEventStartDate().before(yesterday)) {
                 allEventsList.remove(i);
                 i--;
             }
@@ -242,10 +243,10 @@ final class Queries {
             eventName2 = allEventsList.get(i + 1).getEventName();
             eventName3 = allEventsList.get(i + 2).getEventName();
 
-            if (eventName1.equals(eventName2) || eventName1.equals(eventName3)){
+            if (eventName1.equals(eventName2) || eventName1.equals(eventName3)) {
 
                 // Check even further ahead, Linkki's calendar overrides events easily so there can be double's.
-                if (eventName1.equals(eventName3)){
+                if (eventName1.equals(eventName3)) {
                     // Remember that the index of latter objects changes when deleting.
                     allEventsList.remove(i + 1);
                 }
