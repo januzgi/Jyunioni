@@ -20,9 +20,13 @@
     <!-- Toast text to tell the user if the intent contained no data for some reason -->
     <string name="no_event_data_found">Tapahtuman dataa ei löytynyt.</string>
     <!-- Toast text to tell the user if there's no internet connection -->
-    <string name="no_internet_connection">Ei internet yhteyttä.</string>
+    <string name="no_internet_connection">Ei internet yhteyttä.\nYhdistä internetiin.</string>
     <!-- Toast text to tell the user if the event's page URL was not found -->
     <string name="webpage_not_found">Tapahtuman osoitetta ei löytynyt.</string>
+    <!-- Toast text to tell the user to connect to a wifi -->
+    <string name="connect_to_wifi">Yhdistä WIFIin -></string>
+    <!-- Toast text to tell the user to quit app -->
+    <string name="quit_app">Lopeta X</string>
 
     <!-- Empty string -->
     <string name="empty_message"></string>

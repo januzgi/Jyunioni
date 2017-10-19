@@ -2,6 +2,8 @@ package com.example.android.jyunioni;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 
 import java.util.List;
 
@@ -19,14 +21,15 @@ class EventLoader extends AsyncTaskLoader<List<Event>> {
      */
     public static final String LOG_TAG = EventDetails.class.getSimpleName();
 
-    /** Query URL */
+    /** Query URLs, list of Events and internetConnection boolean */
     private String[] mUrls;
-
     private List<Event> mEvents;
+    private boolean internetConnection = false;
 
-    public EventLoader(Context context, String[] urls) {
+    public EventLoader(Context context, String[] urls, boolean connectedToInternet) {
         super(context);
         mUrls = urls;
+        internetConnection = connectedToInternet;
     }
 
     @Override
@@ -47,11 +50,24 @@ class EventLoader extends AsyncTaskLoader<List<Event>> {
         super.deliverResult(mEvents);
     }
 
+
     /** This is on a background thread. */
     @Override
     public List<Event> loadInBackground() {
+        // If there are no URL's in the list
         if (mUrls == null) {
             return null;
+        }
+
+        // If there's no internet connection, then end the activity after waiting a little
+        if (internetConnection == false) {
+            // Pause the thread for 30s and exit the activity
+            try {
+                Thread.sleep(30000);
+                getContext().stopService(new Intent(getContext(), com.example.android.jyunioni.EventLoader.class));
+            } catch (InterruptedException e) {
+                Log.e(LOG_TAG, "Problem trying to pause the background thread in EventLoader.java: " + e);
+            }
         }
 
         // Perform the network request, parse the response, and extract a list of events.
