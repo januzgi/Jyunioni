@@ -26,7 +26,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.app.Activity.RESULT_OK;
+import static android.R.id.message;
 
 /**
  * This fragment displays a list of events and has LoaderManager implemented to use the once fetched data.
@@ -73,11 +73,11 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     /**
      * Create a global boolean to access the internet connection information in the UI and background thread.
      * Create the Handler for stopping the app informatively.
-     * For the WIFI_SETTINGS intent an int to request making a connection. Keep it as a '0' so app execution continues.
+     * An int to check whether to show a "...fetching events..." toast or not.
      */
     public boolean internetConnectionEstablished = true;
     private Handler noConnectionsHandler = new Handler();
-    private static final int CONNECT_TO_WIFI_REQUEST = 0;
+    private int userConnectedToInternet = 0;
 
     /**
      * int for the "no event data" or "no internet connection" messages.
@@ -171,17 +171,8 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         // If there is a network connection, fetch data
         if (internetConnectionEstablished) {
 
-            // Create a toast to keep the user entertained and up-to-date on what's happening.
-            Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.fetching_event_data, Toast.LENGTH_SHORT);
-            // Return the default View of the Toast.
-            View toastView = toast.getView();
-
-            // Get the TextView of the default View of the Toast.
-            TextView toastMessage = (TextView) toastView.findViewById(android.R.id.message);
-            toastMessage.setTextSize(16);
-            toastMessage.setTextColor(Color.parseColor("#FFFFFF"));
-            toastMessage.setGravity(Gravity.CENTER);
-            toast.show();
+            // Show a toast for the user that the events are being fetched.
+            showToast(R.string.fetching_event_data);
 
             // Get a reference to the LoaderManager, in order to interact with loaders.
             LoaderManager loaderManager = getActivity().getLoaderManager();
@@ -193,7 +184,6 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         } else {
             // Otherwise, display error
             // First, hide loading indicator so error message will be visible
-
             mProgressBar.setVisibility(View.GONE);
             emptyStateTextViewMessage = R.string.no_internet_connection;
             mEmptyStateTextView.setText(emptyStateTextViewMessage);
@@ -227,25 +217,23 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
 
-    /*
-    @Override
-    public void onPause() {
-
-        // TODO: fragment to save data for future use. onPause() method implementation
-        // https://stackoverflow.com/questions/22505327/android-save-restore-fragment-state
-        // TODO: get loaded events data from local storage
-
-        // The solution is to call dismiss() on the Dialog you created in
-        // viewP.java:183 before exiting the Activity, e.g. in onPause().
-        // All Windows&Dialogs should be closed before leaving an Activity.
-        // https://stackoverflow.com/questions/2850573/activity-has-leaked-window-that-was-originally-added
-    }
-    */
-
-
     @Override
     public void onResume() {
         super.onResume();
+
+        // Get the state of connectivity to the boolean 'internetConnectionEstablished'
+        internetConnectionEstablished = isNetworkAvailable(getContext());
+
+        if (internetConnectionEstablished && noConnectionsHandler != null) {
+            // Stop the handler from shutting the app down
+            noConnectionsHandler.removeCallbacksAndMessages(null);
+            // Show a toast that events are being fetched for the first time user has an available internet connection.
+            // Add to the counter
+            userConnectedToInternet++;
+            if (userConnectedToInternet == 1) {
+                showToast(R.string.fetching_event_data);
+            }
+        }
 
         LoaderManager loaderManager = getActivity().getLoaderManager();
         loaderManager.restartLoader(EVENT_LOADER_ID, null, EventsFragment.this).forceLoad();
@@ -254,16 +242,20 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public Loader<List<Event>> onCreateLoader(int id, Bundle bundle) {
+
         // Quit the program if there's no internet connection
         if (!internetConnectionEstablished) {
+
             // Create a Runnable to be used later for finishing the Activity.
-            // Give the user 30s of time to connect to a wifi before quitting the app.
-            noConnectionsHandler.postDelayed(new Runnable() {
+            final Runnable noConnectionsRunnable  = new Runnable() {
                 public void run() {
                     getContext().stopService(new Intent(getContext(), com.example.android.jyunioni.EventsFragment.class));
                     getActivity().finish();
                 }
-            }, 30000);
+            };
+
+            // Give the user 60s of time to connect to a wifi before quitting the app.
+            noConnectionsHandler.postDelayed(noConnectionsRunnable, 60000);
 
             // Dialog if there's no internet connection available
             // From: https://stackoverflow.com/questions/25685755/ask-user-to-connect-to-internet-or-quit-app-android
@@ -272,7 +264,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
                     .setNegativeButton(R.string.connect_to_wifi, new DialogInterface.OnClickListener() {
 
                         public void onClick(DialogInterface dialog, int id) {
-                            getActivity().startActivityForResult(new Intent(Settings.ACTION_WIFI_SETTINGS), CONNECT_TO_WIFI_REQUEST);
+                            getActivity().startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
                         }
                     })
                     .setPositiveButton(R.string.quit_app, new DialogInterface.OnClickListener() {
@@ -286,7 +278,8 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             alert.show();
 
             // Show a toast for the user
-            noInternetConnectionToast();
+            showToast(R.string.no_internet_connection);
+
             // Create a new loader for the given URLs, with internetConnectionEstablished == false,
             // so the background thread pauses
             return new EventLoader(getContext(), allEventPageUrls, internetConnectionEstablished);
@@ -298,41 +291,22 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
 
     /**
-     * Show a toast in the UI thread that there's no internet connection
+     * Show a toast in the UI thread for two events:
+     * 1. That there's no internet connection
+     * 2. Display the text "...fetching events..."
      */
-    private void noInternetConnectionToast() {
+    private void showToast(int toastTextMessage) {
         // Create a toast to keep the user entertained and up-to-date on what's happening.
-        Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.no_internet_connection, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(getActivity().getApplicationContext(), toastTextMessage, Toast.LENGTH_LONG);
         // Return the default View of the Toast.
         View toastView = toast.getView();
 
         // Get the TextView of the default View of the Toast.
-        TextView toastMessage = (TextView) toastView.findViewById(android.R.id.message);
+        TextView toastMessage = (TextView) toastView.findViewById(message);
         toastMessage.setTextSize(16);
         toastMessage.setTextColor(Color.parseColor("#FFFFFF"));
         toastMessage.setGravity(Gravity.CENTER);
         toast.show();
-    }
-
-
-    /**
-     * Get the result from WIFI intent and see whether the connection was made or not.
-     * From: https://developer.android.com/training/basics/intents/result.html
-     */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Check which request we're responding to
-        if (requestCode == CONNECT_TO_WIFI_REQUEST) {
-
-            // Make sure the request was successful
-            if (resultCode == RESULT_OK) {
-
-                // https://stackoverflow.com/questions/10407159/how-to-manage-startactivityforresult-on-android
-                // The user connected to a wifi.
-                internetConnectionEstablished = true;
-                noConnectionsHandler = null;
-            }
-        }
     }
 
 

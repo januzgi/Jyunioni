@@ -21,7 +21,7 @@ import android.widget.Toast;
  * Class for single Event's details. Clicking an item in the main list gets you to event details.
  * This class handles the event details.
  */
-class EventDetails extends AppCompatActivity {
+public class EventDetails extends AppCompatActivity {
 
     /** Tag for the log messages */
     public static final String LOG_TAG = EventDetails.class.getSimpleName();

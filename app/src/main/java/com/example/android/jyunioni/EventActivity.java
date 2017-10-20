@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 /**
  * Main activity which compiles viewpager and tablayout together with the fragments being used.
  */
-class EventActivity extends AppCompatActivity {
+public class EventActivity extends AppCompatActivity {
 
 
     @Override

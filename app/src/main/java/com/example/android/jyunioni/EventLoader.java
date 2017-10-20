@@ -61,9 +61,10 @@ class EventLoader extends AsyncTaskLoader<List<Event>> {
 
         // If there's no internet connection, then end the activity after waiting a little
         if (internetConnection == false) {
-            // Pause the thread for 30s and exit the activity
+            // Pause the thread for 60s. Wait for the user to connect to the internet,
+            // if that doesn't happen then the app is shut down.
             try {
-                Thread.sleep(30000);
+                Thread.sleep(60000);
                 getContext().stopService(new Intent(getContext(), com.example.android.jyunioni.EventLoader.class));
             } catch (InterruptedException e) {
                 Log.e(LOG_TAG, "Problem trying to pause the background thread in EventLoader.java: " + e);
