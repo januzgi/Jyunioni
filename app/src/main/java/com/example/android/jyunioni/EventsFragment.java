@@ -260,17 +260,23 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             // Dialog if there's no internet connection available
             // From: https://stackoverflow.com/questions/25685755/ask-user-to-connect-to-internet-or-quit-app-android
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(R.string.no_internet_connection).setCancelable(false)
-                    .setNegativeButton(R.string.connect_to_wifi, new DialogInterface.OnClickListener() {
+            builder.setMessage(R.string.connect_to_internet).setCancelable(false)
+                    .setPositiveButton(R.string.quit_app, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int id) {
+                            getActivity().finish();
+                        }
+                    })
+                    .setNeutralButton(R.string.connect_to_wifi, new DialogInterface.OnClickListener() {
 
                         public void onClick(DialogInterface dialog, int id) {
                             getActivity().startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
                         }
                     })
-                    .setPositiveButton(R.string.quit_app, new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.connect_roaming, new DialogInterface.OnClickListener() {
 
                         public void onClick(DialogInterface dialog, int id) {
-                            getActivity().finish();
+                            getActivity().startActivity(new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS));
                         }
                     });
 

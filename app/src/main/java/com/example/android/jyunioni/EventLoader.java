@@ -26,6 +26,7 @@ class EventLoader extends AsyncTaskLoader<List<Event>> {
     private List<Event> mEvents;
     private boolean internetConnection = false;
 
+
     public EventLoader(Context context, String[] urls, boolean connectedToInternet) {
         super(context);
         mUrls = urls;

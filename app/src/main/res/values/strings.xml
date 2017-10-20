@@ -17,14 +17,21 @@
     <string name="moving_to_event_page">Avataan tapahtuman sivu...</string>
     <!--Toast text to tell event's are being fetched-->
     <string name="fetching_event_data">...haetaan tapahtumia...</string>
+
     <!-- Toast text to tell the user if the intent contained no data for some reason -->
     <string name="no_event_data_found">Tapahtuman dataa ei löytynyt.</string>
+
     <!-- Toast text to tell the user if there's no internet connection -->
     <string name="no_internet_connection">Ei internet yhteyttä.\nYhdistä internetiin.</string>
+    <!-- Toast text to tell the user to establish an internet connection via WIFI or roaming -->
+    <string name="connect_to_internet">Yhdistä internetiin:</string>
     <!-- Toast text to tell the user if the event's page URL was not found -->
     <string name="webpage_not_found">Tapahtuman osoitetta ei löytynyt.</string>
+
     <!-- Toast text to tell the user to connect to a wifi -->
-    <string name="connect_to_wifi">Yhdistä WIFIin -></string>
+    <string name="connect_to_wifi">WIFI -></string>
+    <!-- Toast text to tell the user to connect via roaming -->
+    <string name="connect_roaming">4G / 3G -></string>
     <!-- Toast text to tell the user to quit app -->
     <string name="quit_app">Lopeta X</string>
 
