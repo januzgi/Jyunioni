@@ -90,13 +90,13 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         View rootView = inflater.inflate(R.layout.list_build, container, false);
 
         // Different groups events list .txt address in the server.
-        String LINKKI_EVENTS_URL = "";
+        String LINKKI_EVENTS_URL = "http://users.jyu.fi/~jatasuor/Jyunioni-server/Parsed-events/linkkiEvents.txt";
 
-        String PORSSI_EVENTS_URL = "";
+        String PORSSI_EVENTS_URL = "http://users.jyu.fi/~jatasuor/Jyunioni-server/Parsed-events/porssiEvents.txt";
 
-        String DUMPPI_EVENTS_URL = "";
+        String DUMPPI_EVENTS_URL = "http://users.jyu.fi/~jatasuor/Jyunioni-server/Parsed-events/dumppiEvents.txt";
 
-        String STIMULUS_EVENTS_URL = "";
+        String STIMULUS_EVENTS_URL = "http://users.jyu.fi/~jatasuor/Jyunioni-server/Parsed-events/stimulusEvents.txt";
 
         // Add the event URLs to the String array
         allEventPageUrls[0] = LINKKI_EVENTS_URL;
