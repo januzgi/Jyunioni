@@ -89,16 +89,16 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.list_build, container, false);
 
-        // Different groups event's list .txt address in the server.
-        String LINKKI_EVENTS_URL = "http://users.jyu.fi/~jatasuor/Jyunioni/linkkiEvents.txt";
+        // Different groups events list .txt address in the server.
+        String LINKKI_EVENTS_URL = "";
 
-        String PORSSI_EVENTS_URL = "http://users.jyu.fi/~jatasuor/Jyunioni/porssiEvents.txt";
+        String PORSSI_EVENTS_URL = "";
 
-        String DUMPPI_EVENTS_URL = "http://users.jyu.fi/~jatasuor/Jyunioni/dumppiEvents.txt";
+        String DUMPPI_EVENTS_URL = "";
 
-        String STIMULUS_EVENTS_URL = "http://users.jyu.fi/~jatasuor/Jyunioni/stimulusEvents.txt";
+        String STIMULUS_EVENTS_URL = "";
 
-        // Add the event URL's to the String array
+        // Add the event URLs to the String array
         allEventPageUrls[0] = LINKKI_EVENTS_URL;
         allEventPageUrls[1] = PORSSI_EVENTS_URL;
         allEventPageUrls[2] = DUMPPI_EVENTS_URL;
