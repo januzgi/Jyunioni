@@ -37,4 +37,7 @@
 
     <!-- Empty string -->
     <string name="empty_message"></string>
+
+    <!-- "Sign in" string to inform user to log into a Google account -->
+    <string name="sign_in">Kirjaudu sisään</string>
 </resources>
