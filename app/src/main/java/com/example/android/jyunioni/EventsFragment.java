@@ -33,41 +33,26 @@ import static android.R.id.message;
  */
 public class EventsFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Event>> {
 
-
-    /**
-     * Constant value for the earthquake loader ID.
-     */
+    /** Constant value for the event loader ID. */
     private static final int EVENT_LOADER_ID = 1;
 
-    /**
-     * Tag for the log messages
-     */
+    /** Tag for the log messages */
     public static final String LOG_TAG = EventDetails.class.getSimpleName();
 
-    /**
-     * Adapter for the list of events
-     */
+    /** Adapter for the list of events */
     private EventAdapter mAdapter;
 
-    /**
-     * TextView that is displayed when the list is empty
-     */
+    /** TextView that is displayed when the list is empty */
     private TextView mEmptyStateTextView;
 
-    /**
-     * Progressbar to be shown when fetching data.
-     */
+    /** Progressbar to be shown when fetching data. */
     private ProgressBar mProgressBar;
 
-    /**
-     * Required empty public constructor
-     */
+    /** Required empty public constructor */
     public EventsFragment() {
     }
 
-    /**
-     * A String array for the different groups event URL's.
-     */
+    /** A String array for the different groups event URL's. */
     private String[] allEventPageUrls = new String[4];
 
     /**
@@ -79,9 +64,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     private Handler noConnectionsHandler = new Handler();
     private int userConnectedToInternet = 0;
 
-    /**
-     * int for the "no event data" or "no internet connection" messages.
-     */
+    /** int for the "no event data" or "no internet connection" messages. */
     private int emptyStateTextViewMessage = R.string.empty_message;
 
     @Override
@@ -113,7 +96,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         eventsListView.setEmptyView(mEmptyStateTextView);
 
         // Set the progress bar to be shown when searching for the data
-        mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
+        mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBarEventsList);
         mProgressBar.setVisibility(View.VISIBLE);
 
         // Create an EventAdapter, whose data source is a list of Events.

@@ -20,7 +20,7 @@
         android:textAppearance="?android:textAppearanceMedium" />
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/progressBarEventsList"
         android:layout_width="88dp"
         android:layout_height="88dp"
         android:layout_centerInParent="true"

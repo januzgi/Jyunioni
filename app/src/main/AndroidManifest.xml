@@ -26,6 +26,10 @@
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value="com.example.android.jyunioni.EventActivity" />
+
+        <activity android:name=".SignInGoogleActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>
