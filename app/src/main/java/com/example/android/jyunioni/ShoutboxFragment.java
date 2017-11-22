@@ -14,8 +14,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,7 +49,7 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
         public MessageViewHolder(View v) {
             super(v);
             messageTextView = (TextView) itemView.findViewById(R.id.shoutboxMessageTextView);
-            senderTextView = (TextView) itemView.findViewById(R.id.shoutboxSenderImageView);
+            senderTextView = (TextView) itemView.findViewById(R.id.shoutboxSenderTextView);
             senderImageView = (CircleImageView) itemView.findViewById(R.id.shoutboxSenderImageView);
         }
     }
@@ -65,7 +65,7 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
     private GoogleApiClient mGoogleApiClient;
 
     /** Initialize send button, message recycler view, progress bar, edit text field and the layout manager. */
-    private Button mSendButton;
+    private ImageButton mSendButton;
     private RecyclerView mMessageRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private ProgressBar mProgressBar;
@@ -228,7 +228,8 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
 
 
         // Initialize send button
-        mSendButton = (Button) getView().findViewById(R.id.sendButton);
+        mSendButton = (ImageButton) getView().findViewById(R.id.sendButton);
+
         // Listen for pushing of the send button
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -262,13 +263,11 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in.
+
         // TODO: Check if user is signed in.
     }
 
-    /**
-     * When resuming, start listening for new input or messages from database.
-     */
+    /** When resuming, start listening for new input or messages from database. */
     @Override
     public void onResume() {
         super.onResume();

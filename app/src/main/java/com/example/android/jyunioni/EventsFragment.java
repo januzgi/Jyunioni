@@ -155,7 +155,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         if (internetConnectionEstablished) {
 
             // Show a toast for the user that the events are being fetched.
-            showToast(R.string.fetching_event_data);
+            Toast.makeText(getContext(), R.string.fetching_event_data, Toast.LENGTH_SHORT).show();
 
             // Get a reference to the LoaderManager, in order to interact with loaders.
             LoaderManager loaderManager = getActivity().getLoaderManager();
@@ -214,7 +214,8 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             // Add to the counter
             userConnectedToInternet++;
             if (userConnectedToInternet == 1) {
-                showToast(R.string.fetching_event_data);
+                // Show a toast for the user that the events are being fetched.
+                Toast.makeText(getContext(), R.string.fetching_event_data, Toast.LENGTH_SHORT).show();
             }
         }
 
