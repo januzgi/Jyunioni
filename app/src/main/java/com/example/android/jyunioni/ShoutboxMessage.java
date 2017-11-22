@@ -1,41 +1,65 @@
 /*
- * Copyright (C) 2016 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ Jani Suoranta 22.11.2017
  */
 package com.example.android.jyunioni;
 
 /**
  * ShoutboxMessage is the class for shoutbox messages.
- * This class contains String for the message, database where the messages are being saved.
+ * This class contains constructors for the messages and most important methods.
  */
 class ShoutboxMessage {
 
-    /** String for the message */
-    private String mMessage;
+    /** Different string attributes needed for the messages */
+    private String id;
+    private String text;
+    private String name;
+    private String photoUrl;
+
+    // Empty default constructor
+    public ShoutboxMessage() { }
 
     /**
-     * Create a new ShoutboxMessage object.
+     * ShoutboxMessage constructor.
      *
-     * @param message the message string.
+     * @param text the message string.
+     * @param name name of the message sender.
+     * @param photoUrl URL to the senders profile picture
      */
-    public ShoutboxMessage(String message) {
-        mMessage = message;
+    public ShoutboxMessage(String text, String name, String photoUrl) {
+        this.text = text;
+        this.name = name;
+        this.photoUrl = photoUrl;
     }
 
-    /** Get the strings that are posted into the shoutbox. */
-    public String getShoutboxMessages() {
-        return mMessage;
+    /** Getter and setter for the message id */
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
     }
 
+    /** Getter and setter for the message sender's name */
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /** Getter and setter for the message text */
+    public String getText() {
+        return text;
+    }
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    /** Getter and setter for the message sender's profile picture */
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
 }

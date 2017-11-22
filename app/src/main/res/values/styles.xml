@@ -5,14 +5,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/primary_color</item>
         <item name="colorPrimaryDark">@color/status_bar_color</item>
-        <item name="actionBarStyle">@style/JyunioniAppBarStyle</item>
         <item name="android:windowContentOverlay">@null</item>
-    </style>
-
-    <!-- App bar style -->
-    <style name="JyunioniAppBarStyle" parent="@android:style/Widget.DeviceDefault.Light.ActionBar.Solid.Inverse">
-        <!-- Remove the shadow below the app bar -->
-        <item name="elevation">0dp</item>
     </style>
 
     <!-- Style for a tab that displays a category name  #0D47A1 oranssi: -->
