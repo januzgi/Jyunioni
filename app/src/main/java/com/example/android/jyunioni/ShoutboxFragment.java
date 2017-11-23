@@ -1,5 +1,6 @@
 package com.example.android.jyunioni;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,9 +15,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +25,6 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,11 +46,12 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
         TextView senderTextView;
         CircleImageView senderImageView;
 
-        public MessageViewHolder(View v) {
+        private MessageViewHolder(View v) {
             super(v);
-            messageTextView = (TextView) itemView.findViewById(R.id.shoutboxMessageTextView);
-            senderTextView = (TextView) itemView.findViewById(R.id.shoutboxSenderTextView);
-            senderImageView = (CircleImageView) itemView.findViewById(R.id.shoutboxSenderImageView);
+            messageTextView = itemView.findViewById(R.id.shoutboxMessageTextView);
+            senderTextView = itemView.findViewById(R.id.shoutboxSenderTextView);
+            senderImageView =
+                    itemView.findViewById(R.id.shoutboxSenderImageView);
         }
     }
 
@@ -62,18 +63,14 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
     /** Declare username, profile picture URL and initialize Google API client */
     private String mUsername;
     private String mPhotoUrl;
-    private GoogleApiClient mGoogleApiClient;
 
     /** Initialize send button, message recycler view, progress bar, edit text field and the layout manager. */
     private ImageButton mSendButton;
     private RecyclerView mMessageRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
-    private ProgressBar mProgressBar;
     private EditText mMessageEditText;
 
     // Firebase instance variables
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
     private DatabaseReference mFirebaseDatabaseReference;
     private FirebaseRecyclerAdapter<ShoutboxMessage, MessageViewHolder> mFirebaseAdapter;
 
@@ -93,8 +90,8 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
         mUsername = ANONYMOUS;
 
         // Initialize Firebase Auth
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
         if (mFirebaseUser == null) {
             // Not signed in, launch the sign in activity
             startActivity(new Intent(getContext(), SignInGoogleActivity.class));
@@ -108,22 +105,15 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
             }
         }
 
-        // Connect with Google sign in API
-        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
-                .enableAutoManage(getActivity() /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API)
-                .build();
-
         return rootView;
     }
 
-    // TODO: maybe useless
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         // Initialize RecyclerView and the LayoutManager
-        mMessageRecyclerView = (RecyclerView) getView().findViewById(R.id.messageRecyclerView);
+        mMessageRecyclerView = getView().findViewById(R.id.messageRecyclerView);
         mLinearLayoutManager = new LinearLayoutManager(getContext());
         mLinearLayoutManager.setStackFromEnd(true);
         // Set the RecyclerView to use the LayoutManager
@@ -204,15 +194,33 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
         // Set the adapter to the recyclerView
         mMessageRecyclerView.setAdapter(mFirebaseAdapter);
 
-        // Get the message editTextView instance
-        mMessageEditText = (EditText) getView().findViewById(R.id.messageEditText);
 
-        // Add a listener if the editable textfield changes (user types something)
+        // Get the message editTextView instance
+        mMessageEditText = getView().findViewById(R.id.messageEditText);
+
+        // Create a listener for the edit text to dismiss the keyboard when the edit text loses focus
+        class MyFocusChangeListener implements View.OnFocusChangeListener {
+
+            public void onFocusChange(View v, boolean hasFocus){
+                if(v.getId() == R.id.messageEditText && !hasFocus) {
+
+                    InputMethodManager imm =  (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+
+        // Set the focus listener into action
+        View.OnFocusChangeListener ofcListener = new MyFocusChangeListener();
+        mMessageEditText.setOnFocusChangeListener(ofcListener);
+
+
+        // Add a listener if the editable textfield changes (user types something) to make the send button functioning
         mMessageEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
 
-            // If there is atleast one letter in the textfield, then allow sending the message.
+            // If there is atleast one letter in the textfield, then enable sending the message.
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.toString().trim().length() > 0) {
@@ -228,7 +236,10 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
 
 
         // Initialize send button
-        mSendButton = (ImageButton) getView().findViewById(R.id.sendButton);
+        mSendButton = getView().findViewById(R.id.sendButton);
+        // Set it disabled so the user can only push it when written something.
+        // This changes to enabled in the listener.
+        mSendButton.setEnabled(false);
 
         // Listen for pushing of the send button
         mSendButton.setOnClickListener(new View.OnClickListener() {
@@ -260,13 +271,6 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
         super.onPause();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // TODO: Check if user is signed in.
-    }
-
     /** When resuming, start listening for new input or messages from database. */
     @Override
     public void onResume() {
@@ -280,6 +284,5 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
         Log.e(LOG_TAG, "onConnectionFailed:" + connectionResult);
         Toast.makeText(getContext(), "Google sign in error.", Toast.LENGTH_SHORT).show();
     }
-
 
 }

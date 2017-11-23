@@ -11,13 +11,21 @@
     <color name="background">#FFFFFF</color>
 
     <!-- Progressbar color -->
-    <color name="color_progress_bar">#536DFE</color>
+    <color name="color_progress_bar">#346AAA</color>
 
-    <!--Colors for the buttons and toasts-->
-    <color name="start_color">#FFD180</color>
-    <color name="center_color">#FF9100</color>
-    <color name="end_color">#FFAB40</color>
+    <!-- Text colors for the shoutbox -->
+    <color name="shoutbox_message_color">#000000</color>
+    <color name="shoutbox_sender_color">#9E9E9E</color>
+
+    <!-- Colors for the buttons -->
+    <color name="start_color">#346AAA</color>
+    <color name="center_color">#346AAA</color>
+    <color name="end_color">#9CB6D6</color>
+    <color name="stroke_color">#6890C0</color>
     <color name="state_pressed">#FFF3E0</color>
+
+    <!-- Error color -->
+    <color name="error_color">#cc0000</color>
 
 
     <!-- Theme colors for each group. For readability,

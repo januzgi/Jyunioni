@@ -21,7 +21,7 @@ import static com.example.android.jyunioni.EventDetails.LOG_TAG;
 
 /**
  * Created by JaniS on 29.7.2017.
- * <p>
+ *
  * Class for performing queries to the websites of different group's.
  * Calls methods in parsing classes to form the Event objects.
  * Queries is called from a Loader performing tasks in a background thread.
@@ -31,14 +31,12 @@ final class Queries {
     /**
      * Private constructor
      */
-    private Queries() {
-    }
-
+    private Queries() { }
 
     /**
      * Returns new URL object from the given string URL.
      */
-    public static URL createUrl(String stringUrl) {
+    private static URL createUrl(String stringUrl) {
         URL url;
 
         try {
@@ -53,7 +51,7 @@ final class Queries {
     /**
      * Make an HTTP request to the given URL and return the response as a String.
      */
-    public static String makeHttpRequest(URL url) throws IOException {
+    private static String makeHttpRequest(URL url) throws IOException {
         if (url == null) return "";
 
         String response = "";
@@ -62,8 +60,8 @@ final class Queries {
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
-            urlConnection.setReadTimeout(20000  /*milliseconds*/);
-            urlConnection.setConnectTimeout(55000  /*milliseconds*/);
+            urlConnection.setReadTimeout(200000  /*milliseconds*/);
+            urlConnection.setConnectTimeout(500000  /*milliseconds*/);
             urlConnection.connect();
 
             if (urlConnection.getResponseCode() == 200) {
@@ -78,6 +76,7 @@ final class Queries {
         } catch (IOException e) {
             Log.e(LOG_TAG, "IOexception message when making HTTP request." +
                     "\n(This comes from the catch block inside the method makeHttpRequest in Queries.): " + e);
+            response = "SERVER_ERROR";
         } finally {
             if (urlConnection != null) {
                 // Anyhow disconnect when finished.
@@ -94,7 +93,7 @@ final class Queries {
     /**
      * Convert the InputStream into a String which contains the whole HTTP response from the server.
      */
-    public static String readFromStream(InputStream inputStream) throws IOException {
+    private static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
         if (inputStream != null) {
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
@@ -112,9 +111,9 @@ final class Queries {
 
 
     /**
-     * Query data from different websites and return a list of Event objects.
+     * Query data from the server events .txt files and return a list of Event objects.
      */
-    public static List<Event> fetchEventData(String[] requestUrl) {
+    static List<Event> fetchEventData(String[] requestUrl) {
 
         // Create URL objects and the Strings for URL's. Create the lists in which the event's will be put into.
         List<Event> eventsLinkki = new ArrayList<>();
@@ -132,23 +131,34 @@ final class Queries {
         List<Event> allEventsList = new ArrayList<>();
 
 
-        /**
+        /*
          * Check which groups URL's are on the StringArray of URL's.
          * Fetch data from all the URL's in the stringArray.
          */
         for (int i = 0; i < requestUrl.length; i++) {
 
-            /** LINKKI JYVÄSKYLÄ RY */
+            /* LINKKI JYVÄSKYLÄ RY */
             if (requestUrl[i].contains("linkkiEvents.txt")) {
 
                 linkkiUrl = createUrl(requestUrl[i]);
 
                 // Extract Event fields from the .txt response and create a list of Linkki's Events.
                 // Then add the events to the Linkki's Events list.
-                eventsLinkki.addAll(EventDetailsParser.extractEventDetails(sendHttpRequest(linkkiUrl)));
+                String httpResponse = sendHttpRequest(linkkiUrl);
+
+                // Check for an error in the server.
+                if (httpResponse.equals("SERVER_ERROR")) {
+                    allEventsList.add(new Event("Ongelma serverillä", "1.1.",
+                            "Yritä myöhemmin uudelleen." +
+                                    "\nJos ongelma ei ratkea päivän sisään, laita viestiä tekijälle:\n\njanisuoranta@icloud.com",
+                            R.drawable.error_icon, R.color.error_color, "https://media.giphy.com/media/EUxkZPmTfB7Fe/giphy.gif"));
+                    return allEventsList;
+                }
+
+                eventsLinkki.addAll(EventDetailsParser.extractEventDetails(httpResponse));
 
 
-                /** PÖRSSI RY */
+                /* PÖRSSI RY */
             } else if (requestUrl[i].contains("porssiEvents.txt")) {
 
                 porssiUrl = createUrl(requestUrl[i]);
@@ -158,7 +168,7 @@ final class Queries {
                 eventsPorssi.addAll(EventDetailsParser.extractEventDetails(sendHttpRequest(porssiUrl)));
 
 
-                /** DUMPPI RY */
+                /* DUMPPI RY */
             } else if (requestUrl[i].contains("dumppiEvents.txt")) {
 
                 dumppiUrl = createUrl(requestUrl[i]);
@@ -168,14 +178,14 @@ final class Queries {
                 eventsDumppi.addAll(EventDetailsParser.extractEventDetails(sendHttpRequest(dumppiUrl)));
 
 
-                /** STIMULUS RY */
+                /* STIMULUS RY */
             } else if (requestUrl[i].contains("stimulusEvents.txt")) {
 
                 stimulusUrl = createUrl(requestUrl[i]);
 
                 // Extract Event fields from the .txt response and create a list of Stimulus' Events.
                 // Then add the events to the Stimulus' Events list.
-                eventsDumppi.addAll(EventDetailsParser.extractEventDetails(sendHttpRequest(stimulusUrl)));
+                eventsStimulus.addAll(EventDetailsParser.extractEventDetails(sendHttpRequest(stimulusUrl)));
 
             }
         }
@@ -200,7 +210,7 @@ final class Queries {
     /**
      * Delete passed events from the event's list
      */
-    public static List<Event> deletePassedEvents(List<Event> allEventsList) {
+    private static List<Event> deletePassedEvents(List<Event> allEventsList) {
         // Create yesterday's datestamp so that today's events will be shown.
         // Minus one day from today's Date instance
         Calendar calendar = Calendar.getInstance();
@@ -223,9 +233,9 @@ final class Queries {
     /**
      * Organize events by timestamp so that today's event is on top and so list continues
      */
-    public static List<Event> organizeEventsByTimestamp(final List<Event> allEventsList) {
+    private static List<Event> organizeEventsByTimestamp(final List<Event> allEventsList) {
 
-        /** Arrange the list by the event's timestamp field using Comparator class. */
+        /* Arrange the list by the event's timestamp field using Comparator class. */
         class EventTimeComparator implements Comparator<Event> {
             @Override
             public int compare(Event event1, Event event2) {

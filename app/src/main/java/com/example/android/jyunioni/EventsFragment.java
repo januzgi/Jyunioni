@@ -13,10 +13,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -36,9 +38,6 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     /** Constant value for the event loader ID. */
     private static final int EVENT_LOADER_ID = 1;
 
-    /** Tag for the log messages */
-    public static final String LOG_TAG = EventDetails.class.getSimpleName();
-
     /** Adapter for the list of events */
     private EventAdapter mAdapter;
 
@@ -48,9 +47,14 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     /** Progressbar to be shown when fetching data. */
     private ProgressBar mProgressBar;
 
-    /** Required empty public constructor */
-    public EventsFragment() {
-    }
+    /** Input method manager instance */
+    InputMethodManager imm;
+
+    /** Root view instance */
+    View rootView;
+
+    /** Required empty constructor */
+    public EventsFragment() { }
 
     /** A String array for the different groups event URL's. */
     private String[] allEventPageUrls = new String[4];
@@ -70,7 +74,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.list_build, container, false);
+        rootView = inflater.inflate(R.layout.list_build, container, false);
 
         // Different groups events list .txt address in the server.
         String LINKKI_EVENTS_URL = "http://morland.red/jyunioni-server/Parsed-events/linkkiEvents.txt";
@@ -89,14 +93,14 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
         // Find the ListView object in the view hierarchy.
         // ListView with the view ID called events_list is declared in the list_build.xml layout file.
-        ListView eventsListView = (ListView) rootView.findViewById(R.id.events_list);
+        ListView eventsListView = rootView.findViewById(R.id.events_list);
 
         // Find a reference to the mEmptyStateTextView in the layout
-        mEmptyStateTextView = (TextView) rootView.findViewById(R.id.emptyView);
+        mEmptyStateTextView = rootView.findViewById(R.id.emptyView);
         eventsListView.setEmptyView(mEmptyStateTextView);
 
         // Set the progress bar to be shown when searching for the data
-        mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBarEventsList);
+        mProgressBar = rootView.findViewById(R.id.progressBarEventsList);
         mProgressBar.setVisibility(View.VISIBLE);
 
         // Create an EventAdapter, whose data source is a list of Events.
@@ -107,7 +111,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         eventsListView.setAdapter(mAdapter);
 
 
-        /** Set a click listener to open the event's details via an intent */
+        // Set a click listener to open the event's details via an intent
         eventsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -140,6 +144,8 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             }
         });
 
+        imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
         return rootView;
     }
 
@@ -147,6 +153,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
 
         // Get the state of connectivity to the boolean 'internetConnectionEstablished'
         internetConnectionEstablished = isNetworkAvailable(getContext());
@@ -204,6 +211,8 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     public void onResume() {
         super.onResume();
 
+        Log.e("onResume", "in EventsFragment");
+
         // Get the state of connectivity to the boolean 'internetConnectionEstablished'
         internetConnectionEstablished = isNetworkAvailable(getContext());
 
@@ -226,6 +235,8 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public Loader<List<Event>> onCreateLoader(int id, Bundle bundle) {
+
+        Log.e("onCreateLoader", "in EventsFragment");
 
         // Quit the program if there's no internet connection
         if (!internetConnectionEstablished) {
@@ -292,7 +303,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         View toastView = toast.getView();
 
         // Get the TextView of the default View of the Toast.
-        TextView toastMessage = (TextView) toastView.findViewById(message);
+        TextView toastMessage = toastView.findViewById(message);
         toastMessage.setTextSize(16);
         toastMessage.setTextColor(Color.parseColor("#FFFFFF"));
         toastMessage.setGravity(Gravity.CENTER);
@@ -303,6 +314,8 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onLoadFinished(Loader<List<Event>> loader, List<Event> events) {
         mProgressBar.setVisibility(View.GONE);
+
+        Log.e("onLoadFinished", "in EventsFragment");
 
         // If there is a valid list of Events, then add them to the adapter's
         // data set. This will trigger the ListView to update.

@@ -28,7 +28,6 @@ public class EventDetails extends AppCompatActivity {
 
     /** Private variables for updating the UI with the information from the event page. */
     private String eventNameAndTimestamp = null;
-    private String eventName = null;
     private String eventInformation = null;
     private int eventImageId;
     private String eventUrl = null;
@@ -45,7 +44,7 @@ public class EventDetails extends AppCompatActivity {
         if(intentData != null)
         {
             // Get the event's name and the timestamp.
-            eventName = intent.getStringExtra("EVENT_NAME");
+            String eventName = intent.getStringExtra("EVENT_NAME");
             eventNameAndTimestamp = eventName + "\n" + intent.getStringExtra("EVENT_TIMESTAMP");
 
             // Set the event name as the title of the activity for better UX
@@ -63,20 +62,20 @@ public class EventDetails extends AppCompatActivity {
 
 
         // Set the event's details / information in the event information textview
-        TextView eventInformationTextView = (TextView) findViewById(R.id.event_information_textview);
+        TextView eventInformationTextView = findViewById(R.id.event_information_textview);
         eventInformationTextView.setText(eventInformation);
 
         // Find the header where event's name and timestamp is set
-        TextView eventDetailsHeaderTextView = (TextView) findViewById(R.id.event_details_header_textview);
+        TextView eventDetailsHeaderTextView = findViewById(R.id.event_details_header_textview);
         eventDetailsHeaderTextView.setText(eventNameAndTimestamp);
 
         // Find the imageview by it's id so the correct image can be set
-        ImageView eventDetailImageView = (ImageView) findViewById(R.id.event_detail_image);
+        ImageView eventDetailImageView = findViewById(R.id.event_detail_image);
         eventDetailImageView.setBackgroundResource(eventImageId);
 
 
         // Find the button in the event details view that takes the user to the event's web page.
-        Button eventDetailsButton = (Button) findViewById(R.id.event_details_button);
+        Button eventDetailsButton = findViewById(R.id.event_details_button);
 
         // Set a listener for the button and define actions.
         eventDetailsButton.setOnClickListener(new View.OnClickListener() {

@@ -13,4 +13,10 @@
     <!-- Paddings -->
     <dimen name="custom_normal_padding">16dp</dimen>
     <dimen name="custom_double_padding">32dp</dimen>
+    <dimen name="custom_message_padding">2dp</dimen>
+    <dimen name="custom_recycler_view_padding">16dp</dimen>
+
+    <!-- Size of text -->
+    <dimen name="sender_text_size">10sp</dimen>
+    <dimen name="message_text_size">16sp</dimen>
 </resources>

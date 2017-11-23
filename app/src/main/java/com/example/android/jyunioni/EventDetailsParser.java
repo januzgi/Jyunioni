@@ -11,21 +11,15 @@ import java.util.Scanner;
 class EventDetailsParser {
 
     /**
-     * Tag for the log messages
-     */
-    public static final String LOG_TAG = EventDetails.class.getSimpleName();
-
-
-    /**
      * Return an {@link List<Event>} object by parsing out information from the .txt.
      * Event name, timestamp, general information, image ID, group's color id and event url is needed.
      */
-    public static List<Event> extractEventDetails(String httpResponseString) {
+    static List<Event> extractEventDetails(String httpResponseString) {
         // Create List<Event> object instance
         List<Event> extractedEvents = new ArrayList<>();
 
         // If the response is empty or null, then return early.
-        if (httpResponseString == "") {
+        if (httpResponseString.equals("")) {
             extractedEvents.add(new Event("Internet yhteys vajaa.", "Tarkista verkon toimivuus.", "Testaa pääsetkö Googleen.", R.drawable.default_icon, R.color.primary_color, "https://www.google.fi"));
             return extractedEvents;
         }
@@ -44,7 +38,7 @@ class EventDetailsParser {
         int eventsCount = 0;
 
         // Check which group's event it is (it's written on the first line of the response) and add according icon and color
-        String whichGroupsEvent = "";
+        String whichGroupsEvent;
         whichGroupsEvent = eventsCountScanner.next();
 
         switch (whichGroupsEvent) {
@@ -151,7 +145,7 @@ class EventDetailsParser {
      * @param line Line from the scanner.
      * @return Substring of the line after the ':'. Event details from the .txt file.
      */
-    public static String extractField(String line) {
+    private static String extractField(String line) {
         // Return the string after the ':'
         // Example input: "eventName: Chill IoT-workshop"
         // Example output: "Chill IoT-workshop"
@@ -165,7 +159,7 @@ class EventDetailsParser {
      * @param rawInformation Line of HTTP response from the scanner.
      * @return Clear text with newlines as they should be.
      */
-    public static String extractInformation(String rawInformation) {
+    private static String extractInformation(String rawInformation) {
         // Get the string after the ':', also trim() the result.
         return rawInformation.substring(rawInformation.indexOf(':') + 1, rawInformation.length()).trim();
     }

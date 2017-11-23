@@ -1,5 +1,6 @@
 package com.example.android.jyunioni;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.text.ParseException;
@@ -44,7 +45,7 @@ class Event implements Comparable<Event> {
      * @param groupColorId    The theme color of the group which hosts the event.
      * @param url             The url of the event's page
      */
-    public Event(String eventName, String eventTimestamp, String eventInformation, int imageResourceId, int groupColorId, String url) {
+     Event(String eventName, String eventTimestamp, String eventInformation, int imageResourceId, int groupColorId, String url) {
         this.mEventName = eventName;
         this.mEventTimestamp = eventTimestamp;
         this.mEventInformation = eventInformation;
@@ -54,32 +55,32 @@ class Event implements Comparable<Event> {
     }
 
     /** Getter for event name */
-    public String getEventName() {
+    String getEventName() {
         return this.mEventName;
     }
 
     /** Getter for event timestamp */
-    public String getEventTimestamp() { return this.mEventTimestamp; }
+    String getEventTimestamp() { return this.mEventTimestamp; }
 
     /** Getter for the image resource ID of the event hosting group. */
-    public int getImageResourceId() { return this.mImageResourceId; }
+    int getImageResourceId() { return this.mImageResourceId; }
 
     /** Getter for the color ID for the group hosting the event. */
-    public int getGroupColorId() { return this.mGroupColorId; }
+    int getGroupColorId() { return this.mGroupColorId; }
 
     /** Getter for the URL of the event's page wherefrom the data was fetched too */
     public String getUrl() { return this.mUrl; }
 
     /** Getter for the event's information or description */
-    public String getEventInformation() { return this.mEventInformation; }
+    String getEventInformation() { return this.mEventInformation; }
 
     /** Returns whether or not there is an image for this word. */
-    public boolean hasImage() {
+    boolean hasImage() {
         return this.mImageResourceId != NO_IMAGE_PROVIDED;
     }
 
     /** Getter for the event's starting date */
-    public Date getEventStartDate() {
+    Date getEventStartDate() {
         Date result = null;
 
         // "11.9. 18:00 - 22:00"
@@ -125,7 +126,7 @@ class Event implements Comparable<Event> {
 
     /** Check for NullPointers, thus override. */
     @Override
-    public int compareTo(Event event) {
+    public int compareTo(@NonNull Event event) {
         if (this.getEventStartDate() == null || event.getEventStartDate() == null) return 0;
         return this.getEventStartDate().compareTo(event.getEventStartDate());
     }

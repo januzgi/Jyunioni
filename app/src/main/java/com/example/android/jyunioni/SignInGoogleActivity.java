@@ -1,4 +1,4 @@
-/**
+/*
  * Created by JaniS on 22.11.2017.
  *
  * This class handles the sign in process to Google account.
@@ -36,8 +36,7 @@ public class SignInGoogleActivity extends AppCompatActivity implements GoogleApi
     /** "Sign in" request code */
     private static final int RC_SIGN_IN = 9001;
 
-    /** Sign in button and Google api client objects */
-    private SignInButton mSignInButton;
+    /** Google api client object */
     private GoogleApiClient mGoogleApiClient;
 
     /** Firebase authentication instance variable */
@@ -48,8 +47,10 @@ public class SignInGoogleActivity extends AppCompatActivity implements GoogleApi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_in_screen);
 
+
+
         // Assign sign in button
-        mSignInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        SignInButton mSignInButton = findViewById(R.id.sign_in_button);
         // Set a click listener
         mSignInButton.setOnClickListener(this);
 
@@ -70,7 +71,6 @@ public class SignInGoogleActivity extends AppCompatActivity implements GoogleApi
 
     /**
      * Click listener for the sign in button.
-     * @param v
      */
     @Override
     public void onClick(View v) {
@@ -149,7 +149,7 @@ public class SignInGoogleActivity extends AppCompatActivity implements GoogleApi
                         } else {
                             // If sign in succeeds the authentication state listener will be notified and
                             // logic to handle the signed in user can be handled in the listener.
-                            startActivity(new Intent(SignInGoogleActivity.this, EventActivity.class));
+                            startActivity(new Intent(SignInGoogleActivity.this, FragmentActivity.class));
                             finish();
                         }
                     }

@@ -1,9 +1,11 @@
 /*
- Jani Suoranta 22.11.2017
+ *
  */
 package com.example.android.jyunioni;
 
 /**
+ * Jani Suoranta 22.11.2017
+ *
  * ShoutboxMessage is the class for shoutbox messages.
  * This class contains constructors for the messages and most important methods.
  */
@@ -15,8 +17,8 @@ class ShoutboxMessage {
     private String name;
     private String photoUrl;
 
-    // Empty default constructor
-    public ShoutboxMessage() { }
+    // Empty default constructor required by Firebase logic
+    private ShoutboxMessage () { }
 
     /**
      * ShoutboxMessage constructor.
@@ -25,7 +27,7 @@ class ShoutboxMessage {
      * @param name name of the message sender.
      * @param photoUrl URL to the senders profile picture
      */
-    public ShoutboxMessage(String text, String name, String photoUrl) {
+     ShoutboxMessage(String text, String name, String photoUrl) {
         this.text = text;
         this.name = name;
         this.photoUrl = photoUrl;
@@ -55,11 +57,8 @@ class ShoutboxMessage {
         this.text = text;
     }
 
-    /** Getter and setter for the message sender's profile picture */
-    public String getPhotoUrl() {
+    /** Getter for the message sender's profile picture */
+     String getPhotoUrl() {
         return photoUrl;
-    }
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
     }
 }

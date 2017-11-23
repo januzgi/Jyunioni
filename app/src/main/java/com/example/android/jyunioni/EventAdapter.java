@@ -1,6 +1,7 @@
 package com.example.android.jyunioni;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,12 +24,12 @@ class EventAdapter extends ArrayAdapter<Event>  {
      * @param context is the current context (Activity) that the adapter is being created in.
      * @param events is the list of Events to be displayed.
      */
-    public EventAdapter(Context context, List<Event> events) {
+     EventAdapter(Context context, List<Event> events) {
         super(context, 0, events);
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @Override @NonNull
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         // Check if an existing view is being reused, otherwise inflate the view
         View listItemView = convertView;
         if (listItemView == null) {
@@ -40,19 +41,19 @@ class EventAdapter extends ArrayAdapter<Event>  {
         Event currentEvent = getItem(position);
 
         // Find the TextView in the list_item.xml layout with the ID event_name_text_view.
-        TextView eventNameTextView = (TextView) listItemView.findViewById(R.id.event_name_text_view);
+        TextView eventNameTextView = listItemView.findViewById(R.id.event_name_text_view);
         // Get the name of the currentEvent object and set this text on the event name TextView.
         eventNameTextView.setText(currentEvent.getEventName());
 
 
         // Find the TextView in the list_item.xml layout with the ID event_timestamp_text_view.
-        TextView timestampTextView = (TextView) listItemView.findViewById(R.id.event_timestamp_text_view);
+        TextView timestampTextView = listItemView.findViewById(R.id.event_timestamp_text_view);
         // Get the timestamp from the currentEvent object and set this text on the timestamp TextView.
         timestampTextView.setText(currentEvent.getEventTimestamp());
 
 
         // Find the ImageView in the list_item.xml layout with the ID image.
-        ImageView imageView = (ImageView) listItemView.findViewById(R.id.group_image);
+        ImageView imageView = listItemView.findViewById(R.id.group_image);
 
         // Check if an image is provided for this event or not
         if (currentEvent.hasImage()) {

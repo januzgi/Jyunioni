@@ -19,7 +19,7 @@ class EventLoader extends AsyncTaskLoader<List<Event>> {
     /**
      * Tag for the log messages
      */
-    public static final String LOG_TAG = EventDetails.class.getSimpleName();
+     private static final String LOG_TAG = EventDetails.class.getSimpleName();
 
     /** Query URLs, list of Events and internetConnection boolean */
     private String[] mUrls;
@@ -27,7 +27,7 @@ class EventLoader extends AsyncTaskLoader<List<Event>> {
     private boolean internetConnection = false;
 
 
-    public EventLoader(Context context, String[] urls, boolean connectedToInternet) {
+     EventLoader(Context context, String[] urls, boolean connectedToInternet) {
         super(context);
         mUrls = urls;
         internetConnection = connectedToInternet;
@@ -61,7 +61,7 @@ class EventLoader extends AsyncTaskLoader<List<Event>> {
         }
 
         // If there's no internet connection, then end the activity after waiting a little
-        if (internetConnection == false) {
+        if (!internetConnection) {
             // Pause the thread for 60s. Wait for the user to connect to the internet,
             // if that doesn't happen then the app is shut down.
             try {

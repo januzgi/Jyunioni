@@ -8,12 +8,18 @@
         android:angle="90"
         android:centerColor="@color/center_color"
         android:endColor="@color/end_color"
-        android:startColor="@color/start_color"></gradient>
+        android:startColor="@color/start_color">
 
-    <corners android:radius="100dp"></corners>
+    </gradient>
+
+    <corners android:radius="100dp">
+
+    </corners>
 
     <stroke
         android:width="2dp"
-        android:color="@color/primary_color"></stroke>
+        android:color="@color/stroke_color">
+
+    </stroke>
 
 </shape>

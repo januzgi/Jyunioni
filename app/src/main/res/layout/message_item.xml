@@ -8,7 +8,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/custom_message_padding"
+        android:paddingTop="@dimen/custom_message_padding">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/shoutboxSenderImageView"
@@ -21,21 +23,22 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/shoutboxSenderTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                android:textSize="@dimen/sender_text_size" />
 
             <TextView
                 android:id="@+id/shoutboxMessageTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textSize="@dimen/message_text_size"
+                android:textColor="@color/shoutbox_message_color"/>
         </LinearLayout>
 
     </LinearLayout>
