@@ -60,6 +60,11 @@ class EventLoader extends AsyncTaskLoader<List<Event>> {
             return null;
         }
 
+        // If there already is event's in the list
+        if (mEvents != null) {
+            return null;
+        }
+
         // If there's no internet connection, then end the activity after waiting a little
         if (!internetConnection) {
             // Pause the thread for 60s. Wait for the user to connect to the internet,

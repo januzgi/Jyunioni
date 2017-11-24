@@ -49,6 +49,8 @@ dependencies {
     // jsoup HTML parser library @ https://jsoup.org/
     compile 'org.jsoup:jsoup:1.10.3'
 }
+
+apply plugin: 'com.google.gms.google-services'
 repositories {
     google()
 }
@@ -57,5 +59,3 @@ buildscript {
         google()
     }
 }
-
-apply plugin: 'com.google.gms.google-services'

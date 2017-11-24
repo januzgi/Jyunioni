@@ -211,8 +211,6 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     public void onResume() {
         super.onResume();
 
-        Log.e("onResume", "in EventsFragment");
-
         // Get the state of connectivity to the boolean 'internetConnectionEstablished'
         internetConnectionEstablished = isNetworkAvailable(getContext());
 
@@ -281,10 +279,18 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             // Show a toast for the user
             showToast(R.string.no_internet_connection);
 
+
+            Log.e("onCreateLoader EventLdr", "1 in EventsFragment");
+
+
             // Create a new loader for the given URLs, with internetConnectionEstablished == false,
             // so the background thread pauses
             return new EventLoader(getContext(), allEventPageUrls, internetConnectionEstablished);
+
         }
+
+
+        Log.e("onCreateLoader EventLdr", "2 in EventsFragment");
 
         // Create a new loader for the given URLs
         return new EventLoader(getContext(), allEventPageUrls, internetConnectionEstablished);
@@ -314,8 +320,6 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onLoadFinished(Loader<List<Event>> loader, List<Event> events) {
         mProgressBar.setVisibility(View.GONE);
-
-        Log.e("onLoadFinished", "in EventsFragment");
 
         // If there is a valid list of Events, then add them to the adapter's
         // data set. This will trigger the ListView to update.
