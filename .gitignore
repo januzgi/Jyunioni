@@ -2,10 +2,6 @@
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion
 *.iml
 
-### Separate files
-CONTRIBUTING.md
-LICENSE
-
 
 ## Directory-based project format:
 .idea/
