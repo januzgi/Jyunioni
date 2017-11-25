@@ -1,8 +1,0 @@
-### Exclude all, except the contents of the folders...
-/*
-
-### except the actual program .java files and the layout.xml files
-!app/src/main/java/com/example/android/jyunioni
-!app/src/main/res/layout
-!app/src/main/res/values
-!**/AndroidManifest.xml
