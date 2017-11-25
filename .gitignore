@@ -91,5 +91,5 @@ proguard/
 **/drawable*/
 **/mipmap*/
 **/original*/
-/app/src/main/res/mipmap-*/
-/app/src/main/res/drawable*/
+**/app/src/main/res/mipmap-*/
+**/app/src/main/res/drawable*/
