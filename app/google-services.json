@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "784532054356",
+    "firebase_url": "https://jyunioni.firebaseio.com",
+    "project_id": "jyunioni",
+    "storage_bucket": "jyunioni.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784532054356:android:fcc7735f4b447d54",
+        "android_client_info": {
+          "package_name": "com.example.android.jyunioni"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "784532054356-kg1kfdk0umpo3tvf7hhqf3dvrnvqo07v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.android.jyunioni",
+            "certificate_hash": "d0fb136fc32507e8a7afb22619e3ce36c9d92448"
+          }
+        },
+        {
+          "client_id": "784532054356-ff9b2jpor008sfe1q3nqi9va82vf6p09.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNNV4W0sucF-yy0_8_4e12vHpMKe6KqG0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "784532054356-ff9b2jpor008sfe1q3nqi9va82vf6p09.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
