@@ -88,6 +88,8 @@ local.properties
 proguard/
 
 ## Folders
-**/drawable*
-**/mipmap*
-**/original*
+**/drawable*/
+**/mipmap*/
+**/original*/
+/app/src/main/res/mipmap-*/
+/app/src/main/res/drawable*/
