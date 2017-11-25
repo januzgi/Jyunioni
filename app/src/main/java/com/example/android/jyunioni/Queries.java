@@ -17,8 +17,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import static com.example.android.jyunioni.EventDetails.LOG_TAG;
-
 /**
  * Created by Jani Suoranta on 29.7.2017.
  * <p>
@@ -30,6 +28,11 @@ import static com.example.android.jyunioni.EventDetails.LOG_TAG;
  */
 final class Queries {
 
+
+    /**
+     * Tag for the log messages
+     */
+    private static final String LOG_TAG = Queries.class.getSimpleName();
 
     /**
      * Private constructor

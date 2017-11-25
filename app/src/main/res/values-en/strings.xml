@@ -4,38 +4,38 @@
     <string name="app_name">Jyunioni</string>
 
     <!-- Category name for events -->
-    <string name="category_events">Tapahtumat</string>
+    <string name="category_events">Events</string>
     <!-- Category name for the shoutbox -->
-    <string name="category_shoutbox">Shoutboksi</string>
+    <string name="category_shoutbox">Shoutbox</string>
 
     <!-- event_details.xml website intent button text -->
-    <string name="event_details_button_text">Tapahtumasivulle</string>
+    <string name="event_details_button_text">To events page</string>
 
     <!-- Toast text to tell the user that the app opens a browser -->
-    <string name="moving_to_event_page">Avataan tapahtuman sivu...</string>
+    <string name="moving_to_event_page">Opening the events page...</string>
     <!--Toast text to tell event's are being fetched-->
-    <string name="fetching_event_data">...haetaan tapahtumia...</string>
+    <string name="fetching_event_data">...fetching events...</string>
 
     <!-- Toast text to tell the user if the intent contained no data for some reason -->
-    <string name="no_event_data_found">Tapahtuman dataa ei löytynyt.</string>
+    <string name="no_event_data_found">No events data could be found.</string>
 
     <!-- Toast text to tell the user if there's no internet connection -->
-    <string name="no_internet_connection">Ei internet yhteyttä.\nYhdistä internetiin.</string>
+    <string name="no_internet_connection">No internet connection.\nConnect to the internet.</string>
     <!-- Toast text to tell the user to establish an internet connection via WIFI or roaming -->
-    <string name="connect_to_internet">Yhdistä internetiin:</string>
+    <string name="connect_to_internet">Connect to the internet:</string>
     <!-- Toast text to tell the user if the event's page URL was not found -->
-    <string name="webpage_not_found">Tapahtuman osoitetta ei löytynyt.</string>
+    <string name="webpage_not_found">Events URL couldn\'t be found.</string>
 
     <!-- Toast text to tell the user to connect to a wifi -->
     <string name="connect_to_wifi">WIFI -></string>
     <!-- Toast text to tell the user to connect via roaming -->
     <string name="connect_roaming">4G / 3G -></string>
     <!-- Toast text to tell the user to quit app -->
-    <string name="quit_app">Lopeta X</string>
+    <string name="quit_app">Quit X</string>
 
     <!-- Empty string -->
     <string name="empty_message"></string>
 
     <!-- "Sign in" string to inform user to log into a Google account -->
-    <string name="sign_in">Kirjaudu sisään</string>
+    <string name="sign_in">Log in</string>
 </resources>
