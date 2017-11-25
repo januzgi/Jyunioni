@@ -24,9 +24,9 @@
         android:layout_width="88dp"
         android:layout_height="88dp"
         android:layout_centerInParent="true"
-        android:indeterminateTint="@color/color_progress_bar"
+        android:background="@drawable/jyunioni_icon"
         android:indeterminate="true"
-        android:background="@drawable/jyunioni_icon"/>
+        android:indeterminateTint="@color/color_progress_bar" />
 
 </RelativeLayout>
 

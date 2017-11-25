@@ -7,8 +7,11 @@ import java.util.Scanner;
 /**
  * Created by JaniS on 1.8.2017.
  * Class in which the parsing methods are for different group's events.
+ *
+ * @author Jani Suoranta 25.11.2017
  */
 class EventDetailsParser {
+
 
     /**
      * Return an {@link List<Event>} object by parsing out information from the .txt.

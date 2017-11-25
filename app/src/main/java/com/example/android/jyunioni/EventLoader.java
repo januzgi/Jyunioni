@@ -9,42 +9,56 @@ import java.util.List;
 
 /**
  * Created by JaniS on 3.8.2017.
- *
+ * <p>
  * EventLoader makes it possible to perform heavy HTTP and parsing tasks in a background thread.
  * UI will remain being updated in the main thread so usability won't be compromised during loading data
  * with tasks taking quite long time.
+ *
+ * @author Jani Suoranta 25.11.2017
  */
 class EventLoader extends AsyncTaskLoader<List<Event>> {
 
     /**
      * Tag for the log messages
      */
-     private static final String LOG_TAG = EventDetails.class.getSimpleName();
+    private static final String LOG_TAG = EventDetails.class.getSimpleName();
 
-    /** Query URLs, list of Events and internetConnection boolean */
+    /**
+     * Query URLs, list of Events and internetConnection boolean
+     */
     private String[] mUrls;
     private List<Event> mEvents;
     private boolean internetConnection = false;
 
 
-     EventLoader(Context context, String[] urls, boolean connectedToInternet) {
+    /**
+     * Loader constructor
+     */
+    EventLoader(Context context, String[] urls, boolean connectedToInternet) {
         super(context);
         mUrls = urls;
         internetConnection = connectedToInternet;
     }
 
+
+    /**
+     * Called automatically by LoaderManager when the associated fragment/activity is being started.
+     */
     @Override
     protected void onStartLoading() {
-        if(mEvents != null){
+        if (mEvents != null) {
             deliverResult(mEvents);
         }
 
-        if (takeContentChanged() || mEvents == null){
+        if (takeContentChanged() || mEvents == null) {
             forceLoad();
         }
     }
 
 
+    /**
+     * Sends the result of the load to the registered listener.
+     */
     @Override
     public void deliverResult(List<Event> events) {
         mEvents = events;
@@ -52,7 +66,9 @@ class EventLoader extends AsyncTaskLoader<List<Event>> {
     }
 
 
-    /** This is on a background thread. */
+    /**
+     * This is on a background thread.
+     */
     @Override
     public List<Event> loadInBackground() {
         // If there are no URL's in the list
@@ -61,9 +77,10 @@ class EventLoader extends AsyncTaskLoader<List<Event>> {
         }
 
         // If there already is event's in the list
-        if (mEvents != null) {
+        /*if (mEvents != null) {
+            Log.e("loadInBackground", "events object contents: " + mEvents.get(0).getEventName());
             return null;
-        }
+        }*/
 
         // If there's no internet connection, then end the activity after waiting a little
         if (!internetConnection) {

@@ -20,18 +20,23 @@ import java.util.List;
 import static com.example.android.jyunioni.EventDetails.LOG_TAG;
 
 /**
- * Created by JaniS on 29.7.2017.
- *
+ * Created by Jani Suoranta on 29.7.2017.
+ * <p>
  * Class for performing queries to the websites of different group's.
  * Calls methods in parsing classes to form the Event objects.
  * Queries is called from a Loader performing tasks in a background thread.
+ *
+ * @author Jani Suoranta 25.11.2017
  */
 final class Queries {
+
 
     /**
      * Private constructor
      */
-    private Queries() { }
+    private Queries() {
+    }
+
 
     /**
      * Returns new URL object from the given string URL.
@@ -47,6 +52,7 @@ final class Queries {
         }
         return url;
     }
+
 
     /**
      * Make an HTTP request to the given URL and return the response as a String.
@@ -89,6 +95,7 @@ final class Queries {
         }
         return response;
     }
+
 
     /**
      * Convert the InputStream into a String which contains the whole HTTP response from the server.
@@ -268,6 +275,7 @@ final class Queries {
         return allEventsList;
     }
 
+
     /**
      * Do a small method call which all different URL's need.
      */
@@ -281,6 +289,5 @@ final class Queries {
         }
         return httpResponse;
     }
-
 
 }

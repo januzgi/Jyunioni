@@ -32,31 +32,50 @@ import static android.R.id.message;
 
 /**
  * This fragment displays a list of events and has LoaderManager implemented to use the once fetched data.
+ *
+ * @author Jani Suoranta 25.11.2017
  */
 public class EventsFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<Event>> {
 
-    /** Constant value for the event loader ID. */
+    /**
+     * Constant value for the event loader ID.
+     */
     private static final int EVENT_LOADER_ID = 1;
 
-    /** Adapter for the list of events */
+    /**
+     * Adapter for the list of events
+     */
     private EventAdapter mAdapter;
 
-    /** TextView that is displayed when the list is empty */
+    /**
+     * TextView that is displayed when the list is empty
+     */
     private TextView mEmptyStateTextView;
 
-    /** Progressbar to be shown when fetching data. */
+    /**
+     * Progressbar to be shown when fetching data.
+     */
     private ProgressBar mProgressBar;
 
-    /** Input method manager instance */
+    /**
+     * Input method manager instance
+     */
     InputMethodManager imm;
 
-    /** Root view instance */
+    /**
+     * Root view instance
+     */
     View rootView;
 
-    /** Required empty constructor */
-    public EventsFragment() { }
+    /**
+     * Required empty constructor
+     */
+    public EventsFragment() {
+    }
 
-    /** A String array for the different groups event URL's. */
+    /**
+     * A String array for the different groups event URL's.
+     */
     private String[] allEventPageUrls = new String[4];
 
     /**
@@ -68,12 +87,16 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     private Handler noConnectionsHandler = new Handler();
     private int userConnectedToInternet = 0;
 
-    /** int for the "no event data" or "no internet connection" messages. */
+    /**
+     * int for the "no event data" or "no internet connection" messages.
+     */
     private int emptyStateTextViewMessage = R.string.empty_message;
 
+    /**
+     * Creates and returns the view hierarchy associated with the fragment.
+     */
     @Override
-    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.list_build, container, false);
 
         // Different groups events list .txt address in the server.
@@ -144,12 +167,15 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             }
         });
 
-        imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         return rootView;
     }
 
 
+    /**
+     * Called when the fragments activity has completed its .onCreate().
+     */
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -183,33 +209,13 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
 
     /**
-     * Check if there's an internet connection
+     * When the activity comes to the foreground this is called.
      */
-    public boolean isNetworkAvailable(Context context) {
-        // Check using the ConnectivityManager if there's an internet connection or one is just being made.
-        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        // If there's connections
-        if (connectivity != null) {
-            // Get details on the currently active default data networks
-            NetworkInfo[] info = connectivity.getAllNetworkInfo();
-
-            // Get the info array and see for any connections in the array
-            if (info != null) {
-                for (int i = 0; i < info.length; i++) {
-                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-
     @Override
     public void onResume() {
         super.onResume();
+
+        Log.e("onResume", "in EventsFragment");
 
         // Get the state of connectivity to the boolean 'internetConnectionEstablished'
         internetConnectionEstablished = isNetworkAvailable(getContext());
@@ -221,7 +227,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             // Add to the counter
             userConnectedToInternet++;
             if (userConnectedToInternet == 1) {
-                // Show a toast for the user that the events are being fetched.
+                // Show a toast only the first time that the events are being fetched.
                 Toast.makeText(getContext(), R.string.fetching_event_data, Toast.LENGTH_SHORT).show();
             }
         }
@@ -231,16 +237,17 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
 
+    /**
+     * Instantiate and return a new Loader for the given ID.
+     */
     @Override
     public Loader<List<Event>> onCreateLoader(int id, Bundle bundle) {
-
-        Log.e("onCreateLoader", "in EventsFragment");
 
         // Quit the program if there's no internet connection
         if (!internetConnectionEstablished) {
 
             // Create a Runnable to be used later for finishing the Activity.
-            final Runnable noConnectionsRunnable  = new Runnable() {
+            final Runnable noConnectionsRunnable = new Runnable() {
                 public void run() {
                     getContext().stopService(new Intent(getContext(), com.example.android.jyunioni.EventsFragment.class));
                     getActivity().finish();
@@ -279,14 +286,9 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             // Show a toast for the user
             showToast(R.string.no_internet_connection);
 
-
-            Log.e("onCreateLoader EventLdr", "1 in EventsFragment");
-
-
             // Create a new loader for the given URLs, with internetConnectionEstablished == false,
             // so the background thread pauses
             return new EventLoader(getContext(), allEventPageUrls, internetConnectionEstablished);
-
         }
 
 
@@ -294,6 +296,38 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
         // Create a new loader for the given URLs
         return new EventLoader(getContext(), allEventPageUrls, internetConnectionEstablished);
+    }
+
+
+    /**
+     * Called when a previously created loader has finished its load.
+     */
+    @Override
+    public void onLoadFinished(Loader<List<Event>> loader, List<Event> events) {
+        mProgressBar.setVisibility(View.GONE);
+
+        // Clear the adapter of previous event's data
+        mAdapter.clear();
+
+        // If there is a valid list of Events, then add them to the adapter's
+        // data set. This will trigger the ListView to update.
+        if (events != null && !events.isEmpty()) {
+            mAdapter.addAll(events);
+        } else {
+            mEmptyStateTextView.setText(emptyStateTextViewMessage);
+        }
+
+        getLoaderManager().destroyLoader(EVENT_LOADER_ID);
+    }
+
+
+    /**
+     * Called when a previously created loader is being reset, and thus making its data unavailable.
+     */
+    @Override
+    public void onLoaderReset(Loader<List<Event>> loader) {
+        // Loader reset, so we can clear out our existing data.
+        mAdapter.clear();
     }
 
 
@@ -317,26 +351,28 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
 
-    @Override
-    public void onLoadFinished(Loader<List<Event>> loader, List<Event> events) {
-        mProgressBar.setVisibility(View.GONE);
+    /**
+     * Check if there's an internet connection
+     */
+    public boolean isNetworkAvailable(Context context) {
+        // Check using the ConnectivityManager if there's an internet connection or one is just being made.
+        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        // If there is a valid list of Events, then add them to the adapter's
-        // data set. This will trigger the ListView to update.
-        if (events != null && !events.isEmpty()) {
-            mAdapter.addAll(events);
-        } else {
-            mEmptyStateTextView.setText(emptyStateTextViewMessage);
+        // If there's connections
+        if (connectivity != null) {
+            // Get details on the currently active default data networks
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+
+            // Get the info array and see for any connections in the array
+            if (info != null) {
+                for (int i = 0; i < info.length; i++) {
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+                        return true;
+                    }
+                }
+            }
         }
-
-        getLoaderManager().destroyLoader(EVENT_LOADER_ID);
-    }
-
-
-    @Override
-    public void onLoaderReset(Loader<List<Event>> loader) {
-        // Loader reset, so we can clear out our existing data.
-        mAdapter.clear();
+        return false;
     }
 
 

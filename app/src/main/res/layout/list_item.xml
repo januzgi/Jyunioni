@@ -36,8 +36,7 @@
             android:textAppearance="?android:textAppearanceSmall"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            tools:text="event name"
-            />
+            tools:text="event name" />
 
         <TextView
             android:id="@+id/event_timestamp_text_view"
@@ -58,4 +57,5 @@
             android:layout_marginRight="16dp"
             android:src="@drawable/ic_arrow_forward_black_24dp" />
     </RelativeLayout>
+
 </RelativeLayout>

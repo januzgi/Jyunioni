@@ -37,10 +37,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * ShoutboxFragment displays a view in which the messages in the shoutbox are shown.
+ *
+ * @author Jani Suoranta 25.11.2017
  */
 public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener {
 
-    /** Initialize the different views for the messages */
+    /**
+     * Initialize the different views for the messages
+     */
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
         TextView messageTextView;
         TextView senderTextView;
@@ -56,31 +60,47 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
     }
 
 
-    /** Declare a couple string variables */
+    /**
+     * Declare a couple string variables
+     */
     public static final String MESSAGES_CHILD = "messages";
     public static final String ANONYMOUS = "anonymous";
 
-    /** Declare username, profile picture URL and initialize Google API client */
+    /**
+     * Declare username, profile picture URL and initialize Google API client
+     */
     private String mUsername;
     private String mPhotoUrl;
 
-    /** Initialize send button, message recycler view, progress bar, edit text field and the layout manager. */
+    /**
+     * Initialize send button, message recycler view, progress bar, edit text field and the layout manager.
+     */
     private ImageButton mSendButton;
     private RecyclerView mMessageRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private EditText mMessageEditText;
 
-    // Firebase instance variables
+    /**
+     * Firebase instance variables
+     */
     private DatabaseReference mFirebaseDatabaseReference;
     private FirebaseRecyclerAdapter<ShoutboxMessage, MessageViewHolder> mFirebaseAdapter;
 
-    /** Tag for the log messages */
+    /**
+     * Tag for the log messages
+     */
     private static final String LOG_TAG = SignInGoogleActivity.class.getSimpleName();
 
-    /** Required empty public constructor */
-    public ShoutboxFragment() {}
+    /**
+     * Required empty public constructor
+     */
+    public ShoutboxFragment() {
+    }
 
 
+    /**
+     * Creates and returns the view hierarchy associated with the fragment.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -108,6 +128,10 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
         return rootView;
     }
 
+
+    /**
+     * Called when the fragments activity has completed its .onCreate().
+     */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -201,10 +225,10 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
         // Create a listener for the edit text to dismiss the keyboard when the edit text loses focus
         class MyFocusChangeListener implements View.OnFocusChangeListener {
 
-            public void onFocusChange(View v, boolean hasFocus){
-                if(v.getId() == R.id.messageEditText && !hasFocus) {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (v.getId() == R.id.messageEditText && !hasFocus) {
 
-                    InputMethodManager imm =  (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
             }
@@ -218,7 +242,8 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
         // Add a listener if the editable textfield changes (user types something) to make the send button functioning
         mMessageEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             // If there is atleast one letter in the textfield, then enable sending the message.
             @Override
@@ -231,7 +256,8 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
             }
 
             @Override
-            public void afterTextChanged(Editable editable) { }
+            public void afterTextChanged(Editable editable) {
+            }
         });
 
 
@@ -258,27 +284,35 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
 
     }
 
-    /** When the activity is stopped, release possible resources */
+    /**
+     * When the activity is stopped, release possible resources
+     */
     @Override
     public void onStop() {
         super.onStop();
     }
 
-    /** Pause from listening to database changes or new input. */
+    /**
+     * Pause from listening to database changes or new input.
+     */
     @Override
     public void onPause() {
         mFirebaseAdapter.stopListening();
         super.onPause();
     }
 
-    /** When resuming, start listening for new input or messages from database. */
+    /**
+     * When resuming, start listening for new input or messages from database.
+     */
     @Override
     public void onResume() {
         super.onResume();
         mFirebaseAdapter.startListening();
     }
 
-    /** Show a toast if connecting to Google APIs fails. */
+    /**
+     * Show a toast if connecting to Google APIs fails.
+     */
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.e(LOG_TAG, "onConnectionFailed:" + connectionResult);

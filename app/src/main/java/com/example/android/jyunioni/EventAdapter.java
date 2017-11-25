@@ -15,20 +15,28 @@ import java.util.List;
 /**
  * EventAdapter is an ArrayAdapter that provides the layout for each list item
  * based on a data source, which is a list of Event objects.
+ *
+ * @author Jani Suoranta 25.11.2017
  */
-class EventAdapter extends ArrayAdapter<Event>  {
+class EventAdapter extends ArrayAdapter<Event> {
 
 
-    /** Create a new EventAdapter object.
+    /**
+     * Create a new EventAdapter object.
      *
      * @param context is the current context (Activity) that the adapter is being created in.
-     * @param events is the list of Events to be displayed.
+     * @param events  is the list of Events to be displayed.
      */
-     EventAdapter(Context context, List<Event> events) {
+    EventAdapter(Context context, List<Event> events) {
         super(context, 0, events);
     }
 
-    @Override @NonNull
+
+    /**
+     * Get a View that displays the data at the specified position in the data set.
+     */
+    @Override
+    @NonNull
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         // Check if an existing view is being reused, otherwise inflate the view
         View listItemView = convertView;
@@ -78,6 +86,5 @@ class EventAdapter extends ArrayAdapter<Event>  {
         // the ListView.
         return listItemView;
     }
-
 
 }

@@ -1,9 +1,3 @@
-/*
- * Created by JaniS on 22.11.2017.
- *
- * This class handles the sign in process to Google account.
- * User needs to be logged in to a Google account to post or read content in the shoutbox.
- */
 package com.example.android.jyunioni;
 
 import android.content.Intent;
@@ -28,25 +22,44 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+/**
+ * This class handles the sign in process to Google account.
+ * User needs to be logged in to a Google account to post or read content in the shoutbox.
+ *
+ * @author Jani Suoranta 22.11.2017
+ */
 public class SignInGoogleActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
-    /** Tag for the log messages */
+    /**
+     * Tag for the log messages
+     */
     private static final String LOG_TAG = SignInGoogleActivity.class.getSimpleName();
 
-    /** "Sign in" request code */
+    /**
+     * "Sign in" request code
+     */
     private static final int RC_SIGN_IN = 9001;
 
-    /** Google api client object */
+    /**
+     * Google api client object
+     */
     private GoogleApiClient mGoogleApiClient;
 
-    /** Firebase authentication instance variable */
+    /**
+     * Firebase authentication instance variable
+     */
     private FirebaseAuth mFirebaseAuth;
 
+
+    /**
+     * Called when the activity is first created.
+     *
+     * @param savedInstanceState Activity's previously frozen state, if there was one.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_in_screen);
-
 
 
         // Assign sign in button
@@ -69,6 +82,7 @@ public class SignInGoogleActivity extends AppCompatActivity implements GoogleApi
         mFirebaseAuth = FirebaseAuth.getInstance();
     }
 
+
     /**
      * Click listener for the sign in button.
      */
@@ -82,6 +96,7 @@ public class SignInGoogleActivity extends AppCompatActivity implements GoogleApi
         }
     }
 
+
     /**
      * Get the Google sign in api and start the intent with the sign in request code.
      */
@@ -89,6 +104,7 @@ public class SignInGoogleActivity extends AppCompatActivity implements GoogleApi
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+
 
     /**
      * Show a toast if connecting to Google APIs fails.
@@ -99,11 +115,13 @@ public class SignInGoogleActivity extends AppCompatActivity implements GoogleApi
         Toast.makeText(this, "Google sign in error.", Toast.LENGTH_SHORT).show();
     }
 
+
     /**
      * Get the result from the intent that was started for signing in.
+     *
      * @param requestCode Intent's original request code.
-     * @param resultCode The result code from the intent.
-     * @param data The information of the user's logged in account.
+     * @param resultCode  The result code from the intent.
+     * @param data        The information of the user's logged in account.
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -124,8 +142,10 @@ public class SignInGoogleActivity extends AppCompatActivity implements GoogleApi
         }
     }
 
+
     /**
      * Authenticate user's logged in account with Firebase.
+     *
      * @param acct The logged in Google account.
      */
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
@@ -136,24 +156,24 @@ public class SignInGoogleActivity extends AppCompatActivity implements GoogleApi
 
         // Authenticate with the credentials
         mFirebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        Log.e(LOG_TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
+                Log.e(LOG_TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
 
-                        // If sign in fails, display a message to the user.
-                        if (!task.isSuccessful()) {
-                            Log.e(LOG_TAG, "signInWithCredential", task.getException());
+                // If sign in fails, display a message to the user.
+                if (!task.isSuccessful()) {
+                    Log.e(LOG_TAG, "signInWithCredential", task.getException());
 
-                            Toast.makeText(SignInGoogleActivity.this, "Authentication with Firebase failed.", Toast.LENGTH_SHORT).show();
-                        } else {
-                            // If sign in succeeds the authentication state listener will be notified and
-                            // logic to handle the signed in user can be handled in the listener.
-                            startActivity(new Intent(SignInGoogleActivity.this, FragmentActivity.class));
-                            finish();
-                        }
-                    }
-                });
+                    Toast.makeText(SignInGoogleActivity.this, "Authentication with Firebase failed.", Toast.LENGTH_SHORT).show();
+                } else {
+                    // If sign in succeeds the authentication state listener will be notified and
+                    // logic to handle the signed in user can be handled in the listener.
+                    startActivity(new Intent(SignInGoogleActivity.this, FragmentActivity.class));
+                    finish();
+                }
+            }
+        });
     }
 
 }

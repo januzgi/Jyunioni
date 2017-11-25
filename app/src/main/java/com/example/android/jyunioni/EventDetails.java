@@ -17,22 +17,33 @@ import android.widget.Toast;
 
 /**
  * Created by JaniS on 20.7.2017.
- *
+ * <p>
  * Class for single Event's details. Clicking an item in the main list gets you to event details.
  * This class handles the event details.
+ *
+ * @author Jani Suoranta 25.11.2017
  */
 public class EventDetails extends AppCompatActivity {
 
-    /** Tag for the log messages */
+    /**
+     * Tag for the log messages
+     */
     public static final String LOG_TAG = EventDetails.class.getSimpleName();
 
-    /** Private variables for updating the UI with the information from the event page. */
+    /**
+     * Private variables for updating the UI with the information from the event page.
+     */
     private String eventNameAndTimestamp = null;
     private String eventInformation = null;
     private int eventImageId;
     private String eventUrl = null;
 
 
+    /**
+     * Called when the activity is starting.
+     *
+     * @param savedInstanceState Possible saved bundle from the state before being frozen.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +52,7 @@ public class EventDetails extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle intentData = intent.getExtras();
 
-        if(intentData != null)
-        {
+        if (intentData != null) {
             // Get the event's name and the timestamp.
             String eventName = intent.getStringExtra("EVENT_NAME");
             eventNameAndTimestamp = eventName + "\n" + intent.getStringExtra("EVENT_TIMESTAMP");
@@ -118,17 +128,17 @@ public class EventDetails extends AppCompatActivity {
         });
     }
 
+
     /**
      * Handles the 'up-navigation' properly when going back to events list from event details.
      * This way the app won't reload the data.
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             onBackPressed();
         }
         return true;
     }
-
 
 }

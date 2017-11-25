@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 
 /**
  * Main activity which compiles viewpager and tab layout together with the fragments being used.
+ *
+ * @author Jani Suoranta 20.10.2017
  */
 public class FragmentActivity extends AppCompatActivity {
 
