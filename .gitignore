@@ -75,8 +75,8 @@ gen/
 ## Gradle files
 .gradle/
 build/
-**/gradle/*
-/*/build/
+**gradle/*
+**build/
 *.gradle
 *gradle*
 
@@ -88,8 +88,8 @@ local.properties
 proguard/
 
 ## Folders
-**/drawable*/
-**/mipmap*/
-**/original*/
-**/app/src/main/res/mipmap-*/
-**/app/src/main/res/drawable*/
+**drawable*/
+**mipmap*/
+**original*/
+**app/src/main/res/mipmap-*/
+**app/src/main/res/drawable*/
