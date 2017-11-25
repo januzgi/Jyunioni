@@ -3,7 +3,7 @@
 *.iml
 
 ## Directory-based project format:
-.idea/
+.idea/*
 
 ## File-based project format:
 *.ipr
@@ -70,7 +70,7 @@ gen/
 ## Gradle files
 .gradle/
 build/
-gradle/
+*gradle/*
 /*/build/
 *.gradle
 
@@ -82,5 +82,5 @@ local.properties
 proguard/
 
 ## Folders
-drawable/
-mipmap*/
+*drawable/
+*mipmap*/
