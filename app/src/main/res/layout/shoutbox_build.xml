@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Jani Suoranta 21.11.2017-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/custom_recycler_view_padding">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/messageRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/linearLayout"
+        android:fadingEdge="vertical"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbars="vertical" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/messageEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/sendButton"
+            android:layout_width="64dp"
+            android:layout_height="@dimen/button_height"
+            android:layout_gravity="bottom"
+            android:layout_margin="@dimen/custom_normal_padding"
+            android:adjustViewBounds="true"
+            android:background="@drawable/custom_buttons"
+            android:enabled="false"
+            android:scaleType="center"
+            android:src="@drawable/ic_send_white_24dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

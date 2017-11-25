@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?><!-- (C) Jani Suoranta 17.7.2017 -->
+<resources>
+
+    <!-- Shown in the status bar -->
+    <color name="status_bar_color">#FF9100</color>
+
+    <!-- Primary color of the app. Shown in the app bar and the background of fragments -->
+    <color name="primary_color">#FFAB40</color>
+
+    <!-- Background color for app -->
+    <color name="background">#FFFFFF</color>
+
+    <!-- Progressbar color -->
+    <color name="color_progress_bar">#346AAA</color>
+
+    <!-- Text colors for the shoutbox -->
+    <color name="shoutbox_message_color">#000000</color>
+    <color name="shoutbox_sender_color">#9E9E9E</color>
+
+    <!-- Colors for the buttons -->
+    <color name="start_color">#346AAA</color>
+    <color name="center_color">#346AAA</color>
+    <color name="end_color">#9CB6D6</color>
+    <color name="stroke_color">#6890C0</color>
+    <color name="state_pressed">#FFF3E0</color>
+
+    <!-- Error color -->
+    <color name="error_color">#cc0000</color>
+
+
+    <!-- Theme colors for each group. For readability,
+    using original group logo's colors monochromatic tints (from left) #2 option from: http://www.color-hex.com/ -->
+
+    <!-- Pörssi Ry -->
+    <color name="color_porssi_ry">#2D407E</color>
+    <!--#3A53A4-->
+
+    <!-- Dumppi Ry -->
+    <color name="color_dumppi_ry">#4E0B1C</color>
+    <!--#7A122C-->
+
+    <!-- Linkki Jyväskylä Ry -->
+    <color name="color_linkki_jkl">#0049CF</color>
+    <!--#035CFF-->
+
+    <!-- Stimulus Ry -->
+    <color name="color_stimulus_ry">#F9E800</color>
+    <!--#FFF12D-->
+
+</resources>
