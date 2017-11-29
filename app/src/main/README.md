@@ -4,7 +4,7 @@ Jyunioni App
 
 This app is for the use of students of the University of Jyväskylä. 
 
-The app has two tabs. First tab has an event calendar which compiles 4 organisations publicly available events from their website calendars.
+The app has two tabs. First tab has an event calendar which compiles 4 organisations publicly available events from their website calendars. Events are shown in a list in ascending order by the time they begin. Clicking an event opens up event details page where is additional information of the event. From the event details the user can also go to the official events webpage for further information.
 
 These organizations are the following:
 * Linkki Jyväskylä Ry.
@@ -12,26 +12,27 @@ These organizations are the following:
 * Dumppi Ry.
 * Stimulus Ry.
 
-If you wish your organizations calendar to be featured in the app, please contact me via email.
-
-
-Events are shown in a list in ascending order by the time they begin. Clicking an event opens up event details page from where the user can go the official page of the event (URL). 
+If you wish your organizations calendar to be featured in the app, please contact me via [email](https://github.com/januzgi/Jyunioni-app/tree/master/app/src/main#support--contact "See Support & Contact").
 
 The second tab is a real-time shoutbox that requires a Google log-in. Messages being sent is spread across all users of the app. Google log-in is by default required to use the app. 
 
 
-The app is by default in Finnish and also localized for English users.
+The app is by default in Finnish and also localized for English users. The data of the events is shown in Finnish.
 
 **Download the app in Google Play:**
 
-- - - -
+Known issues & possible crashes
+-------
+* If you start the app without internet connection it asks you to connect to either: connect to the internet via WIFI, 4G or quit. After connected to a WIFI or 4G the app needs to be restarted to fetch the events.
+
 
 Support & Contact 
 -------
 
 For issues, requests or feedback, please contact me via email:
 janisuoranta@icloud.com
----
+
+- - - -
 
 Developers guide
 ------
@@ -40,23 +41,35 @@ To develop the app I recommend using [Android Studio](https://developer.android.
 
 Easiest way to get started with Jyunioni would be to copy the classes into your own project. 
 
-At first, you need to create a new project in Android Studio. Name the project as something else than "jyunioni" to use Firebase console later. Choose your project to target API 15 and later (IceCreamSandwich) on Phone / Tablet. Choose to "Add No Activity" to the project in the creation process.
-Guide for creating a new project can be found [here](https://developer.android.com/studio/projects/create-project.html "Creating a new project in Android Studio").
 
-To get the classes pull this repository to your local machine: `git pull https://github.com/januzgi/Jyunioni-app`
-Guide for creating a local repository can be found [here](https://www.atlassian.com/git/tutorials/setting-up-a-repository "How to set up a repository using git").
-
-Once you have set up your new project in Android Studio and have the classes locally in your machine, you can copy the Jyunioni classes and the manifest. You need to update the package name from `com.example.android.jyunioni` to `com.example.android.MyApplication` in various lines in *AndroidManifest.xml*. 
-
+1. At first, you need to create a new project in Android Studio.
+Name the project as something else than "jyunioni" to use Firebase console later. 
+Choose your project to target API 15 and later (IceCreamSandwich) on Phone / Tablet. 
+Choose to "Add No Activity" to the project in the creation process.
+* Guide for creating a new project in Android Studio can be found [here](https://developer.android.com/studio/projects/create-project.html "Creating a new project in Android Studio").
 
 
+2. To get the classes pull this repository to your local machine: `git pull https://github.com/januzgi/Jyunioni-app`
+* Guide for creating a local repository can be found [here](https://www.atlassian.com/git/tutorials/setting-up-a-repository "How to set up a repository using git").
 
-There are two Gradle files that need to be modified for running Jyunioni.
+
+3. Once you have set up your new project in Android Studio and have the classes locally in your machine, you can copy the Jyunioni classes, folders and the manifest.
+
+**Put:**
+* all folders and their content from Jyunioni-app/app/src/main/res/ into `/MyApplication/app/src/main/res`. This means you can delete all the default folders in `res/` before copypasting the Jyunioni repository `res/` folders.
+* .java classes into `/MyApplication/app/src/main/java/com/example/android/myapplication/`
+* AndroidManifest.xml into `/MyApplication/app/src/main/`
+
+You need to update the package name from `com.example.android.jyunioni` to `com.example.android.MyApplication` in various lines in **AndroidManifest.xml**. 
+You also need to update every .java file package declaration to `package com.example.android.myapplication;`.
+
+
+4. There are two Gradle files that need to be modified for running Jyunioni.
 1) build.gradle (Project: MyApplication)
 2) build.gradle (Module: app)
 
-The following codes are the contents of the Gradle files.
-1) build.gradle (Project: MyApplication)
+The following codes are the contents of the two Gradle files.
+1) **build.gradle (Project: MyApplication)**
 ```java 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
@@ -84,7 +97,7 @@ task clean(type: Delete) {
 }
 ```
 
-2) build.gradle (Module: app)
+2) **build.gradle (Module: app)**
 ```java
 apply plugin: 'com.android.application'
 
@@ -146,26 +159,8 @@ buildscript {
 }
 ```
 
+5. The app uses Google's Firebase and its database for the real-time chat. To get using Firebase in the app yourself, see this [guide](https://codelabs.developers.google.com/codelabs/firebase-android/#0 "Firebase real-time chat in Android guide").
 
+Happy coding!🎉🔥
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+If you need further assistance or have any questions, feel free to contact me via [email](https://github.com/januzgi/Jyunioni-app/tree/master/app/src/main#support--contact "See Support & Contact").

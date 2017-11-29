@@ -29,7 +29,7 @@
     <!-- Toast text to tell the user to connect to a wifi -->
     <string name="connect_to_wifi">WIFI -></string>
     <!-- Toast text to tell the user to connect via roaming -->
-    <string name="connect_roaming">4G / 3G -></string>
+    <string name="connect_roaming">4G -></string>
     <!-- Toast text to tell the user to quit app -->
     <string name="quit_app">Quit X</string>
 
