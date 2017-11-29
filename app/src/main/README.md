@@ -30,5 +30,142 @@ Support & Contact
 -------
 
 For issues, requests or feedback, please contact me via email:
-
 janisuoranta@icloud.com
+---
+
+Developers guide
+------
+
+To develop the app I recommend using [Android Studio](https://developer.android.com/studio/index.html "Download Android Studio"). 
+
+Easiest way to get started with Jyunioni would be to copy the classes into your own project. 
+
+At first, you need to create a new project in Android Studio. Name the project as something else than "jyunioni" to use Firebase console later. Choose your project to target API 15 and later (IceCreamSandwich) on Phone / Tablet. Choose to "Add No Activity" to the project in the creation process.
+Guide for creating a new project can be found [here](https://developer.android.com/studio/projects/create-project.html "Creating a new project in Android Studio").
+
+To get the classes pull this repository to your local machine: `git pull https://github.com/januzgi/Jyunioni-app`
+Guide for creating a local repository can be found [here](https://www.atlassian.com/git/tutorials/setting-up-a-repository "How to set up a repository using git").
+
+Once you have set up your new project in Android Studio and have the classes locally in your machine, you can copy the Jyunioni classes and the manifest. You need to update the package name from `com.example.android.jyunioni` to `com.example.android.MyApplication` in various lines in *AndroidManifest.xml*. 
+
+
+
+
+There are two Gradle files that need to be modified for running Jyunioni.
+1) build.gradle (Project: MyApplication)
+2) build.gradle (Module: app)
+
+The following codes are the contents of the Gradle files.
+1) build.gradle (Project: MyApplication)
+```java 
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        jcenter()
+        // You need to add the following repository to download the
+        // new plugin.
+        google()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.google.gms:google-services:3.1.0'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+```
+
+2) build.gradle (Module: app)
+```java
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion '26.0.2'
+
+    defaultConfig {
+        applicationId "com.example.android.jyunioni"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.android.support:support-v4:26.1.0'
+    compile 'com.android.support:design:26.1.0'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'de.hdodenhof:circleimageview:1.3.0'
+
+    // Google
+    compile 'com.google.android.gms:play-services-auth:11.4.2'
+
+    // Firebase
+    compile 'com.google.firebase:firebase-analytics:11.4.2'
+    compile 'com.google.firebase:firebase-database:11.4.2'
+    compile 'com.google.firebase:firebase-storage:11.4.2'
+    compile 'com.google.firebase:firebase-auth:11.4.2'
+    compile 'com.google.firebase:firebase-config:11.4.2'
+    compile 'com.google.android.gms:play-services-appinvite:11.4.2'
+    compile 'com.google.firebase:firebase-messaging:11.4.2'
+    compile 'com.google.android.gms:play-services-ads:11.4.2'
+    compile 'com.google.firebase:firebase-crash:11.4.2'
+    compile 'com.google.firebase:firebase-appindexing:11.4.2'
+
+    // Firebase UI
+    compile 'com.firebaseui:firebase-ui-database:3.0.0'
+}
+
+apply plugin: 'com.google.gms.google-services'
+repositories {
+    google()
+}
+buildscript {
+    repositories {
+        google()
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
