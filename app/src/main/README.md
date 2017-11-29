@@ -1,5 +1,5 @@
 Jyunioni App
-![alt text](http://users.jyu.fi/~jatasuor/Jyunioni_logo "Jyunioni logo")
+![alt text](http://users.jyu.fi/~jatasuor/Jyunioni-logo "Jyunioni logo")
 ===================================
 
 This app is for the use of students in the University of Jyväskylä.
@@ -48,16 +48,16 @@ Easiest way to get started with Jyunioni would be to copy the classes into your 
 Name the project as something else than "jyunioni" to use Firebase console later. 
 Choose your project to target API 15 and later (IceCreamSandwich) on Phone / Tablet. 
 Choose to "Add No Activity" to the project in the creation process.
-* Guide for creating a new project in Android Studio can be found [here](https://developer.android.com/studio/projects/create-project.html "Creating a new project in Android Studio").
+    * Guide for creating a new project in Android Studio can be found [here](https://developer.android.com/studio/projects/create-project.html "Creating a new project in Android Studio").
 
 
 2. To get the classes pull this repository to your local machine: `git pull https://github.com/januzgi/Jyunioni-app`
-* Guide for creating a local repository can be found [here](https://www.atlassian.com/git/tutorials/setting-up-a-repository "How to set up a repository using git").
+    * Guide for creating a local repository can be found [here](https://www.atlassian.com/git/tutorials/setting-up-a-repository "How to set up a repository using git").
 
 
 3. There are two Gradle files that need to be modified for running Jyunioni.
-1) build.gradle (Project: MyApplication)
-2) build.gradle (Module: app)
+    1) build.gradle (Project: MyApplication)
+    2) build.gradle (Module: app)
 
 The following codes are the contents of the two Gradle files. After making the changes remember to synchronize the project with "Sync Now" that appears in the top right when editing the .gradle files. *The sync won't be successful until you have the "**google-services.json**" at place so see **step 5)** for that.*
 
@@ -155,11 +155,12 @@ buildscript {
 4. Once you have set up your new project in Android Studio, have synced the gradle succesfully and have the classes locally in your machine, you can copypaste the Jyunioni classes, folders and the manifest.
 
 **Put:**
-* all folders and their content from Jyunioni-app/app/src/main/res/ into `/MyApplication/app/src/main/res`. This means you can delete all the default folders in `res/` before copypasting the Jyunioni repository `res/` folders.
-* .java classes into `/MyApplication/app/src/main/java/com/example/android/myapplication/`
-* AndroidManifest.xml into `/MyApplication/app/src/main/`
+    * all folders and their content from Jyunioni-app/app/src/main/res/ into `/MyApplication/app/src/main/res`. This means you can delete all the default folders in `res/` before copypasting the Jyunioni repository `res/` folders.
+    * .java classes into `/MyApplication/app/src/main/java/com/example/android/myapplication/`
+    * AndroidManifest.xml into `/MyApplication/app/src/main/`
 
 You need to update the package name from `com.example.android.jyunioni` to `com.example.android.MyApplication` in various lines in **AndroidManifest.xml**. 
+
 You also need to update every .java file package declaration to `package com.example.android.myapplication;`. These declarations are also at some parts of the code, so just follow the red error indicators.
 
 
