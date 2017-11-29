@@ -1,4 +1,5 @@
 Jyunioni App
+![alt text](http://users.jyu.fi/~jatasuor/Jyunioni_logo "Jyunioni logo")
 ===================================
 
 This app is for the use of students of the University of Jyväskylä. 
