@@ -39,6 +39,8 @@ janisuoranta@icloud.com
 Developers guide
 ------
 
+Are you interested in developing the app further? Want to build something on top of it? You may contact me via [email](https://github.com/januzgi/Jyunioni-app/tree/master/app/src/main#support--contact "See Support & Contact") if you have some suggestions for improvements in the app.
+
 To develop the app I recommend using [Android Studio](https://developer.android.com/studio/index.html "Download Android Studio"). 
 
 Easiest way to get started with Jyunioni would be to copy the classes into your own project. 
