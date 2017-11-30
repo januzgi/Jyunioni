@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,11 +100,8 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
         // Different groups events list .txt address in the server.
         String LINKKI_EVENTS_URL = "http://morland.red/jyunioni-server/Parsed-events/linkkiEvents.txt";
-
         String PORSSI_EVENTS_URL = "http://morland.red/jyunioni-server/Parsed-events/porssiEvents.txt";
-
         String DUMPPI_EVENTS_URL = "http://morland.red/jyunioni-server/Parsed-events/dumppiEvents.txt";
-
         String STIMULUS_EVENTS_URL = "http://morland.red/jyunioni-server/Parsed-events/stimulusEvents.txt";
 
         // Add the event URLs to the String array
@@ -215,8 +211,6 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     public void onResume() {
         super.onResume();
 
-        Log.e("onResume", "in EventsFragment");
-
         // Get the state of connectivity to the boolean 'internetConnectionEstablished'
         internetConnectionEstablished = isNetworkAvailable(getContext());
 
@@ -243,7 +237,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public Loader<List<Event>> onCreateLoader(int id, Bundle bundle) {
 
-        // Quit the program if there's no internet connection
+        // If there's no internet connection
         if (!internetConnectionEstablished) {
 
             // Create a Runnable to be used later for finishing the Activity.
@@ -254,8 +248,8 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
                 }
             };
 
-            // Give the user 60s of time to connect to a wifi before quitting the app.
-            noConnectionsHandler.postDelayed(noConnectionsRunnable, 60000);
+            // Give the user 30s of time to connect to a wifi before quitting the app.
+            noConnectionsHandler.postDelayed(noConnectionsRunnable, 30000);
 
             // Dialog if there's no internet connection available
             // From: https://stackoverflow.com/questions/25685755/ask-user-to-connect-to-internet-or-quit-app-android
@@ -290,9 +284,6 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             // so the background thread pauses
             return new EventLoader(getContext(), allEventPageUrls, internetConnectionEstablished);
         }
-
-
-        Log.e("onCreateLoader EventLdr", "2 in EventsFragment");
 
         // Create a new loader for the given URLs
         return new EventLoader(getContext(), allEventPageUrls, internetConnectionEstablished);

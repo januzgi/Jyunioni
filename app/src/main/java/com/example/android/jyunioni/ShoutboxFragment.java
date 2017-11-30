@@ -38,6 +38,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * ShoutboxFragment displays a view in which the messages in the shoutbox are shown.
  *
+ * NOTE:
+ * This class is my own implementation from the original code of Google and Firebase.
+ * The original code can be found in this course material:
+ * https://codelabs.developers.google.com/codelabs/firebase-android/#0
+ *
  * @author Jani Suoranta 25.11.2017
  */
 public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener {
@@ -85,11 +90,6 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
      */
     private DatabaseReference mFirebaseDatabaseReference;
     private FirebaseRecyclerAdapter<ShoutboxMessage, MessageViewHolder> mFirebaseAdapter;
-
-    /**
-     * Tag for the log messages
-     */
-    private static final String LOG_TAG = SignInGoogleActivity.class.getSimpleName();
 
     /**
      * Required empty public constructor
@@ -315,7 +315,7 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
      */
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.e(LOG_TAG, "onConnectionFailed:" + connectionResult);
+        Log.e("ShoutboxFragment.java", "onConnectionFailed:" + connectionResult);
         Toast.makeText(getContext(), "Google sign in error.", Toast.LENGTH_SHORT).show();
     }
 

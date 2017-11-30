@@ -7,6 +7,11 @@ package com.example.android.jyunioni;
  * ShoutboxMessage is the class for shoutbox messages.
  * This class contains constructors for the messages and most important methods.
  *
+ * NOTE:
+ * This class is my own implementation from the original code of Google and Firebase.
+ * The original code can be found in this course material:
+ * https://codelabs.developers.google.com/codelabs/firebase-android/#0
+ *
  * @author Jani Suoranta 22.11.2017
  */
 class ShoutboxMessage {
@@ -19,7 +24,9 @@ class ShoutboxMessage {
     private String name;
     private String photoUrl;
 
-    // Empty default constructor required by Firebase logic
+    /**
+     * Empty default constructor required by Firebase logic
+     */
     private ShoutboxMessage() {
     }
 

@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  * Created by Jani Suoranta on 29.7.2017.
- * <p>
+ *
  * Class for performing queries to the websites of different group's.
  * Calls methods in parsing classes to form the Event objects.
  * Queries is called from a Loader performing tasks in a background thread.
@@ -27,12 +27,6 @@ import java.util.List;
  * @author Jani Suoranta 25.11.2017
  */
 final class Queries {
-
-
-    /**
-     * Tag for the log messages
-     */
-    private static final String LOG_TAG = Queries.class.getSimpleName();
 
     /**
      * Private constructor
@@ -50,7 +44,7 @@ final class Queries {
         try {
             url = new URL(stringUrl);
         } catch (MalformedURLException exception) {
-            Log.e(LOG_TAG, "Error with creating URL", exception);
+            Log.e("Queries.java", "Error with creating URL", exception);
             return null;
         }
         return url;
@@ -79,11 +73,11 @@ final class Queries {
                 response = readFromStream(inputStream);
             } else {
                 // If the response code was != 200
-                Log.e(LOG_TAG, "HTTP request response code wasn't 200 (OK), but instead: " + Integer.toString(urlConnection.getResponseCode()));
+                Log.e("Queries.java", "HTTP request response code wasn't 200 (OK), but instead: " + Integer.toString(urlConnection.getResponseCode()));
             }
 
         } catch (IOException e) {
-            Log.e(LOG_TAG, "IOexception message when making HTTP request." +
+            Log.e("Queries.java", "IOexception message when making HTTP request." +
                     "\n(This comes from the catch block inside the method makeHttpRequest in Queries.): " + e);
             response = "SERVER_ERROR";
         } finally {
@@ -288,7 +282,7 @@ final class Queries {
         try {
             httpResponse = makeHttpRequest(url);
         } catch (IOException e) {
-            Log.e(LOG_TAG, "IOException when making the HTTP request in sendHttpRequest at Queries.java ", e);
+            Log.e("Queries.java", "IOException when making the HTTP request in sendHttpRequest at Queries.java ", e);
         }
         return httpResponse;
     }

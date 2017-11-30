@@ -8,10 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import static com.example.android.jyunioni.EventDetails.LOG_TAG;
-
 /**
- * Event represents a groups event. Implements Comparable<T> to list the events according their starting date.
+ * Event represents a groups event. Implements Comparable<T> to list the events according to their starting date.
  */
 class Event implements Comparable<Event> {
 
@@ -140,9 +138,8 @@ class Event implements Comparable<Event> {
 
                 SimpleDateFormat newFormat = new SimpleDateFormat("d.M.yyyy");
                 result = newFormat.parse(timestamp);
-                Log.e(LOG_TAG, result.toString());
             } catch (ParseException e) {
-                Log.e(LOG_TAG, "Parsing problem at getEventStartDate().\n" + e);
+                Log.e("Event.java", "Parsing problem at getEventStartDate().\n" + e);
             }
 
             return result;
@@ -157,9 +154,8 @@ class Event implements Comparable<Event> {
 
             SimpleDateFormat newFormat = new SimpleDateFormat("d.M.yyyy");
             result = newFormat.parse(startDateString);
-            Log.e(LOG_TAG, result.toString());
         } catch (ParseException e) {
-            Log.e(LOG_TAG, "Parsing problem at getEventStartDate().\n" + e);
+            Log.e("Event.java", "Parsing problem at getEventStartDate().\n" + e);
         }
 
         return result;

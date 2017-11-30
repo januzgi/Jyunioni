@@ -17,18 +17,13 @@ import android.widget.Toast;
 
 /**
  * Created by JaniS on 20.7.2017.
- * <p>
+ *
  * Class for single Event's details. Clicking an item in the main list gets you to event details.
  * This class handles the event details.
  *
  * @author Jani Suoranta 25.11.2017
  */
 public class EventDetails extends AppCompatActivity {
-
-    /**
-     * Tag for the log messages
-     */
-    public static final String LOG_TAG = EventDetails.class.getSimpleName();
 
     /**
      * Private variables for updating the UI with the information from the event page.
@@ -121,7 +116,7 @@ public class EventDetails extends AppCompatActivity {
                 } catch (Exception e) {
                     // Otherwise, display error that event's webpage wasn't found.
                     Toast.makeText(getApplicationContext(), R.string.webpage_not_found, Toast.LENGTH_SHORT).show();
-                    Log.e(LOG_TAG, "Exception when parsing the event's URL for the website intent.");
+                    Log.e("EventDetails.java", "Exception when parsing the event's URL for the website intent.");
                 }
             }
 

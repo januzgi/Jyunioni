@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -26,14 +25,14 @@ import com.google.firebase.auth.GoogleAuthProvider;
  * This class handles the sign in process to Google account.
  * User needs to be logged in to a Google account to post or read content in the shoutbox.
  *
+ * NOTE:
+ * This class is my own implementation from the original code of Google and Firebase.
+ * The original code can be found in this course material:
+ * https://codelabs.developers.google.com/codelabs/firebase-android/#0
+ *
  * @author Jani Suoranta 22.11.2017
  */
 public class SignInGoogleActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
-
-    /**
-     * Tag for the log messages
-     */
-    private static final String LOG_TAG = SignInGoogleActivity.class.getSimpleName();
 
     /**
      * "Sign in" request code
@@ -111,8 +110,7 @@ public class SignInGoogleActivity extends AppCompatActivity implements GoogleApi
      */
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.e(LOG_TAG, "onConnectionFailed:" + connectionResult);
-        Toast.makeText(this, "Google sign in error.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.google_api_error, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -136,20 +134,18 @@ public class SignInGoogleActivity extends AppCompatActivity implements GoogleApi
                 firebaseAuthWithGoogle(account);
             } else {
                 // Show a toast if Google sign in failed.
-                Log.e(LOG_TAG, "Google Sign-In failed.");
-                Toast.makeText(this, "Google sign in failed.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.sign_in_failed, Toast.LENGTH_SHORT).show();
             }
         }
     }
 
 
     /**
-     * Authenticate user's logged in account with Firebase.
+     * Authenticate users Google account with Firebase.
      *
      * @param acct The logged in Google account.
      */
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.e(LOG_TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
         // Get the account credentials
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
@@ -159,13 +155,9 @@ public class SignInGoogleActivity extends AppCompatActivity implements GoogleApi
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
-                Log.e(LOG_TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
-
                 // If sign in fails, display a message to the user.
                 if (!task.isSuccessful()) {
-                    Log.e(LOG_TAG, "signInWithCredential", task.getException());
-
-                    Toast.makeText(SignInGoogleActivity.this, "Authentication with Firebase failed.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignInGoogleActivity.this, R.string.firebase_auth_failed, Toast.LENGTH_SHORT).show();
                 } else {
                     // If sign in succeeds the authentication state listener will be notified and
                     // logic to handle the signed in user can be handled in the listener.

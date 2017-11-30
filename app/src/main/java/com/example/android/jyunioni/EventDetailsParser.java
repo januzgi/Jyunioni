@@ -78,66 +78,61 @@ class EventDetailsParser {
         // Create a scanner and loop through the string extracting each event's details
         Scanner scanner = new Scanner(httpResponseString).useDelimiter("[\n]");
 
-        while (scanner.hasNext()) {
+        // Loop through all the separate event's in the file.
+        // Find Event fields in order: eventName, eventTimestamp, eventUrl, eventInformation
+        for (int i = 0; i < eventsCount; i++) {
+            line = scanner.next();
 
-            // Loop through all the separate event's in the file.
-            // Find Event fields in order: eventName, eventTimestamp, eventUrl, eventInformation
-            for (int i = 0; i < eventsCount; i++) {
-                line = scanner.next();
+            while (true) {
+                if (line.contains("eventName: ")) {
+                    eventName = extractField(line);
 
-                while (true) {
-                    if (line.contains("eventName: ")) {
-                        eventName = extractField(line);
+                    while (true) {
+                        if (line.contains("eventTimestamp: ")) {
+                            eventTimestamp = extractField(line);
 
-                        while (true) {
-                            if (line.contains("eventTimestamp: ")) {
-                                eventTimestamp = extractField(line);
+                            while (true) {
+                                if (line.contains("eventUrl: ")) {
+                                    eventUrl = extractField(line);
 
-                                while (true) {
-                                    if (line.contains("eventUrl: ")) {
-                                        eventUrl = extractField(line);
+                                    while (true) {
+                                        if (line.contains("eventInformation: ")) {
+                                            // Empty the eventInformation from the previous event's information.
+                                            eventInformation = "";
 
-                                        while (true) {
-                                            if (line.contains("eventInformation: ")) {
-                                                // Empty the eventInformation from the previous event's information.
-                                                eventInformation = "";
-
-                                                while (!line.contains("END_OF_EVENT")) {
-                                                    // If the event information ends then parse the eventInformation and break the loop
-                                                    // While the line isn't "END_OF_EVENT", add the information to the eventInformation
-                                                    eventInformation += line + "\n";
-                                                    line = scanner.next();
-                                                }
-
-                                                // Extract the events information
-                                                eventInformation = extractInformation(eventInformation);
-                                                break;
+                                            while (!line.contains("END_OF_EVENT")) {
+                                                // If the event information ends then parse the eventInformation and break the loop
+                                                // While the line isn't "END_OF_EVENT", add the information to the eventInformation
+                                                eventInformation += line + "\n";
+                                                line = scanner.next();
                                             }
-                                            line = scanner.next();
 
+                                            // Extract the events information
+                                            eventInformation = extractInformation(eventInformation);
+                                            break;
                                         }
-                                        break;
-                                    }
-                                    line = scanner.next();
+                                        line = scanner.next();
 
+                                    }
+                                    break;
                                 }
-                                break;
+                                line = scanner.next();
 
                             }
-                            line = scanner.next();
+                            break;
 
                         }
-                        break;
+                        line = scanner.next();
+
                     }
-                    line = scanner.next();
-
+                    break;
                 }
+                line = scanner.next();
 
-                // Add event to the list
-                extractedEvents.add(new Event(eventName, eventTimestamp, eventInformation, eventIcon, eventGroupColor, eventUrl));
             }
 
-            break;
+            // Add event to the list
+            extractedEvents.add(new Event(eventName, eventTimestamp, eventInformation, eventIcon, eventGroupColor, eventUrl));
         }
 
         return extractedEvents;

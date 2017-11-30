@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * Created by JaniS on 3.8.2017.
- * <p>
+ *
  * EventLoader makes it possible to perform heavy HTTP and parsing tasks in a background thread.
  * UI will remain being updated in the main thread so usability won't be compromised during loading data
  * with tasks taking quite long time.
@@ -17,11 +17,6 @@ import java.util.List;
  * @author Jani Suoranta 25.11.2017
  */
 class EventLoader extends AsyncTaskLoader<List<Event>> {
-
-    /**
-     * Tag for the log messages
-     */
-    private static final String LOG_TAG = EventDetails.class.getSimpleName();
 
     /**
      * Query URLs, list of Events and internetConnection boolean
@@ -76,21 +71,15 @@ class EventLoader extends AsyncTaskLoader<List<Event>> {
             return null;
         }
 
-        // If there already is event's in the list
-        /*if (mEvents != null) {
-            Log.e("loadInBackground", "events object contents: " + mEvents.get(0).getEventName());
-            return null;
-        }*/
-
         // If there's no internet connection, then end the activity after waiting a little
         if (!internetConnection) {
-            // Pause the thread for 60s. Wait for the user to connect to the internet,
+            // Pause the thread for 30s. Wait for the user to connect to the internet,
             // if that doesn't happen then the app is shut down.
             try {
-                Thread.sleep(60000);
+                Thread.sleep(30000);
                 getContext().stopService(new Intent(getContext(), com.example.android.jyunioni.EventLoader.class));
             } catch (InterruptedException e) {
-                Log.e(LOG_TAG, "Problem trying to pause the background thread in EventLoader.java: " + e);
+                Log.e("EventLoader", "Problem trying to pause the background thread in EventLoader.java: " + e);
             }
         }
 

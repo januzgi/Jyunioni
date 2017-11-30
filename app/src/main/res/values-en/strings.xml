@@ -38,4 +38,11 @@
 
     <!-- "Sign in" string to inform user to log into a Google account -->
     <string name="sign_in">Log in</string>
+    <!-- Sign in failed -->
+    <string name="sign_in_failed">Sign in to the account failed.</string>
+    <!-- Google API error -->
+    <string name="google_api_error">Google sign in error.</string>
+    <!-- Firebase authentication failed -->
+    <string name="firebase_auth_failed">Authentication with shoutbox failed.</string>
+
 </resources>
