@@ -21,7 +21,7 @@ The second tab is a real-time shoutbox that requires a Google log-in. Messages b
 The app is by default in Finnish and also localized for English users. The data of the events is shown in Finnish.
 
 
-Known issues & possible crashes
+Known issues
 -------
 * If you start the app without internet connection it asks you to connect to either: connect to the internet via WIFI, 4G or quit. After connected to a WIFI or 4G the app needs to be restarted to fetch the events.
 
@@ -155,9 +155,12 @@ buildscript {
 4. Once you have set up your new project in Android Studio, have synced the gradle succesfully and have the classes locally in your machine, you can copypaste the Jyunioni classes, folders and the manifest.
 
 **Put:**
-    * all folders and their content from Jyunioni-app/app/src/main/res/ into `/MyApplication/app/src/main/res`. This means you can delete all the default folders in `res/` before copypasting the Jyunioni repository `res/` folders.
-    * .java classes into `/MyApplication/app/src/main/java/com/example/android/myapplication/`
-    * AndroidManifest.xml into `/MyApplication/app/src/main/`
+
+* all folders and their content from Jyunioni-app/app/src/main/res/ into `/MyApplication/app/src/main/res`. This means you can delete all the default folders in `res/` before copypasting the Jyunioni repository `res/` folders.
+
+* .java classes into `/MyApplication/app/src/main/java/com/example/android/myapplication/`
+
+* AndroidManifest.xml into `/MyApplication/app/src/main/`
 
 You need to update the package name from `com.example.android.jyunioni` to `com.example.android.MyApplication` in various lines in **AndroidManifest.xml**. 
 
@@ -167,5 +170,9 @@ You also need to update every .java file package declaration to `package com.exa
 5. The app uses Google's Firebase and its database for the real-time chat. With this tutorial you will get the "google-services.json" file needed to sync the gradle succesfully. To get using Firebase in the app yourself, see this [guide](https://codelabs.developers.google.com/codelabs/firebase-android/#0 "Firebase real-time chat in Android guide").
 
 Happy coding!🎉🔥
+
+
+**The server side code which is .PHP and handles the parsing of the events data can be found in it's [own repository](https://github.com/januzgi/Jyunioni-app-server "Jyunioni server PHP codes").**
+
 
 If you need further assistance or have any questions, feel free to contact me via [email](https://github.com/januzgi/Jyunioni-app/tree/master/app/src/main#support--contact "See Support & Contact").
