@@ -1,7 +1,6 @@
 package jani.suoranta.android.jyunioni;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -139,7 +138,7 @@ class Event implements Comparable<Event> {
                 SimpleDateFormat newFormat = new SimpleDateFormat("d.M.yyyy");
                 result = newFormat.parse(timestamp);
             } catch (ParseException e) {
-                Log.e("Event.java", "Parsing problem at getEventStartDate().\n" + e);
+                return null;
             }
 
             return result;
@@ -155,7 +154,7 @@ class Event implements Comparable<Event> {
             SimpleDateFormat newFormat = new SimpleDateFormat("d.M.yyyy");
             result = newFormat.parse(startDateString);
         } catch (ParseException e) {
-            Log.e("Event.java", "Parsing problem at getEventStartDate().\n" + e);
+            return null;
         }
 
         return result;
