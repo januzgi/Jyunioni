@@ -1,4 +1,4 @@
-package com.example.android.jyunioni;
+package jani.suoranta.android.jyunioni;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -58,17 +58,17 @@ public class SignInGoogleActivity extends AppCompatActivity implements GoogleApi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sign_in_screen);
+        setContentView(jani.suoranta.android.jyunioni.R.layout.sign_in_screen);
 
 
         // Assign sign in button
-        SignInButton mSignInButton = findViewById(R.id.sign_in_button);
+        SignInButton mSignInButton = findViewById(jani.suoranta.android.jyunioni.R.id.sign_in_button);
         // Set a click listener
         mSignInButton.setOnClickListener(this);
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestIdToken(getString(jani.suoranta.android.jyunioni.R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         // Access Google's sign in api
@@ -88,7 +88,7 @@ public class SignInGoogleActivity extends AppCompatActivity implements GoogleApi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.sign_in_button:
+            case jani.suoranta.android.jyunioni.R.id.sign_in_button:
                 // Call signIn if the button is clicked.
                 signIn();
                 break;
@@ -110,7 +110,7 @@ public class SignInGoogleActivity extends AppCompatActivity implements GoogleApi
      */
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(this, R.string.google_api_error, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, jani.suoranta.android.jyunioni.R.string.google_api_error, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -134,7 +134,7 @@ public class SignInGoogleActivity extends AppCompatActivity implements GoogleApi
                 firebaseAuthWithGoogle(account);
             } else {
                 // Show a toast if Google sign in failed.
-                Toast.makeText(this, R.string.sign_in_failed, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, jani.suoranta.android.jyunioni.R.string.sign_in_failed, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -157,7 +157,7 @@ public class SignInGoogleActivity extends AppCompatActivity implements GoogleApi
 
                 // If sign in fails, display a message to the user.
                 if (!task.isSuccessful()) {
-                    Toast.makeText(SignInGoogleActivity.this, R.string.firebase_auth_failed, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignInGoogleActivity.this, jani.suoranta.android.jyunioni.R.string.firebase_auth_failed, Toast.LENGTH_SHORT).show();
                 } else {
                     // If sign in succeeds the authentication state listener will be notified and
                     // logic to handle the signed in user can be handled in the listener.

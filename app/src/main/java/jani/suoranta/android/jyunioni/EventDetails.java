@@ -1,4 +1,4 @@
-package com.example.android.jyunioni;
+package jani.suoranta.android.jyunioni;
 
 import android.content.Context;
 import android.content.Intent;
@@ -41,7 +41,7 @@ public class EventDetails extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.event_details);
+        setContentView(jani.suoranta.android.jyunioni.R.layout.event_details);
 
         Intent intent = getIntent();
         Bundle intentData = intent.getExtras();
@@ -66,20 +66,20 @@ public class EventDetails extends AppCompatActivity {
 
 
         // Set the event's details / information in the event information textview
-        TextView eventInformationTextView = findViewById(R.id.event_information_textview);
+        TextView eventInformationTextView = findViewById(jani.suoranta.android.jyunioni.R.id.event_information_textview);
         eventInformationTextView.setText(eventInformation);
 
         // Find the header where event's name and timestamp is set
-        TextView eventDetailsHeaderTextView = findViewById(R.id.event_details_header_textview);
+        TextView eventDetailsHeaderTextView = findViewById(jani.suoranta.android.jyunioni.R.id.event_details_header_textview);
         eventDetailsHeaderTextView.setText(eventNameAndTimestamp);
 
         // Find the imageview by it's id so the correct image can be set
-        ImageView eventDetailImageView = findViewById(R.id.event_detail_image);
+        ImageView eventDetailImageView = findViewById(jani.suoranta.android.jyunioni.R.id.event_detail_image);
         eventDetailImageView.setBackgroundResource(eventImageId);
 
 
         // Find the button in the event details view that takes the user to the event's web page.
-        Button eventDetailsButton = findViewById(R.id.event_details_button);
+        Button eventDetailsButton = findViewById(jani.suoranta.android.jyunioni.R.id.event_details_button);
 
         // Set a listener for the button and define actions.
         eventDetailsButton.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +98,7 @@ public class EventDetails extends AppCompatActivity {
                     if (activeNetwork != null && activeNetwork.isConnected()) {
 
                         // Show a toast for the user when opening the event's page in a browser.
-                        Toast.makeText(getApplicationContext(), R.string.moving_to_event_page, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), jani.suoranta.android.jyunioni.R.string.moving_to_event_page, Toast.LENGTH_SHORT).show();
 
                         // Convert the String URL into a URI object (to pass into the Intent constructor)
                         Uri eventUri = Uri.parse(eventUrl);
@@ -110,11 +110,11 @@ public class EventDetails extends AppCompatActivity {
                         startActivity(websiteIntent);
                     } else {
                         // Otherwise, display error that there's no internet connection
-                        Toast.makeText(getApplicationContext(), R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), jani.suoranta.android.jyunioni.R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     // Otherwise, display error that event's webpage wasn't found.
-                    Toast.makeText(getApplicationContext(), R.string.webpage_not_found, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), jani.suoranta.android.jyunioni.R.string.webpage_not_found, Toast.LENGTH_SHORT).show();
                 }
             }
 

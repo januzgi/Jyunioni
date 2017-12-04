@@ -1,4 +1,4 @@
-package com.example.android.jyunioni;
+package jani.suoranta.android.jyunioni;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,10 @@ class EventDetailsParser {
 
         // If the response is empty or null, then return early.
         if (httpResponseString.equals("")) {
-            extractedEvents.add(new Event("Internet yhteys vajaa.", "Tarkista verkon toimivuus.", "Testaa pääsetkö Googleen.", R.drawable.default_icon, R.color.primary_color, "https://www.google.fi"));
+            extractedEvents.add(new Event("Internet yhteys vajaa.",
+                    "Tarkista verkon toimivuus.", "Testaa pääsetkö Googleen.",
+                    jani.suoranta.android.jyunioni.R.drawable.default_icon,
+                    jani.suoranta.android.jyunioni.R.color.primary_color, "https://www.google.fi"));
             return extractedEvents;
         }
 
@@ -46,24 +49,24 @@ class EventDetailsParser {
 
         switch (whichGroupsEvent) {
             case "LINKKI":
-                eventIcon = R.drawable.linkki_jkl_icon;
-                eventGroupColor = R.color.color_linkki_jkl;
+                eventIcon = jani.suoranta.android.jyunioni.R.drawable.linkki_jkl_icon;
+                eventGroupColor = jani.suoranta.android.jyunioni.R.color.color_linkki_jkl;
                 break;
             case "PORSSI":
-                eventIcon = R.drawable.porssi_ry_icon;
-                eventGroupColor = R.color.color_porssi_ry;
+                eventIcon = jani.suoranta.android.jyunioni.R.drawable.porssi_ry_icon;
+                eventGroupColor = jani.suoranta.android.jyunioni.R.color.color_porssi_ry;
                 break;
             case "DUMPPI":
-                eventIcon = R.drawable.dumppi_ry_icon;
-                eventGroupColor = R.color.color_dumppi_ry;
+                eventIcon = jani.suoranta.android.jyunioni.R.drawable.dumppi_ry_icon;
+                eventGroupColor = jani.suoranta.android.jyunioni.R.color.color_dumppi_ry;
                 break;
             case "STIMULUS":
-                eventIcon = R.drawable.stimulus_ry_icon;
-                eventGroupColor = R.color.color_stimulus_ry;
+                eventIcon = jani.suoranta.android.jyunioni.R.drawable.stimulus_ry_icon;
+                eventGroupColor = jani.suoranta.android.jyunioni.R.color.color_stimulus_ry;
                 break;
             default:
-                eventIcon = R.drawable.default_icon;
-                eventGroupColor = R.color.primary_color;
+                eventIcon = jani.suoranta.android.jyunioni.R.drawable.default_icon;
+                eventGroupColor = jani.suoranta.android.jyunioni.R.color.primary_color;
         }
 
 

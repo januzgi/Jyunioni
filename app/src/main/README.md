@@ -100,7 +100,7 @@ android {
     buildToolsVersion '26.0.2'
 
     defaultConfig {
-        applicationId "com.example.android.jyunioni"
+        applicationId "jani.suoranta.jyunioni"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
@@ -164,7 +164,7 @@ buildscript {
 
 * AndroidManifest.xml into `/MyApplication/app/src/main/`
 
-You need to update the package name from `com.example.android.jyunioni` to `com.example.android.MyApplication` in various lines in **AndroidManifest.xml**. 
+You need to update the package name from `jani.suoranta.jyunioni` to `com.example.android.MyApplication` in various lines in **AndroidManifest.xml**.
 
 You also need to update every .java file package declaration to `package com.example.android.myapplication;`. These declarations are also at some parts of the code, so just follow the red error indicators.
 

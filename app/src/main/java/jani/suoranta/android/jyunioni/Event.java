@@ -1,4 +1,4 @@
-package com.example.android.jyunioni;
+package jani.suoranta.android.jyunioni;
 
 import android.support.annotation.NonNull;
 import android.util.Log;

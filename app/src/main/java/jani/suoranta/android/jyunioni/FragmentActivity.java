@@ -1,4 +1,4 @@
-package com.example.android.jyunioni;
+package jani.suoranta.android.jyunioni;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -17,10 +17,10 @@ public class FragmentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Set the content of the activity to use the activity_main.xml layout file
-        setContentView(R.layout.activity_main);
+        setContentView(jani.suoranta.android.jyunioni.R.layout.activity_main);
 
         // Find the view pager that will allow the user to swipe between fragments
-        ViewPager viewPager = findViewById(R.id.viewpager);
+        ViewPager viewPager = findViewById(jani.suoranta.android.jyunioni.R.id.viewpager);
 
         // Create an adapter that knows which fragment should be shown on each page
         CategoryAdapter adapter = new CategoryAdapter(this, getSupportFragmentManager());
@@ -29,7 +29,7 @@ public class FragmentActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
 
         // Find the tab layout that shows the tabs
-        TabLayout tabLayout = findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(jani.suoranta.android.jyunioni.R.id.tabs);
 
         // Connect the tab layout with the view pager. This will
         //   1. Update the tab layout when the view pager is swiped

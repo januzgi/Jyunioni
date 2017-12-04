@@ -1,7 +1,7 @@
 /*
  *
  */
-package com.example.android.jyunioni;
+package jani.suoranta.android.jyunioni;
 
 /**
  * ShoutboxMessage is the class for shoutbox messages.

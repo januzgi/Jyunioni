@@ -1,4 +1,4 @@
-package com.example.android.jyunioni;
+package jani.suoranta.android.jyunioni;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -149,7 +149,7 @@ final class Queries {
                     allEventsList.add(new Event("Ongelma serverillä", "1.1.",
                             "Yritä myöhemmin uudelleen." +
                                     "\nJos ongelma ei ratkea päivän sisään, laita viestiä tekijälle:\n\njanisuoranta@icloud.com",
-                            R.drawable.error_icon, R.color.error_color, "https://media.giphy.com/media/EUxkZPmTfB7Fe/giphy.gif"));
+                            jani.suoranta.android.jyunioni.R.drawable.error_icon, jani.suoranta.android.jyunioni.R.color.error_color, "https://media.giphy.com/media/EUxkZPmTfB7Fe/giphy.gif"));
                     return allEventsList;
                 }
 

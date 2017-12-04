@@ -1,4 +1,4 @@
-package com.example.android.jyunioni;
+package jani.suoranta.android.jyunioni;
 
 import android.app.AlertDialog;
 import android.app.LoaderManager;
@@ -89,20 +89,20 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     /**
      * int for the "no event data" or "no internet connection" messages.
      */
-    private int emptyStateTextViewMessage = R.string.empty_message;
+    private int emptyStateTextViewMessage = jani.suoranta.android.jyunioni.R.string.empty_message;
 
     /**
      * Creates and returns the view hierarchy associated with the fragment.
      */
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.list_build, container, false);
+        rootView = inflater.inflate(jani.suoranta.android.jyunioni.R.layout.list_build, container, false);
 
         // Different groups events list .txt address in the server.
-        String LINKKI_EVENTS_URL = "http://morland.red/jyunioni-server/Parsed-events/linkkiEvents.txt";
-        String PORSSI_EVENTS_URL = "http://morland.red/jyunioni-server/Parsed-events/porssiEvents.txt";
-        String DUMPPI_EVENTS_URL = "http://morland.red/jyunioni-server/Parsed-events/dumppiEvents.txt";
-        String STIMULUS_EVENTS_URL = "http://morland.red/jyunioni-server/Parsed-events/stimulusEvents.txt";
+        String LINKKI_EVENTS_URL = "http://morland.red/jani.suoranta.jyunioni-server/Parsed-events/linkkiEvents.txt";
+        String PORSSI_EVENTS_URL = "http://morland.red/jani.suoranta.jyunioni-server/Parsed-events/porssiEvents.txt";
+        String DUMPPI_EVENTS_URL = "http://morland.red/jani.suoranta.jyunioni-server/Parsed-events/dumppiEvents.txt";
+        String STIMULUS_EVENTS_URL = "http://morland.red/jani.suoranta.jyunioni-server/Parsed-events/stimulusEvents.txt";
 
         // Add the event URLs to the String array
         allEventPageUrls[0] = LINKKI_EVENTS_URL;
@@ -112,14 +112,14 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
         // Find the ListView object in the view hierarchy.
         // ListView with the view ID called events_list is declared in the list_build.xml layout file.
-        ListView eventsListView = rootView.findViewById(R.id.events_list);
+        ListView eventsListView = rootView.findViewById(jani.suoranta.android.jyunioni.R.id.events_list);
 
         // Find a reference to the mEmptyStateTextView in the layout
-        mEmptyStateTextView = rootView.findViewById(R.id.emptyView);
+        mEmptyStateTextView = rootView.findViewById(jani.suoranta.android.jyunioni.R.id.emptyView);
         eventsListView.setEmptyView(mEmptyStateTextView);
 
         // Set the progress bar to be shown when searching for the data
-        mProgressBar = rootView.findViewById(R.id.progressBarEventsList);
+        mProgressBar = rootView.findViewById(jani.suoranta.android.jyunioni.R.id.progressBarEventsList);
         mProgressBar.setVisibility(View.VISIBLE);
 
         // Create an EventAdapter, whose data source is a list of Events.
@@ -184,7 +184,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         if (internetConnectionEstablished) {
 
             // Show a toast for the user that the events are being fetched.
-            Toast.makeText(getContext(), R.string.fetching_event_data, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), jani.suoranta.android.jyunioni.R.string.fetching_event_data, Toast.LENGTH_SHORT).show();
 
             // Get a reference to the LoaderManager, in order to interact with loaders.
             LoaderManager loaderManager = getActivity().getLoaderManager();
@@ -197,7 +197,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             // Otherwise, display error
             // First, hide loading indicator so error message will be visible
             mProgressBar.setVisibility(View.GONE);
-            emptyStateTextViewMessage = R.string.no_internet_connection;
+            emptyStateTextViewMessage = jani.suoranta.android.jyunioni.R.string.no_internet_connection;
             mEmptyStateTextView.setText(emptyStateTextViewMessage);
         }
 
@@ -222,7 +222,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             userConnectedToInternet++;
             if (userConnectedToInternet == 1) {
                 // Show a toast only the first time that the events are being fetched.
-                Toast.makeText(getContext(), R.string.fetching_event_data, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), jani.suoranta.android.jyunioni.R.string.fetching_event_data, Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -243,7 +243,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             // Create a Runnable to be used later for finishing the Activity.
             final Runnable noConnectionsRunnable = new Runnable() {
                 public void run() {
-                    getContext().stopService(new Intent(getContext(), com.example.android.jyunioni.EventsFragment.class));
+                    getContext().stopService(new Intent(getContext(), EventsFragment.class));
                     getActivity().finish();
                 }
             };
@@ -254,20 +254,20 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             // Dialog if there's no internet connection available
             // From: https://stackoverflow.com/questions/25685755/ask-user-to-connect-to-internet-or-quit-app-android
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(R.string.connect_to_internet).setCancelable(false)
-                    .setPositiveButton(R.string.quit_app, new DialogInterface.OnClickListener() {
+            builder.setMessage(jani.suoranta.android.jyunioni.R.string.connect_to_internet).setCancelable(false)
+                    .setPositiveButton(jani.suoranta.android.jyunioni.R.string.quit_app, new DialogInterface.OnClickListener() {
 
                         public void onClick(DialogInterface dialog, int id) {
                             getActivity().finish();
                         }
                     })
-                    .setNeutralButton(R.string.connect_to_wifi, new DialogInterface.OnClickListener() {
+                    .setNeutralButton(jani.suoranta.android.jyunioni.R.string.connect_to_wifi, new DialogInterface.OnClickListener() {
 
                         public void onClick(DialogInterface dialog, int id) {
                             getActivity().startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
                         }
                     })
-                    .setNegativeButton(R.string.connect_roaming, new DialogInterface.OnClickListener() {
+                    .setNegativeButton(jani.suoranta.android.jyunioni.R.string.connect_roaming, new DialogInterface.OnClickListener() {
 
                         public void onClick(DialogInterface dialog, int id) {
                             getActivity().startActivity(new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS));
@@ -278,7 +278,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
             alert.show();
 
             // Show a toast for the user
-            showToast(R.string.no_internet_connection);
+            showToast(jani.suoranta.android.jyunioni.R.string.no_internet_connection);
 
             // Create a new loader for the given URLs, with internetConnectionEstablished == false,
             // so the background thread pauses

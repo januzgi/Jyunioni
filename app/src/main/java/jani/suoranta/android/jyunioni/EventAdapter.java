@@ -1,4 +1,4 @@
-package com.example.android.jyunioni;
+package jani.suoranta.android.jyunioni;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -42,26 +42,26 @@ class EventAdapter extends ArrayAdapter<Event> {
         View listItemView = convertView;
         if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.list_item, parent, false);
+                    jani.suoranta.android.jyunioni.R.layout.list_item, parent, false);
         }
 
         // Get the {@link Event} object located at this position in the list
         Event currentEvent = getItem(position);
 
         // Find the TextView in the list_item.xml layout with the ID event_name_text_view.
-        TextView eventNameTextView = listItemView.findViewById(R.id.event_name_text_view);
+        TextView eventNameTextView = listItemView.findViewById(jani.suoranta.android.jyunioni.R.id.event_name_text_view);
         // Get the name of the currentEvent object and set this text on the event name TextView.
         eventNameTextView.setText(currentEvent.getEventName());
 
 
         // Find the TextView in the list_item.xml layout with the ID event_timestamp_text_view.
-        TextView timestampTextView = listItemView.findViewById(R.id.event_timestamp_text_view);
+        TextView timestampTextView = listItemView.findViewById(jani.suoranta.android.jyunioni.R.id.event_timestamp_text_view);
         // Get the timestamp from the currentEvent object and set this text on the timestamp TextView.
         timestampTextView.setText(currentEvent.getEventTimestamp());
 
 
         // Find the ImageView in the list_item.xml layout with the ID image.
-        ImageView imageView = listItemView.findViewById(R.id.group_image);
+        ImageView imageView = listItemView.findViewById(jani.suoranta.android.jyunioni.R.id.group_image);
 
         // Check if an image is provided for this event or not
         if (currentEvent.hasImage()) {
@@ -75,7 +75,7 @@ class EventAdapter extends ArrayAdapter<Event> {
         }
 
         // Set the theme color for the list item, find id first
-        View textContainer = listItemView.findViewById(R.id.text_container);
+        View textContainer = listItemView.findViewById(jani.suoranta.android.jyunioni.R.id.text_container);
 
         // Find the color that the resource ID maps to and
         // set the background color of the text container View

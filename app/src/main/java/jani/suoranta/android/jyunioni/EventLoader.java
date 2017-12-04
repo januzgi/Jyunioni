@@ -1,4 +1,4 @@
-package com.example.android.jyunioni;
+package jani.suoranta.android.jyunioni;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
@@ -76,7 +76,7 @@ class EventLoader extends AsyncTaskLoader<List<Event>> {
             // if that doesn't happen then the app is shut down.
             try {
                 Thread.sleep(30000);
-                getContext().stopService(new Intent(getContext(), com.example.android.jyunioni.EventLoader.class));
+                getContext().stopService(new Intent(getContext(), EventLoader.class));
             } catch (InterruptedException e) {
                 return null;
             }

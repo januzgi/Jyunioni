@@ -1,4 +1,4 @@
-package com.example.android.jyunioni;
+package jani.suoranta.android.jyunioni;
 
 import android.content.Context;
 import android.content.Intent;
@@ -56,10 +56,9 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
 
         private MessageViewHolder(View v) {
             super(v);
-            messageTextView = itemView.findViewById(R.id.shoutboxMessageTextView);
-            senderTextView = itemView.findViewById(R.id.shoutboxSenderTextView);
-            senderImageView =
-                    itemView.findViewById(R.id.shoutboxSenderImageView);
+            messageTextView = itemView.findViewById(jani.suoranta.android.jyunioni.R.id.shoutboxMessageTextView);
+            senderTextView = itemView.findViewById(jani.suoranta.android.jyunioni.R.id.shoutboxSenderTextView);
+            senderImageView = itemView.findViewById(jani.suoranta.android.jyunioni.R.id.shoutboxSenderImageView);
         }
     }
 
@@ -103,7 +102,7 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.shoutbox_build, container, false);
+        View rootView = inflater.inflate(jani.suoranta.android.jyunioni.R.layout.shoutbox_build, container, false);
 
         // Set default username is anonymous.
         mUsername = ANONYMOUS;
@@ -136,7 +135,7 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
         super.onActivityCreated(savedInstanceState);
 
         // Initialize RecyclerView and the LayoutManager
-        mMessageRecyclerView = getView().findViewById(R.id.messageRecyclerView);
+        mMessageRecyclerView = getView().findViewById(jani.suoranta.android.jyunioni.R.id.messageRecyclerView);
         mLinearLayoutManager = new LinearLayoutManager(getContext());
         mLinearLayoutManager.setStackFromEnd(true);
         // Set the RecyclerView to use the LayoutManager
@@ -170,7 +169,7 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
             @Override
             public MessageViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
                 LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-                return new MessageViewHolder(inflater.inflate(R.layout.message_item, viewGroup, false));
+                return new MessageViewHolder(inflater.inflate(jani.suoranta.android.jyunioni.R.layout.message_item, viewGroup, false));
             }
 
             // Unused view holders get filled with data to be displayed.
@@ -186,7 +185,7 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
                 // Set the profile picture to the senderImageView's viewHolder or use the default picture.
                 viewHolder.senderTextView.setText(shoutboxMessage.getName());
                 if (shoutboxMessage.getPhotoUrl() == null) {
-                    viewHolder.senderImageView.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_account_circle_black_36dp));
+                    viewHolder.senderImageView.setImageDrawable(ContextCompat.getDrawable(getContext(), jani.suoranta.android.jyunioni.R.drawable.ic_account_circle_black_36dp));
                 } else {
                     // Use Glide to smoothen and fasten the scrolling of the messages list.
                     // https://github.com/bumptech/glide
@@ -219,13 +218,13 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
 
 
         // Get the message editTextView instance
-        mMessageEditText = getView().findViewById(R.id.messageEditText);
+        mMessageEditText = getView().findViewById(jani.suoranta.android.jyunioni.R.id.messageEditText);
 
         // Create a listener for the edit text to dismiss the keyboard when the edit text loses focus
         class MyFocusChangeListener implements View.OnFocusChangeListener {
 
             public void onFocusChange(View v, boolean hasFocus) {
-                if (v.getId() == R.id.messageEditText && !hasFocus) {
+                if (v.getId() == jani.suoranta.android.jyunioni.R.id.messageEditText && !hasFocus) {
 
                     InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
@@ -261,7 +260,7 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
 
 
         // Initialize send button
-        mSendButton = getView().findViewById(R.id.sendButton);
+        mSendButton = getView().findViewById(jani.suoranta.android.jyunioni.R.id.sendButton);
         // Set it disabled so the user can only push it when written something.
         // This changes to enabled in the listener.
         mSendButton.setEnabled(false);
