@@ -3,7 +3,6 @@ package com.example.android.jyunioni;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import java.util.List;
 
@@ -79,7 +78,7 @@ class EventLoader extends AsyncTaskLoader<List<Event>> {
                 Thread.sleep(30000);
                 getContext().stopService(new Intent(getContext(), com.example.android.jyunioni.EventLoader.class));
             } catch (InterruptedException e) {
-                Log.e("EventLoader", "Problem trying to pause the background thread in EventLoader.java: " + e);
+                return null;
             }
         }
 

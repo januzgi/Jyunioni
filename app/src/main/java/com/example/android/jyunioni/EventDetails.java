@@ -7,7 +7,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -116,7 +115,6 @@ public class EventDetails extends AppCompatActivity {
                 } catch (Exception e) {
                     // Otherwise, display error that event's webpage wasn't found.
                     Toast.makeText(getApplicationContext(), R.string.webpage_not_found, Toast.LENGTH_SHORT).show();
-                    Log.e("EventDetails.java", "Exception when parsing the event's URL for the website intent.");
                 }
             }
 

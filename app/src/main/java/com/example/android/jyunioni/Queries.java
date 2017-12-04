@@ -1,7 +1,5 @@
 package com.example.android.jyunioni;
 
-import android.util.Log;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,7 +42,6 @@ final class Queries {
         try {
             url = new URL(stringUrl);
         } catch (MalformedURLException exception) {
-            Log.e("Queries.java", "Error with creating URL", exception);
             return null;
         }
         return url;
@@ -72,13 +69,10 @@ final class Queries {
                 inputStream = urlConnection.getInputStream();
                 response = readFromStream(inputStream);
             } else {
-                // If the response code was != 200
-                Log.e("Queries.java", "HTTP request response code wasn't 200 (OK), but instead: " + Integer.toString(urlConnection.getResponseCode()));
+                response = "SERVER_ERROR";
             }
 
         } catch (IOException e) {
-            Log.e("Queries.java", "IOexception message when making HTTP request." +
-                    "\n(This comes from the catch block inside the method makeHttpRequest in Queries.): " + e);
             response = "SERVER_ERROR";
         } finally {
             if (urlConnection != null) {
@@ -282,7 +276,7 @@ final class Queries {
         try {
             httpResponse = makeHttpRequest(url);
         } catch (IOException e) {
-            Log.e("Queries.java", "IOException when making the HTTP request in sendHttpRequest at Queries.java ", e);
+            return "SERVER_ERROR";
         }
         return httpResponse;
     }

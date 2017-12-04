@@ -11,7 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -315,7 +314,6 @@ public class ShoutboxFragment extends Fragment implements GoogleApiClient.OnConn
      */
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.e("ShoutboxFragment.java", "onConnectionFailed:" + connectionResult);
         Toast.makeText(getContext(), "Google sign in error.", Toast.LENGTH_SHORT).show();
     }
 

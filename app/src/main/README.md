@@ -1,5 +1,5 @@
 Jyunioni App
-![alt text](http://users.jyu.fi/~jatasuor/Jyunioni-logo "Jyunioni logo")
+![alt text](http://users.jyu.fi/~jatasuor/Jyunioni/Jyunioni-banneri "Jyunioni banneri")
 ===================================
 
 This app is for the use of students in the University of Jyväskylä.
