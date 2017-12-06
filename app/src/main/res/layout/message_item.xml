@@ -37,8 +37,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
+                android:background="@drawable/rounded_message_background"
                 android:textColor="@color/shoutbox_message_color"
-                android:textSize="@dimen/message_text_size" />
+                android:textSize="@dimen/message_text_size"
+                android:padding="@dimen/message_bubble_padding"/>
         </LinearLayout>
 
     </LinearLayout>

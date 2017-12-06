@@ -27,6 +27,9 @@
     <!-- Error color -->
     <color name="error_color">#cc0000</color>
 
+    <!-- Event information text color -->
+    <color name="event_information_text_color">#6e6e6e</color>
+
 
     <!-- Theme colors for each group. For readability,
     using original group logo's colors monochromatic tints (from left) #2 option from: http://www.color-hex.com/ -->
