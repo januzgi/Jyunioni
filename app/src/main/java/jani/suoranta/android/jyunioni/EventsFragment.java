@@ -92,6 +92,14 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     private int emptyStateTextViewMessage = jani.suoranta.android.jyunioni.R.string.empty_message;
 
     /**
+     * Initialize the events listView.
+     * Also initialize index and top position of the listView
+     */
+    private ListView eventsListView;
+    private int listIndex = 0;
+    private int listTop = 0;
+
+    /**
      * Creates and returns the view hierarchy associated with the fragment.
      */
     @Override
@@ -99,10 +107,10 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         rootView = inflater.inflate(jani.suoranta.android.jyunioni.R.layout.list_build, container, false);
 
         // Different groups events list .txt address in the server.
-        String LINKKI_EVENTS_URL = "http://morland.red/jani.suoranta.jyunioni-server/Parsed-events/linkkiEvents.txt";
-        String PORSSI_EVENTS_URL = "http://morland.red/jani.suoranta.jyunioni-server/Parsed-events/porssiEvents.txt";
-        String DUMPPI_EVENTS_URL = "http://morland.red/jani.suoranta.jyunioni-server/Parsed-events/dumppiEvents.txt";
-        String STIMULUS_EVENTS_URL = "http://morland.red/jani.suoranta.jyunioni-server/Parsed-events/stimulusEvents.txt";
+        String LINKKI_EVENTS_URL = "http://morland.red/jyunioni-server/Parsed-events/linkkiEvents.txt";
+        String PORSSI_EVENTS_URL = "http://morland.red/jyunioni-server/Parsed-events/porssiEvents.txt";
+        String DUMPPI_EVENTS_URL = "http://morland.red/jyunioni-server/Parsed-events/dumppiEvents.txt";
+        String STIMULUS_EVENTS_URL = "http://morland.red/jyunioni-server/Parsed-events/stimulusEvents.txt";
 
         // Add the event URLs to the String array
         allEventPageUrls[0] = LINKKI_EVENTS_URL;
@@ -112,7 +120,7 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
         // Find the ListView object in the view hierarchy.
         // ListView with the view ID called events_list is declared in the list_build.xml layout file.
-        ListView eventsListView = rootView.findViewById(jani.suoranta.android.jyunioni.R.id.events_list);
+        eventsListView = rootView.findViewById(jani.suoranta.android.jyunioni.R.id.events_list);
 
         // Find a reference to the mEmptyStateTextView in the layout
         mEmptyStateTextView = rootView.findViewById(jani.suoranta.android.jyunioni.R.id.emptyView);
@@ -128,7 +136,6 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
         // ListView uses the EventAdapter so ListView will display list items for each Event in the list.
         eventsListView.setAdapter(mAdapter);
-
 
         // Set a click listener to open the event's details via an intent
         eventsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -176,7 +183,6 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
         // Get the state of connectivity to the boolean 'internetConnectionEstablished'
         internetConnectionEstablished = isNetworkAvailable(getContext());
 
@@ -203,6 +209,19 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
 
     }
 
+
+    /**
+     * Gets called when the EventsFragment is paused. For example when the EventDetails activity is called.
+     */
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        // Get the eventsListView positions to the privates listIndex and listTop
+        listIndex = eventsListView.getFirstVisiblePosition();
+        View v = eventsListView.getChildAt(0);
+        listTop = (v == null) ? 0 : (v.getTop() - eventsListView.getPaddingTop());
+    }
 
     /**
      * When the activity comes to the foreground this is called.
@@ -304,6 +323,9 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         // data set. This will trigger the ListView to update.
         if (events != null && !events.isEmpty()) {
             mAdapter.addAll(events);
+
+            // Restore eventsListViews index and position when returning from the EventDetails activity
+            eventsListView.setSelectionFromTop(listIndex, listTop);
         } else {
             mEmptyStateTextView.setText(emptyStateTextViewMessage);
         }

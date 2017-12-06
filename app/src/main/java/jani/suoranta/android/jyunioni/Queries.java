@@ -146,8 +146,8 @@ final class Queries {
 
                 // Check for an error in the server.
                 if (httpResponse.equals("SERVER_ERROR")) {
-                    allEventsList.add(new Event("Ongelma serverillä", "1.1.",
-                            "Yritä myöhemmin uudelleen." +
+                    allEventsList.add(new Event("Ongelmia", "1.1.",
+                            "Ongelmia sovelluksessa tai serverillä. Yritä myöhemmin uudelleen." +
                                     "\nJos ongelma ei ratkea päivän sisään, laita viestiä tekijälle:\n\njanisuoranta@icloud.com",
                             jani.suoranta.android.jyunioni.R.drawable.error_icon, jani.suoranta.android.jyunioni.R.color.error_color, "https://media.giphy.com/media/EUxkZPmTfB7Fe/giphy.gif"));
                     return allEventsList;
