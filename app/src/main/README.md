@@ -180,7 +180,7 @@ Happy coding!🎉🔥
 If you need further assistance or have any questions, feel free to contact me via [email](https://github.com/januzgi/Jyunioni-app/tree/master/app/src/main#support--contact "See Support & Contact").
 
 
-License
+MIT license
 -------
 Copyright (c) 2017 Jani Suoranta
 
