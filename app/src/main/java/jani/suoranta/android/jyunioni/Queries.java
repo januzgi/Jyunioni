@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -14,6 +13,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by Jani Suoranta on 29.7.2017.
@@ -49,19 +50,19 @@ final class Queries {
 
 
     /**
-     * Make an HTTP request to the given URL and return the response as a String.
+     * Make an HTTPS request to the given URL and return the response as a String.
      */
-    private static String makeHttpRequest(URL url) throws IOException {
+    private static String makeHttpsRequest(URL url) throws IOException {
         if (url == null) return "";
 
         String response = "";
-        HttpURLConnection urlConnection = null;
+        HttpsURLConnection urlConnection = null;
         InputStream inputStream = null;
         try {
-            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection = (HttpsURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
-            urlConnection.setReadTimeout(200000  /*milliseconds*/);
-            urlConnection.setConnectTimeout(500000  /*milliseconds*/);
+            urlConnection.setReadTimeout(2000  /*milliseconds*/);
+            urlConnection.setConnectTimeout(5000  /*milliseconds*/);
             urlConnection.connect();
 
             if (urlConnection.getResponseCode() == 200) {
@@ -142,7 +143,7 @@ final class Queries {
 
                 // Extract Event fields from the .txt response and create a list of Linkki's Events.
                 // Then add the events to the Linkki's Events list.
-                String httpResponse = sendHttpRequest(linkkiUrl);
+                String httpResponse = sendHttpsRequest(linkkiUrl);
 
                 // Check for an error in the server.
                 if (httpResponse.equals("SERVER_ERROR")) {
@@ -163,7 +164,7 @@ final class Queries {
 
                 // Extract Event fields from the .txt response and create a list of Pörssi's Events.
                 // Then add the events to the Pörssi's Events list.
-                eventsPorssi.addAll(EventDetailsParser.extractEventDetails(sendHttpRequest(porssiUrl)));
+                eventsPorssi.addAll(EventDetailsParser.extractEventDetails(sendHttpsRequest(porssiUrl)));
 
 
                 /* DUMPPI RY */
@@ -173,7 +174,7 @@ final class Queries {
 
                 // Extract Event fields from the .txt response and create a list of Dumppi's Events.
                 // Then add the events to the Dumppi's Events list.
-                eventsDumppi.addAll(EventDetailsParser.extractEventDetails(sendHttpRequest(dumppiUrl)));
+                eventsDumppi.addAll(EventDetailsParser.extractEventDetails(sendHttpsRequest(dumppiUrl)));
 
 
                 /* STIMULUS RY */
@@ -183,7 +184,7 @@ final class Queries {
 
                 // Extract Event fields from the .txt response and create a list of Stimulus' Events.
                 // Then add the events to the Stimulus' Events list.
-                eventsStimulus.addAll(EventDetailsParser.extractEventDetails(sendHttpRequest(stimulusUrl)));
+                eventsStimulus.addAll(EventDetailsParser.extractEventDetails(sendHttpsRequest(stimulusUrl)));
 
             }
         }
@@ -270,15 +271,15 @@ final class Queries {
     /**
      * Do a small method call which all different URL's need.
      */
-    private static String sendHttpRequest(URL url) {
+    private static String sendHttpsRequest(URL url) {
         // Perform HTTP request to the URL and receive a string response back
-        String httpResponse = null;
+        String httpsResponse = null;
         try {
-            httpResponse = makeHttpRequest(url);
+            httpsResponse = makeHttpsRequest(url);
         } catch (IOException e) {
             return "SERVER_ERROR";
         }
-        return httpResponse;
+        return httpsResponse;
     }
 
 }

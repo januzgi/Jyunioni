@@ -107,10 +107,10 @@ public class EventsFragment extends Fragment implements LoaderManager.LoaderCall
         rootView = inflater.inflate(jani.suoranta.android.jyunioni.R.layout.list_build, container, false);
 
         // Different groups events list .txt address in the server.
-        String LINKKI_EVENTS_URL = "http://morland.red/jyunioni-server/Parsed-events/linkkiEvents.txt";
-        String PORSSI_EVENTS_URL = "http://morland.red/jyunioni-server/Parsed-events/porssiEvents.txt";
-        String DUMPPI_EVENTS_URL = "http://morland.red/jyunioni-server/Parsed-events/dumppiEvents.txt";
-        String STIMULUS_EVENTS_URL = "http://morland.red/jyunioni-server/Parsed-events/stimulusEvents.txt";
+        String LINKKI_EVENTS_URL = "https://morland.red/jyunioni-server/Parsed-events/linkkiEvents.txt";
+        String PORSSI_EVENTS_URL = "https://morland.red/jyunioni-server/Parsed-events/porssiEvents.txt";
+        String DUMPPI_EVENTS_URL = "https://morland.red/jyunioni-server/Parsed-events/dumppiEvents.txt";
+        String STIMULUS_EVENTS_URL = "https://morland.red/jyunioni-server/Parsed-events/stimulusEvents.txt";
 
         // Add the event URLs to the String array
         allEventPageUrls[0] = LINKKI_EVENTS_URL;
