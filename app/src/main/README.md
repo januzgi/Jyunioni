@@ -4,7 +4,7 @@ Jyunioni App
 
 This app is for the use of students in the University of Jyväskylä.
 
-**[Download Jyunioni from Google Play](https://play.google.com/store/apps/details?id=jani.suoranta.android.jyunioni "Download Jyunioni")** 
+**Due to GDPR updates, app is no longer available in Google Play** 
 
 The app has two tabs. First tab has an event calendar which compiles 4 organisations publicly available events from their website calendars. Events are shown in a list in ascending order by the time they begin. Clicking an event opens up event details page where is additional information of the event. From the event details the user can also go to the official events webpage for further information.
 
